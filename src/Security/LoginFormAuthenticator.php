@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Enums\UserStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,9 +64,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
+
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
+        }
+
+        if ($user->getStatus() === UserStatus::ARCHIVED) {
+            throw new CustomUserMessageAuthenticationException('This user is archived. Please contact admin.');
+        }
+        if ($user->getStatus() === UserStatus::BLOCKED) {
+            throw new CustomUserMessageAuthenticationException('This user is blocked. Please contact admin.');
+        }
+        if ($user->getStatus() === UserStatus::INACTIVE) {
+            throw new CustomUserMessageAuthenticationException('Please activate your account first.');
         }
 
         return $user;

@@ -18,6 +18,7 @@ class UserFixture extends Fixture
         $user->setLastname('Admin');
         $user->setEmail('admin@rushframework.com');
         $user->setStatus(UserStatus::ACTIVE);
+        $user->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($user);
 
@@ -26,7 +27,6 @@ class UserFixture extends Fixture
         $user2->setLastname('user');
         $user2->setEmail('user@rushframework.com');
         $user2->setStatus(UserStatus::ACTIVE);
-        $user2->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($user2);
 
