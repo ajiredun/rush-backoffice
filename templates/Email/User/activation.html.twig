@@ -1,0 +1,13 @@
+<h3>You did it! You registered!</h3>
+
+Hi {{ user.firstname }}! You're successfully registered.
+
+
+
+{# example, assuming you have a route named "login" #}
+To activate your account, go to: <a target="_blank" href="{{ url('app_activate',{'activation':user.activation}) }}">...</a>.
+
+Thanks!
+
+{# Makes an absolute URL to the /images/logo.png file #}
+<img style="width:75px;height:75px;" src="{{ absolute_url(asset('assets/logo.jpg')) }}">
