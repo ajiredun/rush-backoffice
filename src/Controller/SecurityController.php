@@ -27,6 +27,14 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/", name="app_test")
+     */
+    public function test()
+    {
+        return new Response('<h1>Hello Test</h1>');
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      */
     public function logout()
