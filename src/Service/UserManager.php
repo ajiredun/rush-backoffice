@@ -55,9 +55,10 @@ class UserManager
     public function setPassword(User $user, $password = null)
     {
         if (empty($password)) {
-            $password = random(1000000000,1000000000000);
+            $password = rand(1000000000,1000000000000);
         }
 
+        $event = new UserPasswordEvent($user, $password);
         $this->eventDispatcher->dispatch($event, UserPasswordEvent::NAME);
 
         $user->setPassword($this->passwordEncoder->encodePassword(

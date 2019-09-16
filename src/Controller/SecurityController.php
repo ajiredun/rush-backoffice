@@ -139,6 +139,8 @@ class SecurityController extends AbstractController
                 if ($user) {
                     $userManager->setPassword($user);
                     $this->getDoctrine()->getManager()->flush();
+
+                    $error = "We sent you an Email.";
                 } else {
                     $error = "There is no account with this email address.";
                 }

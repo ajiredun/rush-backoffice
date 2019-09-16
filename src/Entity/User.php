@@ -77,6 +77,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastactive;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -259,6 +264,18 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getLastactive(): ?\DateTimeInterface
+    {
+        return $this->lastactive;
+    }
+
+    public function setLastactive(?\DateTimeInterface $lastactive): self
+    {
+        $this->lastactive = $lastactive;
 
         return $this;
     }

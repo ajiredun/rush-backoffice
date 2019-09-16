@@ -13,9 +13,12 @@ class UserPasswordEvent extends Event
 
     protected $user;
 
-    public function __construct(User $user)
+    protected $password;
+
+    public function __construct(User $user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -24,5 +27,13 @@ class UserPasswordEvent extends Event
     public function getUser(): User
     {
         return $this->user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

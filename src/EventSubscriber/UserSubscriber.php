@@ -29,7 +29,7 @@ class UserSubscriber implements EventSubscriberInterface
             ],
 
             UserPasswordEvent::NAME => [
-                ['userPassword_change',10],
+                ['userPassword_mail',10],
             ],
         ];
     }
@@ -48,8 +48,8 @@ class UserSubscriber implements EventSubscriberInterface
 
     }
 
-    public function userPassword_change(UserPasswordEvent $event)
+    public function userPassword_mail(UserPasswordEvent $event)
     {
-
+        $this->mailManager->sendForgotPasswordMail($event->getUser(), $event->getPassword());
     }
 }
