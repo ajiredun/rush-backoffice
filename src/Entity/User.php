@@ -82,6 +82,16 @@ class User implements UserInterface
      */
     private $lastactive;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -288,6 +298,18 @@ class User implements UserInterface
     public function setLastactive(?\DateTimeInterface $lastactive): self
     {
         $this->lastactive = $lastactive;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
