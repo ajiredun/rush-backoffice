@@ -31,6 +31,10 @@
                                         <div class="alert alert-danger">{{ error }}</div>
                                     {% endif %}
 
+                                    {% if success %}
+                                        <div class="alert alert-success">{{ success }}</div>
+                                    {% endif %}
+
                                     <div class="form-group mb-3">
                                         <input id="inputFirstname" type="text" placeholder="Name" required=""
                                                autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4"
@@ -61,7 +65,7 @@
                                     </div>
 
                                     <div class="custom-control custom-checkbox mb-3">
-                                        <input id="customCheck1" type="checkbox" name="rules"
+                                        <input id="customCheck1" type="checkbox" name="rules" required="required"
                                                class="custom-control-input">
                                         <label for="customCheck1" class="custom-control-label">I agree to the terms and policies</label>
                                     </div>

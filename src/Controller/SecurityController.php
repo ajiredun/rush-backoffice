@@ -63,6 +63,7 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserManager $userManager)
     {
         $error = null;
+        $success = null;
 
         if (
             $request->isMethod('POST')
@@ -75,13 +76,21 @@ class SecurityController extends AbstractController
                 $request->request->get('input_confirm_password')
             ) {
                 if ($request->request->get('input_password') === $request->request->get('input_confirm_password')) {
-                    $user = $userManager->createUser([
-                        'firstname' => $request->request->get('input_firstname'),
-                        'lastname' => $request->request->get('input_lastname'),
-                        'email' => $request->request->get('input_email'),
-                        'password' => $request->request->get('input_password'),
-                    ]);
 
+                    $email = $request->request->get('input_email');
+
+                    if (!$userManager->isUserExist($email)) {
+                        $user = $userManager->createUser([
+                            'firstname' => $request->request->get('input_firstname'),
+                            'lastname' => $request->request->get('input_lastname'),
+                            'email' => $email,
+                            'password' => $request->request->get('input_password'),
+                        ]);
+
+                        $success = "Please activate your account by clicking on the link we sent by mail.";
+                    } else {
+                        $error = "An account with this email address already exists.";
+                    }
                 } else {
                     $error = "The two passwords don't match.";
                 }
@@ -92,6 +101,7 @@ class SecurityController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'error' => $error,
+            'success' => $success,
             'input_email' => $request->request->get('input_email'),
             'input_firstname' => $request->request->get('input_firstname'),
             'input_lastname' => $request->request->get('input_lastname')

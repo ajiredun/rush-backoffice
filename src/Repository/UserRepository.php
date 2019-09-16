@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enums\UserStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +18,63 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+
+    public function findOnlineUsers($lazy = false)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.lastactive > :date')
+            ->setParameter('date', new \DateTime('5 minutes ago'));
+        if ($lazy) {
+            $qb->select('u.id');
+        }
+        $qb = $qb->getQuery();
+
+        return $qb->execute();
+    }
+
+    public function findTotalActiveUsers($lazy = false)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.status != :status')
+            ->setParameter('status', UserStatus::ARCHIVED);
+
+        if ($lazy) {
+            $qb->select('u.id');
+        }
+
+        $qb = $qb->getQuery();
+
+        return $qb->execute();
+    }
+
+    public function findUsersCreatedByMonth($delay = null, $lazy = false)
+    {
+        // if you want for a month specific '-1 month'
+
+        $start = new \DateTime('first day of this month');
+        $end = new \DateTime('last day of this month');
+
+        if ($delay !== null) {
+            $start->modify($delay);
+            $end->modify($delay);
+            $end->modify('last day of this month');
+        }
+
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.createdAt >= :date')
+            ->andWhere('u.createdAt < :dateEnd')
+            ->setParameter('date',$start)
+            ->setParameter('dateEnd',$end);
+
+        if ($lazy) {
+            $qb->select('u.id');
+        }
+
+        $qb = $qb->getQuery();
+
+        return $qb->execute();
     }
 
     // /**

@@ -20,12 +20,18 @@ class DashboardController extends AbstractController
         $users = $ur->findBy(
             [],
             ['createdAt' => 'DESC'],
-            20
+            15
         );
 
+        $usersOnline = $ur->findOnlineUsers();
+        $usersCreatedThisMonth = $ur->findUsersCreatedByMonth();
+        $totalActiveUsers = $ur->findTotalActiveUsers(true);
 
         return $this->render('dashboard/dashboard.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'usersOnline' => $usersOnline,
+            'usersCreatedThisMonth' => $usersCreatedThisMonth,
+            'totalUsers' => $totalActiveUsers
         ]);
     }
 }

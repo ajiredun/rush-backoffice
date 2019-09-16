@@ -285,7 +285,7 @@ class User implements UserInterface
     public function isActiveNow()
     {
         // Delay during wich the user will be considered as still active
-        $delay = new \DateTime('2 minutes ago');
+        $delay = new \DateTime('5 minutes ago');
 
         return ( $this->getLastactive() > $delay );
     }
@@ -297,7 +297,7 @@ class User implements UserInterface
 
     public function getPicture()
     {
-        return 'https://robohash.org/rf'.$this->getId().'?set=set5';
+        return 'https://robohash.org/aj'.$this->getId().'?set=set4&size=100x100';
     }
 
     public function getLastactive(): ?\DateTimeInterface

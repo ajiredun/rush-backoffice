@@ -8,88 +8,24 @@
 
 {% block content %}
     <div class="row mt-5">
-        <div class="col-xl-12 mb-5 mb-xl-0">
-            <div class="card bg-default shadow">
-                <div class="card-header bg-transparent border-0">
-                    <h3 class="text-white mb-0">Users</h3>
-                </div>
-                <div class="table-responsive">
-                    {% if users is empty %}
-                        <h3>No Users</h3>
-                    {% else %}
-                        <table class="table align-items-center table-dark table-flush">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Roles</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for user in users %}
-                                <tr>
-                                    <th scope="row">
-                                        <div class="media align-items-center">
-                                            <a href="#" class="avatar rounded-circle mr-3">
-                                                <img alt="{{ user.name }}" src="{{ user.picture }}">
-                                            </a>
-                                            <div class="media-body">
-                                                {% if user.isActiveNow %}
-                                                    <span class="badge badge-dot mr-2"><i class="bg-success"></i> Online</span>
-                                                {% else %}
-                                                    <span class="badge badge-dot mr-2"><i class="bg-gradient-gray-dark"></i> Offline</span>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <td>
-                                        {{ user.firstname }} {{ user.lastname }}
-                                    </td>
-                                    <td>
-                                        {{ user.email }}
-                                    </td>
-                                    <td>
-                                        {% if user.status == 'active' %}
-                                            <span class="badge badge-dot mr-2"><i class="bg-success"></i> ACTIVE</span>
-                                        {% endif %}
-                                        {% if user.status == 'inactive' %}
-                                            <span class="badge badge-dot mr-2"><i class="bg-blue"></i> INACTIVE</span>
-                                        {% endif %}
-                                        {% if user.status == 'blocked' %}
-                                            <span class="badge badge-dot mr-2"><i class="bg-red"></i> BLOCKED</span>
-                                        {% endif %}
-                                        {% if user.status == 'archived' %}
-                                            <span class="badge badge-dot mr-2"><i class="bg-gradient-gray-dark"></i> ARCHIVED</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% for role in user.roles %}
-                                            <span class="badge badge-secondary">{{ role }}</span>
-                                        {% endfor %}
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                <a class="dropdown-item" href="#">View Profile</a>
-                                                <a class="dropdown-item" href="#">View Orders</a>
-                                                <a class="dropdown-item" href="#">Change Role</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="col-xl-8 mb-5 mb-xl-0 mh400" data-simplebar="init" >
+            {% set config = {'config':{
+                'title' : 'Newly Created User Accounts',
+                'dark': true,
+                'users' : users,
+                'fields' : ['image','online','name', 'status','createdAt'],
+                'options' : ['view_profile','view_orders','change_role']
+            }} %}
+            {% include 'admin/components/user_list.html.twig' with config %}
+        </div>
+        <div class="col-xl-4 mh400" data-simplebar>
+            {% set config = {'config':{
+                'title' : 'Online Users',
+                'users' : usersOnline,
+                'fields' : ['image','name'],
+                'options' : ['view_profile']
+            }} %}
+            {% include 'admin/components/user_list.html.twig' with config %}
         </div>
     </div>
 {% endblock %}

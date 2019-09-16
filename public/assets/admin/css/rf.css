@@ -1,0 +1,26 @@
+.mh300 {
+    max-height:300px;
+    overflow: auto;
+}
+.mh400 {
+    max-height:400px;
+    overflow: auto;
+}
+.mh500 {
+    max-height:500px;
+    overflow: auto;
+}
+
+.rf-online-sign {
+    width:15px !important;
+    height:15px !important;
+    position: relative;
+    top: -15px;
+    left: -15px;
+    border:2px solid white;
+}
+
+.outof {
+    font-size:10px;
+    color:grey;
+}

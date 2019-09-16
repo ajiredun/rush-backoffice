@@ -8,7 +8,6 @@ use App\Entity\User;
 
 class MailManager
 {
-    const EMAIL = 'ajir.edun@gmail.com';
     const SYSTEM_EMAIL = 'dev@dev.ajiredun.com';
 
     protected $mailer;
@@ -25,7 +24,7 @@ class MailManager
     {
         $message = (new \Swift_Message('Rush Framework - Activation'))
             ->setFrom(MailManager::SYSTEM_EMAIL)
-            ->setTo(MailManager::EMAIL)
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->templating->render(
                 // templates/emails/registration.html.twig
@@ -43,7 +42,7 @@ class MailManager
     {
         $message = (new \Swift_Message('Rush Framework - Forgot Password'))
             ->setFrom(MailManager::SYSTEM_EMAIL)
-            ->setTo(MailManager::EMAIL)
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->templating->render(
                 // templates/emails/registration.html.twig

@@ -41,7 +41,7 @@ class UserManager
         $user->setLastname($data['lastname']);
         $user->setEmail($data['email']);
         $user->setRoles($roles);
-        $this->setPassword($user, $data['password']);
+        $this->setPassword($user, $data['password'], false);
 
         $event = new UserCreateEvent($user);
         $this->eventDispatcher->dispatch($event, UserCreateEvent::NAME);
@@ -52,18 +52,36 @@ class UserManager
         return $user;
     }
 
-    public function setPassword(User $user, $password = null)
+    public function setPassword(User $user, $password = null, $propagation = true)
     {
         if (empty($password)) {
             $password = rand(1000000000,1000000000000);
         }
 
-        $event = new UserPasswordEvent($user, $password);
-        $this->eventDispatcher->dispatch($event, UserPasswordEvent::NAME);
+        if ($propagation) {
+            $event = new UserPasswordEvent($user, $password);
+            $this->eventDispatcher->dispatch($event, UserPasswordEvent::NAME);
+        }
 
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
             $password
         ));
+    }
+
+    /**
+     * @param $email
+     * @return bool
+     */
+    public function isUserExist($email)
+    {
+        $ur = $this->em->getRepository(User::class);
+        $user = $ur->findOneBy(array('email'=>$email));
+
+        if ($user) {
+            return true;
+        }
+
+        return false;
     }
 }
