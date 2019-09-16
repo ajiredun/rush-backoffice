@@ -13,12 +13,12 @@ use Symfony\Component\Security\Core\Security;
 class KernelSubscriber implements EventSubscriberInterface
 {
 
-    protected $user;
+    protected $security;
     protected $em;
 
     public function __construct(EntityManagerInterface $em, Security $security)
     {
-        $this->user = $security->getUser();
+        $this->security = $security;
         $this->em = $em;
     }
 
@@ -33,14 +33,11 @@ class KernelSubscriber implements EventSubscriberInterface
 
     public function onTerminate(KernelEvent $event)
     {
-        if ($event->isMasterRequest()) {
-            if (!is_null($this->user)) {
-                dd();
-            }
-        }
-        if (!$this->user->isActiveNow()) {
-            $this->user->setLastActive(new \DateTime());
-            $this->em->flush($this->user);
+        $user = $this->security->getUser();
+
+        if (!is_null($user) && !$user->isActiveNow()) {
+            $user->setLastactive(new \DateTime());
+            $this->em->flush($user);
         }
     }
 }

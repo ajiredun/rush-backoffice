@@ -268,6 +268,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function isActiveNow()
+    {
+        // Delay during wich the user will be considered as still active
+        $delay = new \DateTime('2 minutes ago');
+
+        return ( $this->getLastactive() > $delay );
+    }
+
     public function getLastactive(): ?\DateTimeInterface
     {
         return $this->lastactive;
