@@ -290,6 +290,16 @@ class User implements UserInterface
         return ( $this->getLastactive() > $delay );
     }
 
+    public function getName()
+    {
+        return $this->getFirstname() . " " . $this->getLastname();
+    }
+
+    public function getPicture()
+    {
+        return 'https://robohash.org/rf'.$this->getId().'?set=set5';
+    }
+
     public function getLastactive(): ?\DateTimeInterface
     {
         return $this->lastactive;
