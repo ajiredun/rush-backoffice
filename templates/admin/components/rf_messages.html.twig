@@ -1,0 +1,47 @@
+{% if rfMessages is defined and rfMessages.success is defined and rfMessages.success is not empty %}
+    {% for message in rfMessages.success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span class="alert-inner--icon"><i class="ni ni-check-bold"></i></span>
+            <span class="alert-inner--text">{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if rfMessages is defined and rfMessages.info is defined and rfMessages.info is not empty %}
+    {% for message in rfMessages.info %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <span class="alert-inner--text">{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if rfMessages is defined and rfMessages.warning is defined and rfMessages.warning is not empty %}
+    {% for message in rfMessages.warning %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span class="alert-inner--icon"><i class="ni ni-fat-remove"></i></span>
+            <span class="alert-inner--text">{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+{% if rfMessages is defined and rfMessages.error is defined and rfMessages.error is not empty %}
+    {% for message in rfMessages.error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span class="alert-inner--icon"><i class="ni ni-fat-remove"></i></span>
+            <span class="alert-inner--text">{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}

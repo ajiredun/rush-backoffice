@@ -1,3 +1,7 @@
+.rf-hide {
+    display:none;
+}
+
 .mh300 {
     max-height:300px;
     overflow: auto;

@@ -15,7 +15,6 @@
               rel="stylesheet"/>
         <!-- CSS Files -->
         <link href="{{ asset('assets/admin/css/argon-dashboard.css') }}?v=1.1.0" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css"/>
         <link rel="stylesheet" href="{{ asset('assets/admin/css/rf.css') }}"/>
     {% endblock %}
 </head>
@@ -37,6 +36,7 @@
                 {% include 'admin/header.html.twig' %}
             {% endblock %}
             <div class="container-fluid mt--7">
+                {% include 'admin/components/rf_messages.html.twig' %}
                 {% block content %}
 
                 {% endblock %}
@@ -81,7 +81,7 @@
     <script src="{{ asset('assets/admin/js/plugins/chart.js/dist/Chart.extension.js') }}"></script>
     <!--   Argon JS   -->
     <script src="{{ asset('assets/admin/js/argon-dashboard.min.js') }}?v=1.1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+    <script src="{{ asset('assets/admin/js/rf.js') }}?v=1.1.0"></script>
 {% endblock %}
 </body>
 </html>

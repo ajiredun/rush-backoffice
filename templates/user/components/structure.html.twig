@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Management{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'user',
+        'items': [
+            {'path' : '#', 'title':"Users"},
+            {'path' : '#', 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : '#', 'title':"User Management"},
+        'items': [
+            {'path' : '#', 'title':"Users"},
+            {'path' : '#', 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'user/components/header.html.twig' %}
+{% endblock %}

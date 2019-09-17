@@ -2,7 +2,18 @@
 <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
     <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ config.path }}">{{ config.title }}</a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ config.main.path }}">{{ config.main.title }}</a>
+
+        <!-- Links -->
+        {% if  config.items is defined and config.items is not empty %}
+            <ul class="navbar-nav align-items-center d-none d-md-flex">
+                {% for item in config.items %}
+                    <li class="nav-item {% if item.active is defined and item.active %}active{% endif %}">
+                        <a class="nav-link" href="{{ item.path }}">{{ item.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">

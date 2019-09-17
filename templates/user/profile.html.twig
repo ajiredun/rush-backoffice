@@ -1,22 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'user/components/structure.html.twig' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}{{ user.name }} - Profile{% endblock %}
 
 {% block sidenav %}
-    {% set config = {'config':{'active' : 'user'}} %}
+    {% set config = {'config':{
+        'active' : 'user',
+        'items': [
+            {'path' : '#', 'title':"Users"},
+            {'path' : '#', 'title':"Add User"},
+        ]
+    }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
 {% endblock %}
 
 {% block nav %}
     {% set config = {'config':{
-        'path' : path('rf_dashboard'),
-        'title':"User Management"
+        'main': {'path' : '#', 'title':"User Profile"},
+        'items': [
+            {'path' : '#', 'title':"Users"},
+            {'path' : '#', 'title':"Add User"},
+        ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
 {% endblock %}
 
 {% block header %}
-    {% include 'user/header.html.twig' %}
+    {% include 'user/components/header_profile.html.twig' %}
 {% endblock %}
 
 {% block content %}

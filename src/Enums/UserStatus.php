@@ -15,10 +15,10 @@ class UserStatus
     {
         $enums = UserStatus::getArray();
 
-        if (array_key_exists($statusFrom,$enums)) {
-            return $enums[$statusFrom];
+        if (in_array($statusFrom,$enums)) {
+            return $statusFrom;
         } else {
-            return 'archived';
+            return false;
         }
     }
 
