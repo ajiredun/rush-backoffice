@@ -2,6 +2,19 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block sidenav %}
+    {% set config = {'config':{'active' : 'dashboard'}} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'path' : path('rf_dashboard'),
+        'title':"Dashboard"
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
 {% block header %}
     {% include 'dashboard/header.html.twig' %}
 {% endblock %}

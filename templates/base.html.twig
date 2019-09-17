@@ -22,12 +22,16 @@
 <body>
 {% block whole %}
     {% block sidenav %}
-        {% include 'admin/sidenav.html.twig' %}
     {% endblock %}
     <div class="main-content">
+        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+            <div class="alert alert-warning" style="margin-bottom: 0;">
+                You are currently switched to another user.
+                <a href="{{ path('rf_dashboard', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
+            </div>
+        {% endif %}
         {% block body %}
             {% block nav %}
-                {% include 'admin/nav.html.twig' %}
             {% endblock %}
             {% block header %}
                 {% include 'admin/header.html.twig' %}

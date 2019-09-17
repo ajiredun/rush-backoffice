@@ -44,7 +44,7 @@
                         {% if 'image' in config.fields %}
                             <th scope="row">
                                 <div class="media align-items-center">
-                                    <a href="#" class="avatar rounded-circle">
+                                    <a href="{{ path('rf_user_profile',{'id':user.id}) }}" class="avatar rounded-circle">
                                         <img alt="{{ user.name }}" src="{{ user.picture }}">
                                     </a>
                                     {% if 'online' in config.fields %}
@@ -102,7 +102,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                         {% if 'view_profile' in config.options %}
-                                            <a class="dropdown-item" href="#">View Profile</a>
+                                            <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':user.id}) }}">View Profile</a>
                                         {% endif %}{% if 'view_orders' in config.options %}
                                             <a class="dropdown-item" href="#">View Orders</a>
                                         {% endif %}{% if 'change_role' in config.options %}

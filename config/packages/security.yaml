@@ -21,6 +21,7 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 86400
+            switch_user: true
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -41,3 +42,6 @@ security:
         - { path: ^/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        !php/const App\Enums\Roles::ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH, !php/const App\Enums\Roles::ROLE_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_EDITOR, !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_EDITOR]

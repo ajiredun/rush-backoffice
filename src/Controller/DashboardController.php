@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Enums\UserStatus;
+use App\Enums\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractController
 {
     /**
      * @Route("/", name="rf_dashboard")
+     * @IsGranted(Roles::ROLE_VIEWER)
      */
     public function index()
     {
