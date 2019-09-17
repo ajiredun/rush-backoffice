@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,7 +86,7 @@ class SecurityController extends AbstractController
                             'lastname' => $request->request->get('input_lastname'),
                             'email' => $email,
                             'password' => $request->request->get('input_password'),
-                        ]);
+                        ], [Roles::ROLE_VIEWER]);
 
                         $success = "Please activate your account by clicking on the link we sent by mail.";
                     } else {

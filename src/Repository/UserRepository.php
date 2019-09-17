@@ -66,7 +66,9 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('u.createdAt >= :date')
             ->andWhere('u.createdAt < :dateEnd')
             ->setParameter('date',$start)
-            ->setParameter('dateEnd',$end);
+            ->setParameter('dateEnd',$end)
+            ->andWhere('u.status != :status')
+            ->setParameter('status', UserStatus::ARCHIVED);
 
         if ($lazy) {
             $qb->select('u.id');

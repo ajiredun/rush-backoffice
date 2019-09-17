@@ -14,7 +14,7 @@ class DashboardController extends AbstractController
      * @Route("/", name="rf_dashboard")
      * @IsGranted(Roles::ROLE_VIEWER)
      */
-    public function index()
+    public function dashboard()
     {
         $em = $this->getDoctrine()->getManager();
 

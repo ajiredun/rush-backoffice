@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\User;
 use App\Enums\Roles;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -19,7 +20,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('area', [$this, 'calculateArea']),
+            new TwigFunction('getConfigurableRoles', [$this, 'getConfigurableRoles']),
         ];
     }
 
@@ -28,8 +29,8 @@ class AppExtension extends AbstractExtension
         return Roles::getLabel($role);
     }
 
-    public function calculateArea(int $width, int $length)
+    public function getConfigurableRoles()
     {
-        return $width * $length;
+        return Roles::getConfigurableList();
     }
 }

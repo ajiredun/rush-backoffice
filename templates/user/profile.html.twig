@@ -15,7 +15,7 @@
 
 {% block nav %}
     {% set config = {'config':{
-        'main': {'path' : '#', 'title':"User Profile"},
+        'main': {'path' : path('rf_user_profile',{'id':user.id}), 'title':"User Profile"},
         'items': [
             {'path' : '#', 'title':"Users"},
             {'path' : '#', 'title':"Add User"},
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="card-body pt-0 pt-md-4">
-                    <div class="row">
+                    {#<div class="row">
                         <div class="col">
                             <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                 <div>
@@ -65,41 +65,116 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>#}
                     <div class="text-center">
                         <h3>
-                            Jessica Jones<span class="font-weight-light">, 27</span>
+                            {{ user.name }}<span class="font-weight-light"></span>
+
+                            {% if user.status == 'active' %}
+                                <span class="badge badge-dot mr-2"><i class="bg-gradient-primary"></i></span>
+                            {% endif %}
+                            {% if user.status == 'inactive' %}
+                                <span class="badge badge-dot mr-2"><i class="bg-blue"></i></span>
+                            {% endif %}
+                            {% if user.status == 'blocked' %}
+                                <span class="badge badge-dot mr-2"><i class="bg-red"></i></span>
+                            {% endif %}
+                            {% if user.status == 'archived' %}
+                                <span class="badge badge-dot mr-2"><i
+                                            class="bg-gradient-darker"></i></span>
+                            {% endif %}
+
                         </h3>
-                        <div class="h5 font-weight-300">
-                            <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                        </div>
-                        <div class="h5 mt-4">
-                            <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                        </div>
+                        {% if user.address is not empty %}
+                            <div class="h5 font-weight-300">
+                                <i class="fa fa-map-marker-alt mr-2"></i>{{ user.address }}
+                                , {{ user.country }}  {{ user.zipcode }}
+                            </div>
+                        {% endif %}{% if user.telephone is not empty %}
+                            <div class="h5 mt-4">
+                                <i class="fa fa-phone"></i> {{ user.telephone }}
+                            </div>
+                        {% endif %}{% if user.mobile is not empty %}
+                            <div class="h5 mt-4">
+                                <i class="fa fa-mobile-alt"></i> {{ user.mobile }}
+                            </div>
+                        {% endif %}
                         <div>
-                            <i class="ni education_hat mr-2"></i>University of Computer Science
+                            <i class="fa fa-at mr-2"></i> {{ user.email }}
                         </div>
                         <hr class="my-4"/>
-                        <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and
+                        {#<p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and
                             records all of his own music.</p>
-                        <a href="#">Show more</a>
+                        <a href="#">Show more</a>#}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-8 order-xl-1">
+        <div class="col-xl-8 order-xl-1 rf-account-details">
+            {% if is_granted(constant('App\\Enums\\Roles::ROLE_ROLES_MANAGEMENT')) %}
+                <div class="card bg-default shadow">
+                    <div class="card-header bg-transparent border-0">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h3 class="mb-0 text-white">Manage Roles</h3>
+                            </div>
+                            {#<div class="col-4 text-right">
+                                <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                            </div>#}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <h6 class="heading-small text-muted mb-4">Roles</h6>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    {% for rolekey, roletitle in getConfigurableRoles() %}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                                                    <input class="custom-control-input roles_checkbox"
+                                                           id="role_{{ rolekey }}"
+                                                           type="checkbox" value="{{ rolekey }}">
+                                                    <label class="custom-control-label text-white"
+                                                           for="role_{{ rolekey }}">{{ roletitle }}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <input type="hidden" id="roles_input"
+                                                   class="form-control form-control-alternative"
+                                                   name="update_roles" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button type="submit" class="btn btn-darker btn-block">Update Roles</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br/>
+            {% endif %}
             <div class="card bg-secondary shadow">
                 <div class="card-header bg-white border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">My account</h3>
+                            <h3 class="mb-0">{{ user.name }} info</h3>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                            <a href="#!" rf-parent=".rf-account-details" rf-show=".card-body" class="btn rf btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body rf-hide">
+                    {{ form(user_form) }}
                     <form>
                         <h6 class="heading-small text-muted mb-4">User information</h6>
                         <div class="pl-lg-4">
@@ -194,4 +269,27 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            //init the role list with the currentuser option
+            {% for role in user.roles %}
+            $('#role_{{ role }}').attr('checked', 'checked');
+            fillRoleInput();
+            {% endfor %}
+
+            $(".roles_checkbox[type=checkbox]").on("click", fillRoleInput);
+        });
+
+        function fillRoleInput() {
+            var str = '';
+            $(".roles_checkbox:checked").each(function () {
+                str = str + $(this).val() + ",";
+            });
+            $('#roles_input').val(str);
+        }
+    </script>
 {% endblock %}

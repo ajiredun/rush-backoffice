@@ -15,6 +15,9 @@ class Roles
     const ROLE_USER_MANAGEMENT_VIEWER = "ROLE_USER_MANAGEMENT_VIEWER";
     const ROLE_USER_MANAGEMENT_EDITOR = "ROLE_USER_MANAGEMENT_EDITOR";
 
+    // ROLE MANAGEMENT
+    const ROLE_ROLES_MANAGEMENT = "ROLE_ROLES_MANAGEMENT";
+
     //MEDIA MANAGEMENT
     const ROLE_MEDIA_MANAGEMENT_VIEWER = "ROLE_MEDIA_MANAGEMENT_VIEWER";
     const ROLE_MEDIA_MANAGEMENT_EDITOR = "ROLE_MEDIA_MANAGEMENT_EDITOR";
@@ -29,6 +32,15 @@ class Roles
         return '';
     }
 
+    static function roleExist($role)
+    {
+        $list = Roles::getList();
+        if (array_key_exists($role, $list)) {
+            return true;
+        }
+        return false;
+    }
+
     static function getList()
     {
         return [
@@ -39,6 +51,18 @@ class Roles
             Roles::ROLE_USER_MANAGEMENT_EDITOR => "User Manager",
             Roles::ROLE_MEDIA_MANAGEMENT_VIEWER => "Media Manager - View Only",
             Roles::ROLE_MEDIA_MANAGEMENT_EDITOR => "Media Manager",
+            Roles::ROLE_ROLES_MANAGEMENT => "Role Manager"
+        ];
+    }
+
+    static function getConfigurableList()
+    {
+        return [
+            Roles::ROLE_ADMIN => "Admin" ,
+            Roles::ROLE_VIEWER => 'Back Office User',
+            Roles::ROLE_USER_MANAGEMENT_EDITOR => "User Manager",
+            Roles::ROLE_MEDIA_MANAGEMENT_EDITOR => "Media Manager",
+            Roles::ROLE_ROLES_MANAGEMENT => "Role Manager"
         ];
     }
 }

@@ -75,10 +75,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         if ($user->getStatus() === UserStatus::ARCHIVED) {
-            throw new CustomUserMessageAuthenticationException('This user is archived. Please contact admin.');
+            throw new CustomUserMessageAuthenticationException('Your account has been archived. Please contact admin.');
         }
         if ($user->getStatus() === UserStatus::BLOCKED) {
-            throw new CustomUserMessageAuthenticationException('This user is blocked. Please contact admin.');
+            throw new CustomUserMessageAuthenticationException('Your account has been blocked. Please contact admin.');
         }
         if ($user->getStatus() === UserStatus::INACTIVE) {
             throw new CustomUserMessageAuthenticationException('Please activate your account first.');
