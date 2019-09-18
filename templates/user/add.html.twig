@@ -1,0 +1,141 @@
+{% extends 'user/components/structure.html.twig' %}
+
+{% block title %}User List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'user',
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : path('rf_user_add'), 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_user_list'), 'title':"User Management"},
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : path('rf_user_add'), 'title':"Add User", 'active':true},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'user/components/header_list.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Create User</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{ form_start(user_form) }}
+                    <h6 class="heading-small text-muted mb-4">User information</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    {{ form_row(user_form.email) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.firstname) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.lastname) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <!-- Address -->
+                    <h6 class="heading-small text-muted mb-4">Security</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.password) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.confirmpassword) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <!-- Address -->
+                    <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.telephone) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.mobile) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(user_form.address) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.country) }}
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    {{ form_row(user_form.zipcode) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <h6 class="heading-small text-muted mb-4">Actions</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_rest(user_form) }}
+                                    <button type="submit" class="btn btn-icon btn-3 btn-primary">
+                                        <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+
+                                        <span class="btn-inner--text">Create</span>
+                                    </button>
+                                </div>
+                                <br/>
+                                <iframe src="https://www.mauritiuspost.mu/products-and-services/post-code-finder"
+                                        style="width:100%; height:200px;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(user_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

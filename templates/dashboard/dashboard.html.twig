@@ -3,17 +3,20 @@
 
 {% block content %}
     <div class="row mt-5">
-        <div class="col-xl-8 mb-5 mb-xl-0 mh400" data-simplebar="init" >
+        <div class="col-xl-8 mb-5 mb-xl-0 mh400" >
             {% set config = {'config':{
                 'title' : 'Newly Created User Accounts',
                 'dark': true,
                 'users' : users,
                 'fields' : ['image','online','name', 'status','createdAt'],
-                'options' : ['view_profile','view_orders','change_role']
+                'options' : ['view_profile','view_orders','change_role'],
+                'title_options': [
+                    {'name':'view users', 'path': path('rf_user_list') , 'icon': '<i class="fa fa-list-ol"></i>'}
+                ]
             }} %}
             {% include 'admin/components/user_list.html.twig' with config %}
         </div>
-        <div class="col-xl-4 mh400" data-simplebar>
+        <div class="col-xl-4 mh400">
             {% set config = {'config':{
                 'title' : 'Online Users',
                 'users' : usersOnline,

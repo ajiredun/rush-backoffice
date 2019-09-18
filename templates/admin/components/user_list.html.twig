@@ -6,7 +6,24 @@
 
 <div class="card {% if dark %}bg-default{% endif %} shadow">
     <div class="card-header {% if dark %}bg-transparent{% endif %}  border-0">
-        <h3 class="{% if dark %}text-white{% endif %} mb-0">{{ config.title }}</h3>
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="{% if dark %}text-white{% endif %} mb-0">{{ config.title }}</h3>
+            </div>
+            <div class="col-4 text-right">
+                {% if config.title_options is defined and config.title_options is not empty %}
+                    {% for item in config.title_options %}
+                        <a href="{{ item.path }}" class="btn rf btn-icon btn-3 btn-sm" {% if item.class is defined %}{{ item.class }}{% else %} btn-outline-grey{% endif %} type="button">
+                            {% if item.icon is defined %}
+                                <span class="btn-inner--icon">{{ item.icon | raw }}</span>
+                            {% endif %}
+                            <span class="btn-inner--text">{{ item.name }}</span>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
     </div>
     <div class="table-responsive">
         {% if config.users is empty %}
@@ -60,7 +77,9 @@
                             </th>
                         {% endif %}{% if 'name' in config.fields %}
                             <td>
-                                {{ user.firstname }} {{ user.lastname }}
+                                <a href="{{ path('rf_user_profile',{'id':user.id}) }}">
+                                    {{ user.firstname }} {{ user.lastname }}
+                                </a>
                             </td>
                         {% endif %}{% if 'email' in config.fields %}
                             <td>
@@ -89,7 +108,9 @@
                         {% endif %}{% if 'roles' in config.fields %}
                             <td>
                                 {% for role in user.roles %}
-                                    <span class="badge badge-secondary">{{ role }}</span>
+                                    <div >
+                                        {{ role | roleLabel }}
+                                    </div>
                                 {% endfor %}
                             </td>
                         {% endif %}
@@ -106,7 +127,7 @@
                                         {% endif %}{% if 'view_orders' in config.options %}
                                             <a class="dropdown-item" href="#">View Orders</a>
                                         {% endif %}{% if 'change_role' in config.options %}
-                                            <a class="dropdown-item" href="#">Change Role</a>
+                                            <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':user.id}) }}#role">Change Role</a>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -117,5 +138,19 @@
                 </tbody>
             </table>
         {% endif %}
+
+
+    </div>
+    <div class="card-footer {% if dark %}bg-transparent{% endif %}  border-0">
+        <div class="row align-items-center">
+            <div class="col-12">
+                {% if config.paginate is defined and config.paginate %}
+                    <div>
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
     </div>
 </div>

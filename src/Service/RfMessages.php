@@ -10,31 +10,31 @@ class RfMessages
     public function __construct()
     {
         $this->messages = [
-            'success' => [],
-            'info' => [],
-            'error' => [],
-            'warning' => []
+            'rfsuccess' => [],
+            'rfinfo' => [],
+            'rferror' => [],
+            'rfwarning' => []
         ];
     }
 
     public function addSuccess($message)
     {
-        $this->messages['success'][]= $message;
+        $this->messages['rfsuccess'][]= $message;
     }
 
     public function addInfo($message)
     {
-        $this->messages['info'][]= $message;
+        $this->messages['rfinfo'][]= $message;
     }
 
     public function addWarning($message)
     {
-        $this->messages['warning'][]= $message;
+        $this->messages['rfwarning'][]= $message;
     }
 
     public function addError($message)
     {
-        $this->messages['error'][]= $message;
+        $this->messages['rferror'][]= $message;
     }
 
     /**

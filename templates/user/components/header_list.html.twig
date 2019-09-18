@@ -1,5 +1,7 @@
-<!-- Header -->
-<div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
+{%  set randImageValue = random(4) %}
+<div class="header pb-8 pt-5 pt-md-8 d-flex align-items-center" style="background-image: url('{{ asset('assets/login/login'~randImageValue~'.jpg') }}'); background-size: cover; background-position: center top;">
+    <!-- Mask -->
+    <span class="mask bg-gradient-default opacity-8"></span>
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->
@@ -72,76 +74,8 @@
                     </div>
                 </div>
             </div>
-            {#<br/>
-            <div class="row">
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card bg-gradient-dark card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <h2 style="color:white;">Sales Stats</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Orders</h5>
-                                    <span class="h2 font-weight-bold mb-0">0</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                        <i class="fas fa-chart-pie"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-nowrap">Since 1st {{ "now"|date("M Y") }}</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Order Price</h5>
-                                    <span class="h2 font-weight-bold mb-0">Rs 0000</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                        <i class="fas fa-calculator"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-nowrap">Avg Since 1st {{ "now"|date("M Y") }}</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                                    <span class="h2 font-weight-bold mb-0">Rs 0000</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-success text-white rounded-circle shadow">
-                                        <i class="fas fa-calculator"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-nowrap">Since 1st {{ "now"|date("M Y") }}</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>#}
         </div>
     </div>
 </div>
+
+

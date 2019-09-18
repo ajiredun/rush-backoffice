@@ -4,12 +4,27 @@ namespace App\Twig;
 
 use App\Entity\User;
 use App\Enums\Roles;
+use App\Enums\UserStatus;
+use App\Service\SearchParams;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+
+    protected  $searchParams;
+
+    /**
+     * AppExtension constructor.
+     * @param SearchParams $searchParams
+     */
+    public function __construct(SearchParams $searchParams)
+    {
+        $this->searchParams = $searchParams;
+    }
+
+
     public function getFilters()
     {
         return [
@@ -21,6 +36,8 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('getConfigurableRoles', [$this, 'getConfigurableRoles']),
+            new TwigFunction('getUserStatusList', [$this, 'getUserStatusList']),
+            new TwigFunction('searchParamsGet', [$this, 'searchParamsGet']),
         ];
     }
 
@@ -32,5 +49,15 @@ class AppExtension extends AbstractExtension
     public function getConfigurableRoles()
     {
         return Roles::getConfigurableList();
+    }
+
+    public function searchParamsGet($sector, $param = null)
+    {
+        return $this->searchParams->get($sector, $param);
+    }
+
+    public function getUserStatusList()
+    {
+        return UserStatus::getList();
     }
 }

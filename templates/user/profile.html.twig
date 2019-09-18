@@ -6,8 +6,8 @@
     {% set config = {'config':{
         'active' : 'user',
         'items': [
-            {'path' : '#', 'title':"Users"},
-            {'path' : '#', 'title':"Add User"},
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : path('rf_user_add'), 'title':"Add User"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -17,8 +17,8 @@
     {% set config = {'config':{
         'main': {'path' : path('rf_user_profile',{'id':user.id}), 'title':"User Profile"},
         'items': [
-            {'path' : '#', 'title':"Users"},
-            {'path' : '#', 'title':"Add User"},
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : path('rf_user_add'), 'title':"Add User"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
@@ -112,7 +112,7 @@
         </div>
         <div class="col-xl-8 order-xl-1 rf-account-details">
             {% if is_granted(constant('App\\Enums\\Roles::ROLE_ROLES_MANAGEMENT')) %}
-                <div class="card bg-default shadow">
+                <div id="role" class="card bg-default shadow">
                     <div class="card-header bg-transparent border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
@@ -166,51 +166,33 @@
                 <div class="card-header bg-white border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">{{ user.name }} info</h3>
+                            <h3 class="mb-0">{{ user.name }} Details</h3>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="#!" rf-parent=".rf-account-details" rf-show=".card-body" class="btn rf btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                            {% if is_granted(constant('App\\Enums\\Roles::ROLE_USER_MANAGEMENT_EDITOR'), user) %}
+                                <button rf-parent=".rf-account-details" rf-show=".card-body"
+                                        class="btn rf btn-icon btn-3 btn-outline-grey btn-sm" type="button">
+                                    <span class="btn-inner--icon"><i class="fa fa-edit"></i></span>
+                                    <span class="btn-inner--text">edit</span>
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                <div class="card-body rf-hide">
-                    {{ form(user_form) }}
-                    <form>
+                {% if is_granted(constant('App\\Enums\\Roles::ROLE_USER_MANAGEMENT_EDITOR'), user) %}
+                    <div class="card-body rf-hide">
+                        {{ form_start(user_form) }}
                         <h6 class="heading-small text-muted mb-4">User information</h6>
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-username">Username</label>
-                                        <input type="text" id="input-username"
-                                               class="form-control form-control-alternative" placeholder="Username"
-                                               value="lucky.jesse">
+                                        {{ form_row(user_form.firstname) }}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-email">Email address</label>
-                                        <input type="email" id="input-email"
-                                               class="form-control form-control-alternative"
-                                               placeholder="jesse@example.com">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-first-name">First name</label>
-                                        <input type="text" id="input-first-name"
-                                               class="form-control form-control-alternative" placeholder="First name"
-                                               value="Lucky">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-last-name">Last name</label>
-                                        <input type="text" id="input-last-name"
-                                               class="form-control form-control-alternative" placeholder="Last name"
-                                               value="Jesse">
+                                        {{ form_row(user_form.lastname) }}
                                     </div>
                                 </div>
                             </div>
@@ -220,52 +202,57 @@
                         <h6 class="heading-small text-muted mb-4">Contact information</h6>
                         <div class="pl-lg-4">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-address">Address</label>
-                                        <input id="input-address" class="form-control form-control-alternative"
-                                               placeholder="Home Address"
-                                               value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
+                                        {{ form_row(user_form.telephone) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        {{ form_row(user_form.mobile) }}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-city">City</label>
-                                        <input type="text" id="input-city" class="form-control form-control-alternative"
-                                               placeholder="City" value="New York">
+                                        {{ form_row(user_form.address) }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-country">Country</label>
-                                        <input type="text" id="input-country"
-                                               class="form-control form-control-alternative" placeholder="Country"
-                                               value="United States">
+                                        {{ form_row(user_form.country) }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-country">Postal code</label>
-                                        <input type="number" id="input-postal-code"
-                                               class="form-control form-control-alternative" placeholder="Postal code">
+                                        {{ form_row(user_form.zipcode) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr class="my-4"/>
-                        <!-- Description -->
-                        <h6 class="heading-small text-muted mb-4">About me</h6>
                         <div class="pl-lg-4">
-                            <div class="form-group">
-                                <label>About Me</label>
-                                <textarea rows="4" class="form-control form-control-alternative"
-                                          placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form_rest(user_form) }}
+                                        <button type="submit" class="btn btn-icon btn-3 btn-primary">
+                                            <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+
+                                            <span class="btn-inner--text">Update</span>
+                                        </button>
+                                    </div>
+                                    <br/>
+                                    <iframe src="https://www.mauritiuspost.mu/products-and-services/post-code-finder"
+                                            style="width:100%; height:200px;"></iframe>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        {{ form_end(user_form) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

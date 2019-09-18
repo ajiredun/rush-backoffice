@@ -49,6 +49,7 @@
                                             <br/><br/>
                                             If you are seeing this page, it maybe because you were trying to access an unauthorised page.
                                             <br/><br/>
+                                            <a id="back" class="btn btn-outline-primary btn-sm" type="button">Go Back</a>
                                             <a class="btn btn-outline-secondary btn-sm" href="{{ path('rf_dashboard') }}">Dashboard</a>
                                             <br/>
                                             <br/>
@@ -111,4 +112,13 @@
             background-position: center center;
         }
     </style>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#back').on('click', function(e){
+            e.preventDefault();
+            window.history.back();
+        });
+    </script>
 {% endblock %}

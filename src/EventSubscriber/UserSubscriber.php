@@ -4,19 +4,24 @@
 namespace App\EventSubscriber;
 
 
+use App\Enums\UserStatus;
 use App\Event\UserCreateEvent;
 use App\Event\UserPasswordEvent;
 use App\Service\MailManager;
+use App\Service\RfMessages;
 use App\Util\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserSubscriber implements EventSubscriberInterface
 {
     protected $mailManager;
+    protected $rfMessages;
 
-    public function __construct(MailManager $mailManager)
+
+    public function __construct(MailManager $mailManager, RfMessages $rfMessages)
     {
         $this->mailManager = $mailManager;
+        $this->rfMessages = $rfMessages;
     }
 
 
@@ -39,12 +44,21 @@ class UserSubscriber implements EventSubscriberInterface
     {
 
         $user = $event->getUser();
+        if ($user->getStatus() == UserStatus::ACTIVE) {
+            $this->rfMessages->addWarning('The user is already active, so we have not generated the activation link.');
+            return;
+        }
         $user->setActivation(Security::createActivationLink($user));
     }
 
     public function userCreate_activation_mail(UserCreateEvent $event)
     {
-        $this->mailManager->sendActivationMail($event->getUser());
+        $user = $event->getUser();
+        if ($user->getStatus() == UserStatus::ACTIVE) {
+            $this->rfMessages->addWarning('The user is already active, so we have not sent the activation mail.');
+            return;
+        }
+        $this->mailManager->sendActivationMail($user);
 
     }
 

@@ -32,5 +32,15 @@ class UserStatus
         ];
     }
 
+    static function getList()
+    {
+        return [
+            UserStatus::INACTIVE => 'Inactive',
+            UserStatus::ACTIVE => 'Active',
+            UserStatus::BLOCKED => 'Blocked',
+            UserStatus::ARCHIVED => 'Archived'
+        ];
+    }
+
 
 }

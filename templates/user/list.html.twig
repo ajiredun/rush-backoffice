@@ -1,0 +1,83 @@
+{% extends 'user/components/structure.html.twig' %}
+
+{% block title %}User List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'user',
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : path('rf_user_add'), 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_user_list'), 'title':"User Management"},
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users", 'active':true},
+            {'path' : path('rf_user_add'), 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'user/components/header_list.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0" >
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control rf-focus" name="rfsearch_userlist_name" value="{{ searchParamsGet('userlist_name') }}" placeholder="name or email">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control" size="" name="rfsearch_userlist_status" id="status">
+                                <option value="">Status</option>
+                                {% for status,name in getUserStatusList() %}
+                                    <option {% if searchParamsGet('userlist_status')== status %}selected="selected"{% endif %} value="{{ status }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control" size=""  name="rfsearch_userlist_role" id="roles">
+                                <option value="">Role</option>
+                                {% for role, name in getConfigurableRoles() %}
+                                    <option {% if searchParamsGet('userlist_role')== role %}selected="selected"{% endif %} value="{{ role }}" > {{ name }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-darker"><i class="fa fa-search"></i> </button>
+                            <a href="{{ path('rf_user_list') }}" class="btn btn-outline-darker btn-sm"><i class="fa fa-times"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row user-list-content">
+        <div class="col-xl-12 mb-5 mb-xl-0" >
+            {% set config = {'config':{
+                'title' : 'Users ('~pagination.getTotalItemCount~')',
+                'users' : pagination,
+                'fields' : ['image','online','name', 'email', 'status', 'roles', 'createdAt'],
+                'options' : ['view_profile','view_orders','change_role'],
+                'paginate' : true
+            }} %}
+            {% include 'admin/components/user_list.html.twig' with config %}
+        </div>
+    </div>
+{% endblock %}

@@ -43,6 +43,20 @@ class UserManager
         $user->setRoles($roles);
         $this->setPassword($user, $data['password'], false);
 
+        return $this->createUserBase($user, $roles, $status);
+    }
+
+    public function createUserFromObject(User $user, $roles = [], $status = UserStatus::INACTIVE)
+    {
+        $this->setPassword($user, $user->getPassword(), false);
+
+        return $this->createUserBase($user, $roles, $status);
+    }
+
+    protected function createUserBase(User $user, $roles = [], $status = UserStatus::INACTIVE)
+    {
+        $user->setStatus($status);
+        $user->setRoles($roles);
         $event = new UserCreateEvent($user);
         $this->eventDispatcher->dispatch($event, UserCreateEvent::NAME);
 

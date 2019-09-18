@@ -1,0 +1,34 @@
+{% extends 'user/components/structure.html.twig' %}
+
+{% block title %}User List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'user',
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users"},
+            {'path' : '#', 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_user_list'), 'title':"User Management"},
+        'items': [
+            {'path' : path('rf_user_list'), 'title':"Users", 'active':true},
+            {'path' : '#', 'title':"Add User"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'user/components/header_list.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    </div>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Enums\UserStatus;
+use App\Service\SearchParams;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -18,6 +19,36 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function getWithSearchQueryBuilder(SearchParams $searchParams)
+    {
+        $term = $searchParams->getCurrent('name');
+        $status = $searchParams->getCurrent('status');
+        $role = $searchParams->getCurrent('role');
+
+        $qb = $this->createQueryBuilder('u');
+
+        if (!empty($term)) {
+            $qb->orWhere('u.lastname LIKE :term')
+                ->setParameter('term', "$term%");
+            $qb->orWhere('u.firstname LIKE :term')
+                ->setParameter('term', "$term%");
+            $qb->orWhere('u.email LIKE :term')
+                ->setParameter('term', "%$term%");
+        }
+
+        if (!empty($status)) {
+            $qb->andWhere('u.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        if (!empty($role)) {
+            $qb->andWhere("u.roles LIKE :role")
+                ->setParameter('role', '%"' . $role . '"%');
+        }
+
+        return $qb->getQuery();
     }
 
 
@@ -65,8 +96,8 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u')
             ->andWhere('u.createdAt >= :date')
             ->andWhere('u.createdAt < :dateEnd')
-            ->setParameter('date',$start)
-            ->setParameter('dateEnd',$end)
+            ->setParameter('date', $start)
+            ->setParameter('dateEnd', $end)
             ->andWhere('u.status != :status')
             ->setParameter('status', UserStatus::ARCHIVED);
 

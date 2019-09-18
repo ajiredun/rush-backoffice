@@ -4,4 +4,7 @@ $(document).ready(function () {
         var parent = $(this).attr('rf-parent');
         $(parent + ' ' + toshow).toggle(1000);
     });
+
+    $('.rf-focus').focus();
+    $('.rf-focus').select();
 });

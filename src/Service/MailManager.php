@@ -12,11 +12,13 @@ class MailManager
 
     protected $mailer;
     private $templating;
+    protected $rfMessages;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, RfMessages $rfMessages)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->rfMessages = $rfMessages;
     }
 
 
@@ -36,6 +38,7 @@ class MailManager
         ;
 
         $this->mailer->send($message);
+        $this->rfMessages->addInfo('Activation mail sent successfully.');
     }
 
     public function sendForgotPasswordMail(User $user, $password)
@@ -54,5 +57,6 @@ class MailManager
         ;
 
         $this->mailer->send($message);
+        $this->rfMessages->addInfo('Forgot password mail sent successfully.');
     }
 }

@@ -4,6 +4,8 @@
 namespace App\EventSubscriber;
 
 
+use App\Service\RfMessages;
+use App\Service\SearchParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
@@ -15,18 +17,23 @@ class KernelSubscriber implements EventSubscriberInterface
 
     protected $security;
     protected $em;
+    protected $rfMessages;
+    protected $searchParams;
 
-    public function __construct(EntityManagerInterface $em, Security $security)
+    public function __construct(EntityManagerInterface $em, Security $security, RfMessages $rfMessages, SearchParams $searchParams)
     {
         $this->security = $security;
         $this->em = $em;
+        $this->rfMessages = $rfMessages;
+        $this->searchParams = $searchParams;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::TERMINATE => [
-                ['onTerminate',20]
+            KernelEvents::CONTROLLER => [
+                ['onTerminate',20],
+                ['onControllerInit']
             ],
         ];
     }
@@ -38,6 +45,44 @@ class KernelSubscriber implements EventSubscriberInterface
         if (!is_null($user) && !$user->isActiveNow()) {
             $user->setLastactive(new \DateTime());
             $this->em->flush($user);
+        }
+    }
+
+    public function onControllerInit(KernelEvent $event)
+    {
+        $request = $event->getRequest();
+        $this->manageRfMessage($request);
+        $this->manageSearchParams($request);
+
+    }
+
+    protected function manageRfMessage($request)
+    {
+        if ($request->get('rfsuccess',false)) {
+            $this->rfMessages->addSuccess($request->get('rfsuccess'));
+        }
+
+        if ($request->get('rfinfo',false)) {
+            $this->rfMessages->addInfo($request->get('rfinfo'));
+        }
+
+        if ($request->get('rfwarning',false)) {
+            $this->rfMessages->addWarning($request->get('rfwarning'));
+        }
+
+        if ($request->get('rferror',false)) {
+            $this->rfMessages->addError($request->get('rferror'));
+        }
+    }
+
+    protected function manageSearchParams($request)
+    {
+        $params = array_merge($request->request->all(), $request->query->all());
+        foreach ($params as $param => $paramvalue) {
+            if (strpos($param, 'rfsearch_') !== false) {
+                $split = explode('_',$param,2);
+                $this->searchParams->add($split[1],$paramvalue);
+            }
         }
     }
 }
