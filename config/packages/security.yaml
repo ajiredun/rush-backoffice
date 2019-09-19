@@ -41,8 +41,12 @@ security:
         - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/forgot-password$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/efconnect, role: ROLE_USER }
-        - { path: ^/, roles: ROLE_VIEWER }
+        - { path: ^/efconnect, role: !php/const App\Enums\Roles::ROLE_VIEWER }
+        - { path: ^/elfinder/files_viewer, role: !php/const App\Enums\Roles::ROLE_VIEWER }
+        - { path: ^/elfinder/files, role: !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR }
+        - { path: ^/elfinder/gallery_viewer, role: !php/const App\Enums\Roles::ROLE_VIEWER }
+        - { path: ^/elfinder/gallery, role: !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR }
+        - { path: ^/, roles: !php/const App\Enums\Roles::ROLE_VIEWER }
         # - { path: ^/profile, roles: ROLE_USER }
 
     role_hierarchy:
