@@ -1,0 +1,12 @@
+fm_elfinder:
+    assets_path: /components
+    instances:
+        default:
+            theme: material-default
+            include_assets: true
+            relative_path: true
+            connector:
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: rf

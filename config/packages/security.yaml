@@ -41,6 +41,7 @@ security:
         - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/forgot-password$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/efconnect, role: ROLE_USER }
         - { path: ^/, roles: ROLE_VIEWER }
         # - { path: ^/profile, roles: ROLE_USER }
 
