@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Management{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'page',
+        'items': [
+            {'path' : path('rf_page'), 'title':"Pages"},
+            {'path' : '#', 'title':"Add Page"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : '#', 'title':"Page Management"},
+        'items': [
+            {'path' : path('rf_page'), 'title':"Pages"},
+            {'path' : '#', 'title':"Add Page"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'page/components/header.html.twig' %}
+{% endblock %}

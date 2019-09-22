@@ -1,6 +1,6 @@
-{% extends 'user/components/structure.html.twig' %}
+{% extends 'page/components/structure.html.twig' %}
 
-{% block title %}User List{% endblock %}
+{% block title %}Page List{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
@@ -24,6 +24,9 @@
     {% include 'admin/nav.html.twig' with config %}
 {% endblock %}
 
+{% block header %}
+    {% include 'page/components/header_list.html.twig' %}
+{% endblock %}
 
 {% block content %}
     <div class="row">

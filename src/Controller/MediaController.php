@@ -18,8 +18,8 @@ class MediaController extends AbstractController
      */
     public function index($type)
     {
-        $instanceFiles = 'files_view';
-        $instanceGallery = 'gallery_view';
+        $instanceFiles = 'files_viewer';
+        $instanceGallery = 'gallery_viewer';
 
         if ($this->isGranted(Roles::ROLE_MEDIA_MANAGEMENT_EDITOR)) {
             $instanceFiles = 'files';
@@ -34,7 +34,7 @@ class MediaController extends AbstractController
             return $this->redirectToRoute('elfinder', ['instance' => $instanceGallery]);
         }
 
-        return $this->redirectToRoute('rf_dashboard', ['id' => $user->getId(), 'rfsuccess' => $user->getName() . ' details has been updated successfully']);
+        return $this->redirectToRoute('rf_dashboard', [ 'rfwarning' => 'Invalid instance of Finder']);
     }
 
 }

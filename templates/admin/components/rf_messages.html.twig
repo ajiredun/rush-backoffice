@@ -1,5 +1,5 @@
-{% if rfMessages is defined and rfMessages.rfsuccess is defined and rfMessages.rfsuccess is not empty %}
-    {% for message in rfMessages.rfsuccess %}
+{% if rfMessages is defined and rfMessages.messages is defined and rfMessages.messages.rfsuccess is defined and rfMessages.messages.rfsuccess is not empty %}
+    {% for message in rfMessages.messages.rfsuccess %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <span class="alert-inner--icon"><i class="ni ni-check-bold"></i></span>
             <span class="alert-inner--text">{{ message }}</span>
@@ -10,8 +10,8 @@
     {% endfor %}
 {% endif %}
 
-{% if rfMessages is defined and rfMessages.rfinfo is defined and rfMessages.rfinfo is not empty %}
-    {% for message in rfMessages.rfinfo %}
+{% if rfMessages is defined and rfMessages.messages is defined and rfMessages.messages.rfinfo is defined and rfMessages.messages.rfinfo is not empty %}
+    {% for message in rfMessages.messages.rfinfo %}
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             <span class="alert-inner--text">{{ message }}</span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -21,8 +21,8 @@
     {% endfor %}
 {% endif %}
 
-{% if rfMessages is defined and rfMessages.rfwarning is defined and rfMessages.rfwarning is not empty %}
-    {% for message in rfMessages.rfwarning %}
+{% if rfMessages is defined and rfMessages.messages is defined and rfMessages.messages.rfwarning is defined and rfMessages.messages.rfwarning is not empty %}
+    {% for message in rfMessages.messages.rfwarning %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <span class="alert-inner--icon"><i class="ni ni-fat-remove"></i></span>
             <span class="alert-inner--text">{{ message }}</span>
@@ -34,8 +34,8 @@
 {% endif %}
 
 
-{% if rfMessages is defined and rfMessages.rferror is defined and rfMessages.rferror is not empty %}
-    {% for message in rfMessages.rferror %}
+{% if rfMessages is defined and rfMessages.messages is defined and rfMessages.messages.rferror is defined and rfMessages.messages.rferror is not empty %}
+    {% for message in rfMessages.messages.rferror %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <span class="alert-inner--icon"><i class="ni ni-fat-remove"></i></span>
             <span class="alert-inner--text">{{ message }}</span>

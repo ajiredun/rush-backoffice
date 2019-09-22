@@ -82,8 +82,7 @@ class UserController extends AbstractController
 
         return $this->render('user/profile.html.twig', [
             'user' => $user,
-            'user_form' => $form->createView(),
-            'rfMessages' => $rfMessages->getMessages()
+            'user_form' => $form->createView()
         ]);
     }
 
@@ -123,7 +122,6 @@ class UserController extends AbstractController
         $totalActiveUsers = $userRepository->findTotalActiveUsers(true);
 
         return $this->render('user/add.html.twig', [
-            'rfMessages' => $rfMessages->getMessages(),
             'user_form' => $form->createView(),
             'usersOnline' => $usersOnline,
             'usersCreatedThisMonth' => $usersCreatedThisMonth,
@@ -134,7 +132,7 @@ class UserController extends AbstractController
     /**
      * @Route("/list", name="rf_user_list")
      */
-    public function list(Request $request, RfMessages $rfMessages, UserRepository $userRepository, PaginatorInterface $paginator, SearchParams $searchParams)
+    public function list(Request $request, UserRepository $userRepository, PaginatorInterface $paginator, SearchParams $searchParams)
     {
 
         $searchParams->setCurrentSector('userlist');
@@ -149,7 +147,6 @@ class UserController extends AbstractController
         $totalActiveUsers = $userRepository->findTotalActiveUsers(true);
 
         return $this->render('user/list.html.twig', [
-            'rfMessages' => $rfMessages->getMessages(),
             'usersOnline' => $usersOnline,
             'usersCreatedThisMonth' => $usersCreatedThisMonth,
             'totalUsers' => $totalActiveUsers,
