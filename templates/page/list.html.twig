@@ -1,13 +1,13 @@
 {% extends 'page/components/structure.html.twig' %}
 
-{% block title %}Page List{% endblock %}
+{% block title %}Pages{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
-        'active' : 'user',
+        'active' : 'page',
         'items': [
-            {'path' : path('rf_user_list'), 'title':"Users"},
-            {'path' : '#', 'title':"Add User"},
+            {'path' : path('rf_page'), 'title':"Pages"},
+            {'path' : '#', 'title':"Add Page"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -15,10 +15,10 @@
 
 {% block nav %}
     {% set config = {'config':{
-        'main': {'path' : path('rf_user_list'), 'title':"User Management"},
+        'main': {'path' : path('rf_page'), 'title':"Page Management"},
         'items': [
-            {'path' : path('rf_user_list'), 'title':"Users", 'active':true},
-            {'path' : '#', 'title':"Add User"},
+            {'path' : path('rf_page'), 'title':"Pages", 'active':true},
+            {'path' : '#', 'title':"Add Page"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}

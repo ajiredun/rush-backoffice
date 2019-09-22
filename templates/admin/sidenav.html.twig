@@ -85,6 +85,16 @@
                         <i class="ni ni-camera-compact text-green"></i> Media Management
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if "media" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
+                        <i class="ni ni-atom text-purple"></i> Visual Packs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if "media" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
+                        <i class="ni ni-books text-orange"></i> Media Management
+                    </a>
+                </li>
         </div>
     </div>
 </nav>
