@@ -86,13 +86,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if "media" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
+                    <a class="nav-link {% if "visual_pack" == config.active %}active{% endif %}" href="{{ path('rf_visualpack') }}">
                         <i class="ni ni-atom text-purple"></i> Visual Packs
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if "media" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
-                        <i class="ni ni-books text-orange"></i> Media Management
+                    <a class="nav-link {% if "content_types" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
+                        <i class="ni ni-books text-orange"></i> Content Types
                     </a>
                 </li>
         </div>

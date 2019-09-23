@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visual Packs{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'visual_pack',
+        'items': [
+            {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
+            {'path' : '#', 'title':"Add Visual Pack"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : '#', 'title':"Visual Packs"},
+        'items': [
+            {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
+            {'path' : '#', 'title':"Add Visual Pack"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'visual_pack/components/header.html.twig' %}
+{% endblock %}

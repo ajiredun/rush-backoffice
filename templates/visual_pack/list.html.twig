@@ -1,0 +1,36 @@
+{% extends 'visual_pack/components/structure.html.twig' %}
+
+{% block title %}Visual Packs{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'visual_pack',
+        'items': [
+            {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
+            {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
+        'items': [
+            {'path' : path('rf_visualpack'), 'title':"Visual Packs", 'active':true},
+            {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'visual_pack/components/header_list.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    </div>
+{% endblock %}
