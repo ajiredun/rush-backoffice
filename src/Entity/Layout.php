@@ -54,6 +54,15 @@ class Layout
      */
     private $visualPack;
 
+    /**
+     * Layout constructor.
+     */
+    public function __construct()
+    {
+        $this->visual = 'assets/admin/img/sketch.jpg';
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

@@ -38,42 +38,29 @@
                 <div class="card-header bg-translucent-neutral border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Create Visual Pack</h3>
+                            <h3 class="mb-0">Create Layout</h3>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     {{ form_start(form) }}
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    {{ form_row(form.code) }}
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    {{ form_row(form.title) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    {{ form_rest(form) }}
-                                    <button type="submit" class="btn btn-icon btn-3 btn-primary">
-                                        <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-icon btn-3 btn-primary">
+                        <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
 
-                                        <span class="btn-inner--text">Create</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                        <span class="btn-inner--text">Create</span>
+                    </button>
                     {{ form_end(form) }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Tips</h2>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('rf_visualpack_structure') }}"> Create the layout from here</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

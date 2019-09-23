@@ -20,20 +20,11 @@ class VisualPackType extends AbstractType
             ->add('code',
                 TextType::class,
                 [
-                    'label' => 'Code (must be something unique)'
+                    'label' => 'Code (must start with VP_)'
                 ]
             )
             ->add('title',
                 TextType::class
-            )
-            ->add('active',
-                ChoiceType::class,
-                [
-                    'choices' => Boolean::getChoices(),
-                    'multiple' => false,
-                    'expanded' => false,
-                    'label' => "Activate this visual pack?"
-                ]
             )
         ;
     }

@@ -1,6 +1,6 @@
 {% extends 'visual_pack/components/structure.html.twig' %}
 
-{% block title %}Add a visual pack{% endblock %}
+{% block title %}Visualize Layout{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
@@ -8,7 +8,7 @@
         'items': [
             {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
             {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
-            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure"},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -20,7 +20,7 @@
         'items': [
             {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
             {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
-            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure", 'active':true},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout", 'active':true},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
@@ -37,79 +37,35 @@
                  class="shadow">
 
             </div>
-            <style>
-                #canvas_structure .slot {
-                    background-image: linear-gradient(45deg, #e6e6e6 18.75%, #f7f7f7 18.75%, #f7f7f7 50%, #e6e6e6 50%, #e6e6e6 68.75%, #f7f7f7 68.75%, #f7f7f7 100%);
-                    background-size: 11.31px 11.31px;
-                    border:2px solid white;
-                    margin-bottom:10px;
-                    text-align: center;
-                    font-size:16px;
-                    color:black;
-                    font-weight: bold;
-                    height:200px;
-                    vertical-align: middle;
-                    line-height: 200px;
-                }
-                #canvas_structure .slot-1 {
-                    height: 100px;
-                    font-size:14px;
-                    vertical-align: middle;
-                    line-height: 100px;
-                }
-                .slot-2 {
-                    min-height:300px;
-                    vertical-align: middle;
-                    line-height: 300px;
-                }
-                .slot-3 {
-                    min-height:400px;
-                    vertical-align: middle;
-                    line-height: 400px;
-                }
-                .slot-4 {
-                     min-height:500px;
-                     vertical-align: middle;
-                     line-height: 500px;
-                 }
-                .slot-5 {
-                    min-height:600px;
-                    vertical-align: middle;
-                    line-height: 600px;
-                }
-                .slot-6 {
-                    min-height:600px;
-                    vertical-align: middle;
-                    line-height: 600px;
-                }
-            </style>
         </div>
         <div class="col-md-4">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <textarea id="htmlinputstructure" cols="28" rows="10" placeholder="Type your HTML here">
+                    {% if layout is not empty %}
+                    <textarea id="htmlinputstructure" cols="28" rows="10" placeholder="Type your HTML here">{{ layout.structure | raw }}</textarea>
+                    {% else %}
+                        <textarea id="htmlinputstructure" cols="28" rows="10" placeholder="Type your HTML here">
 <div class="row">
 <div class="col-md-12" >
-<div class="slot slot-1" data-slot="NAV">NAV</div>
-<div class="slot" data-slot="HEADER">HEADER</div>
+<div class="slot" data-slot="S_SLOT_01"></div>
 </div>
 </div>
 <div class="row">
 <div class="col-md-4" >
-<div class="slot slot-4" data-slot="SIDE">SIDE</div>
+<div class="slot slot-4" data-slot="S_SLOT_02"></div>
 </div>
 <div class="col-md-8" >
-<div class="slot slot-3" data-slot="CONTENT">CONTENT</div>
+<div class="slot slot-4" data-slot="S_SLOT_03"></div>
 </div>
 </div>
 <div class="row">
 <div class="col-md-12" >
-<div class="slot slot-1"  data-slot="FOOTER">FOOTER</div>
+<div class="slot slot-1"  data-slot="S_SLOT_04"></div>
 </div>
 </div>
-                </div>
-
                 </textarea>
+                    {% endif %}
+
             </div>
             <div class="row align-items-center">
                 <div class="col-12">
@@ -120,7 +76,7 @@
                             Only start with the <code>"< body >"</code> and end with the <code>"< /body >"</code>
                         </li>
                         <li>
-                            Add CSS class <code>"slot"</code> and <code>"data-slot='NAV'"</code> to have the slot rendered as other slots
+                            Add CSS class <code>"slot"</code> and <code>"data-slot='S_SLOT_01'"</code> to have the slot rendered as other slots
                         </li>
                         <li>
                             It supports Bootrstrap 4
@@ -133,6 +89,12 @@
                         </li>
                         <li>
                             Add CSS class <code>"slot-2 slot-3 slot-4"</code> have 75px, 100px, 125px height (minimum)
+                        </li>
+                        <li>
+                            Go crazy, here are the available slot names:
+                            <ul>
+                                <li>RF_SLOT_01 to RF_SLOT_99</li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

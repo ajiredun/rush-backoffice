@@ -8,7 +8,7 @@
         'items': [
             {'path' : path('rf_visualpack'), 'title':"Visual Packs"},
             {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
-            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure"},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -20,7 +20,7 @@
         'items': [
             {'path' : path('rf_visualpack'), 'title':"Visual Packs", 'active':true},
             {'path' : path('rf_visualpack_add'), 'title':"Add Visual Pack"},
-            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout Structure"},
+            {'path' : path('rf_visualpack_structure'), 'title':"Visualize Layout"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
@@ -31,6 +31,50 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="row ">
+        {% for vp in list %}
+            <div class="col-xl-6 mb-5">
+                <div class="card shadow">
+                    <div class="card-header border-0">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h3 class=" mb-0">{{ vp.title }}</h3>
+                                <h5>Code: {{ vp.code }}</h5>
+                                {% if vp.active %}
+                                    <span class="text-green">Active</span>
+                                {% else %}
+                                    <span class="text-orange">Inactive</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-4 text-right">
+                                {% if vp.active %}
+                                    <a href="#" class="btn btn-sm btn-success" title="ACTIVE"><i
+                                                class="fa fa-check-circle"></i></a>
+                                {% else %}
+                                    <a href="{{ path('rf_visualpack_activate', {'visualPack':vp.id}) }}" class="btn btn-sm btn-outline-primary"
+                                       title="Activate this visual pack">
+                                        <i class="fa fa-check-circle"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ path('rf_visualpack_add_layout', {'visualPack':vp.id}) }}"
+                           class="btn btn-sm btn-outline-primary" title="Add Layout"><i class="fa fa-plus-square"></i>
+                            Add Layout
+                        </a>
+                        &nbsp;&nbsp;
+                        <h5> {{ vp.layouts | length }} Layouts</h5>
+
+                        {% set config = {
+                            'layouts': vp.layouts,
+                            'choosable' : false
+                        } %}
+                        {% include 'visual_pack/components/layout_overview.html.twig' with config %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
     </div>
 {% endblock %}
