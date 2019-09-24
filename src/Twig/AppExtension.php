@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\User;
+use App\Enums\LayoutCode;
 use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Service\SearchParams;
@@ -38,6 +39,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getConfigurableRoles', [$this, 'getConfigurableRoles']),
             new TwigFunction('getUserStatusList', [$this, 'getUserStatusList']),
             new TwigFunction('searchParamsGet', [$this, 'searchParamsGet']),
+            new TwigFunction('getLayoutList', [$this, 'getLayoutList']),
         ];
     }
 
@@ -59,5 +61,10 @@ class AppExtension extends AbstractExtension
     public function getUserStatusList()
     {
         return UserStatus::getList();
+    }
+
+    public function getLayoutList()
+    {
+        return LayoutCode::getList();
     }
 }

@@ -30,5 +30,34 @@
 
 {% block content %}
     <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0" >
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control rf-focus" name="rfsearch_pagelist_name" value="{{ searchParamsGet('pagelist_name') }}" placeholder="Page Name, Route">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-darker"><i class="fa fa-search"></i> </button>
+                            <a href="{{ path('rf_page') }}" class="btn btn-outline-darker btn-sm"><i class="fa fa-times"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row user-list-content">
+        <div class="col-xl-12 mb-5 mb-xl-0" >
+            {% set config = {'config':{
+                'title' : 'Pages ('~pagination.getTotalItemCount~')',
+                'users' : pagination,
+                'fields' : ['route','name','published', 'lastModifiedBy', 'lastModifiedAt', 'roles'],
+                'options' : ['view_profile','view_orders','change_role'],
+                'paginate' : true
+            }} %}
+            {% include 'admin/components/user_list.html.twig' with config %}
+        </div>
     </div>
 {% endblock %}

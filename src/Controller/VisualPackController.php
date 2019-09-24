@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/visual-pack")
- * @IsGranted(Roles::ROLE_VIEWER)
+ * @IsGranted(Roles::ROLE_VISUAL_PACK_VIEWER)
  */
 class VisualPackController extends AbstractController
 {
@@ -52,6 +52,7 @@ class VisualPackController extends AbstractController
 
     /**
      * @Route("/add", name="rf_visualpack_add")
+     * @IsGranted(Roles::ROLE_VISUAL_PACK_EDITOR)
      */
     public function add(Request $request, RfMessages $rfMessages)
     {
@@ -77,6 +78,7 @@ class VisualPackController extends AbstractController
 
     /**
      * @Route("/add-layout/{visualPack}", name="rf_visualpack_add_layout")
+     * @IsGranted(Roles::ROLE_VISUAL_PACK_EDITOR)
      */
     public function addLayout(Request $request,VisualPack $visualPack, RfMessages $rfMessages)
     {
@@ -103,6 +105,7 @@ class VisualPackController extends AbstractController
 
     /**
      * @Route("/activate/{visualPack}", name="rf_visualpack_activate")
+     * @IsGranted(Roles::ROLE_VISUAL_PACK_EDITOR)
      */
     public function activate(Request $request,VisualPack $visualPack, VisualPackRepository $visualPackRepository, RfMessages $rfMessages)
     {

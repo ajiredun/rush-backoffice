@@ -50,5 +50,5 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
 
     role_hierarchy:
-        !php/const App\Enums\Roles::ROLE_VIEWER: [!php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_VIEWER]
-        !php/const App\Enums\Roles::ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH, !php/const App\Enums\Roles::ROLE_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_ROLES_MANAGEMENT]
+        !php/const App\Enums\Roles::ROLE_VIEWER: [!php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_VISUAL_PACK_VIEWER, !php/const App\Enums\Roles::ROLE_PAGE_MANAGEMENT_VIEWER]
+        !php/const App\Enums\Roles::ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH, !php/const App\Enums\Roles::ROLE_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_ROLES_MANAGEMENT,  !php/const App\Enums\Roles::ROLE_VISUAL_PACK_EDITOR,  !php/const App\Enums\Roles::ROLE_PAGE_MANAGEMENT_EDITOR ]
