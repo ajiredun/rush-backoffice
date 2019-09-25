@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Enums\Roles;
+use App\Repository\PageRepository;
+use App\Repository\UserRepository;
 use App\Service\RfMessages;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,26 +17,32 @@ class DashboardController extends AbstractController
      * @Route("/", name="rf_dashboard")
      * @IsGranted(Roles::ROLE_VIEWER)
      */
-    public function dashboard()
+    public function dashboard(UserRepository $userRepository, PageRepository $pageRepository )
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $ur = $em->getRepository(User::class);
-        $users = $ur->findBy(
+        $users = $userRepository->findBy(
             [],
             ['createdAt' => 'DESC'],
             15
         );
 
-        $usersOnline = $ur->findOnlineUsers();
-        $usersCreatedThisMonth = $ur->findUsersCreatedByMonth();
-        $totalActiveUsers = $ur->findTotalActiveUsers(true);
+
+
+        $usersOnline = $userRepository->findOnlineUsers();
+        $usersCreatedThisMonth = $userRepository->findUsersCreatedByMonth();
+        $totalActiveUsers = $userRepository->findTotalActiveUsers(true);
+
+        $pagesPublished = $pageRepository->findBy(['published'=>true]);
+        $pagesCreatedThisMonth = $pageRepository->findPagesCreatedByMonth();
+        $totalPages = $pageRepository->findAll();
 
         return $this->render('dashboard/dashboard.html.twig', [
             'users' => $users,
             'usersOnline' => $usersOnline,
             'usersCreatedThisMonth' => $usersCreatedThisMonth,
-            'totalUsers' => $totalActiveUsers
+            'totalUsers' => $totalActiveUsers,
+            'totalPages' => $totalPages,
+            'pagesCreatedThisMonth' => $pagesCreatedThisMonth,
+            'pagesPublished' => $pagesPublished,
         ]);
     }
 }

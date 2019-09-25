@@ -26,26 +26,26 @@
 
     </div>
     <div class="table-responsive">
-        {% if config.users is empty %}
-            <h3>No Users</h3>
+        {% if config.pages is empty %}
+            <h3>No Page</h3>
         {% else %}
             <table class="table align-items-center {% if dark %}table-dark{% endif %} table-flush">
                 <thead class="{% if dark %}thead-dark{% else %}thead-light{% endif %}">
                 <tr>
-                    {% if 'image' in config.fields %}
-                        <th scope="col"></th>
+                    {% if 'route' in config.fields %}
+                        <th scope="col">URL</th>
                     {% endif %}
                     {% if 'name' in config.fields %}
                         <th scope="col">Name</th>
                     {% endif %}
-                    {% if 'email' in config.fields %}
-                        <th scope="col">Email</th>
+                    {% if 'lastModifiedBy' in config.fields %}
+                        <th scope="col">Last Modified By</th>
                     {% endif %}
-                    {% if 'status' in config.fields %}
+                    {% if 'lastModifiedAt' in config.fields %}
+                        <th scope="col">Last Modified</th>
+                    {% endif %}
+                    {% if 'published' in config.fields %}
                         <th scope="col">Status</th>
-                    {% endif %}
-                    {% if 'createdAt' in config.fields %}
-                        <th scope="col">Created on</th>
                     {% endif %}
                     {% if 'roles' in config.fields %}
                         <th scope="col">Roles</th>
@@ -56,46 +56,46 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for user in config.users %}
+                {% for page in config.pages %}
                     <tr>
-                        {% if 'image' in config.fields %}
-                            <th scope="row">
-                                {% set userConfig = {'user': user } %}
-                                {% include 'admin/components/user_icon.html.twig' with userConfig %}
-                            </th>
-                        {% endif %}{% if 'name' in config.fields %}
+                        {% if 'route' in config.fields %}
                             <td>
-                                <a href="{{ path('rf_user_profile',{'id':user.id}) }}">
-                                    {{ user.firstname }} {{ user.lastname }}
+                                <a href="{{ path('rf_page_view', {'id':page.id}) }}">
+                                    {{ page.route }}
                                 </a>
                             </td>
-                        {% endif %}{% if 'email' in config.fields %}
+                        {% endif %}{% if 'name' in config.fields %}
                             <td>
-                                {{ user.email }}
+                                <a href="{{ path('rf_page_view', {'id':page.id}) }}">
+                                    {{ page.name }}
+                                </a>
                             </td>
-                        {% endif %}{% if 'status' in config.fields %}
+                        {% endif %}
+
+                        {% if 'lastModifiedBy' in config.fields %}
+                            <th scope="row">
+                                {% set userConfig = {'user': page.lastModifiedBy } %}
+                                {% include 'admin/components/user_icon.html.twig' with userConfig %}
+                            </th>
+                        {% endif %}
+
+                        {% if 'lastModifiedAt' in config.fields %}
                             <td>
-                                {% if user.status == 'active' %}
-                                    <span class="badge badge-dot mr-2"><i class="bg-gradient-primary"></i> ACTIVE</span>
-                                {% endif %}
-                                {% if user.status == 'inactive' %}
-                                    <span class="badge badge-dot mr-2"><i class="bg-blue"></i> INACTIVE</span>
-                                {% endif %}
-                                {% if user.status == 'blocked' %}
-                                    <span class="badge badge-dot mr-2"><i class="bg-red"></i> BLOCKED</span>
-                                {% endif %}
-                                {% if user.status == 'archived' %}
-                                    <span class="badge badge-dot mr-2"><i
-                                                class="bg-gradient-gray-dark"></i> ARCHIVED</span>
-                                {% endif %}
+                                {{ page.lastModifiedAt | date('d m Y H:i') }}
                             </td>
-                        {% endif %}{% if 'createdAt' in config.fields %}
+                        {% endif %}
+
+                        {% if 'published' in config.fields %}
                             <td>
-                                {{ user.createdAt | date('d M Y H:i') }}
+                                {% if page.published %}
+                                    <span class="badge badge-pill badge-success"><i class="fas fa-globe"></i> &nbsp; Published</span>
+                                {% else %}
+                                    <span class="badge badge-pill badge-primary"><i class="fas fa-pencil-ruler"></i> &nbsp; Draft</span>
+                                {% endif %}
                             </td>
                         {% endif %}{% if 'roles' in config.fields %}
                             <td>
-                                {% for role in user.roles %}
+                                {% for role in page.roles %}
                                     <div >
                                         {{ role | roleLabel }}
                                     </div>
@@ -110,12 +110,16 @@
                                         <i class="fas fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                        {% if 'view_profile' in config.options %}
-                                            <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':user.id}) }}">View Profile</a>
-                                        {% endif %}{% if 'view_orders' in config.options %}
-                                            <a class="dropdown-item" href="#">View Orders</a>
-                                        {% endif %}{% if 'change_role' in config.options %}
-                                            <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':user.id}) }}#role">Change Role</a>
+                                        {% if 'properties' in config.options %}
+                                            <a class="dropdown-item" href="{{ path('rf_page_edit',{'id':page.id}) }}">Edit Properties</a>
+                                        {% endif %}{% if 'contents' in config.options %}
+                                            <a class="dropdown-item" href="{{ path('rf_page_view', {'id':page.id}) }}">Edit Contents</a>
+                                        {% endif %}{% if 'visualize' in config.options %}
+                                            {% if page.published %}
+                                                <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':page.id}) }}#role">View in Front Office</a>
+                                            {% else %}
+                                                <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':page.id}) }}#role">Visualize</a>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>

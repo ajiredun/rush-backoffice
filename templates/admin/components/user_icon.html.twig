@@ -1,0 +1,14 @@
+<div class="media align-items-center">
+    <a href="{{ path('rf_user_profile',{'id':user.id}) }}" title="{{ user.name }}" class="avatar rounded-circle">
+        <img alt="{{ user.name }}" src="{{ user.picture }}">
+    </a>
+    {% if 'online' in config.fields %}
+        <div class="media-body">
+            {% if user.isActiveNow %}
+                <span class="badge badge-dot mr-2"><i class="bg-success rf-online-sign"></i></span>
+            {% else %}
+                <span class="badge badge-dot mr-2"><i class="bg-gradient-gray-dark rf-online-sign"></i></span>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

@@ -1,5 +1,8 @@
-<!-- Header -->
-<div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
+{%  set randImageValue = random(4) %}
+<div class="header pb-8 pt-5 pt-md-8" style="background-image: url('{{ asset('assets/login/login'~randImageValue~'.jpg') }}'); background-size: cover; background-position: center top;">
+    <!-- Mask -->
+    <span class="mask bg-gradient-darker opacity-8"></span>
+
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->

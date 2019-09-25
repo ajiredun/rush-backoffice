@@ -7,6 +7,7 @@ use App\Entity\Page;
 use App\Entity\User;
 use App\Entity\VisualPack;
 use App\Enums\LayoutCode;
+use App\Enums\Roles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -58,6 +59,19 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($login);
         $manager->flush($login);
+
+        $layout = $layoutRepository->findOneBy(['code'=>LayoutCode::LAYOUT_10, 'visualPack'=>$vp]);
+        //Create profile page
+        $profile = new Page();
+        $profile->setRoute("/profile");
+        $profile->setLayout($layout);
+        $profile->setLastModifiedBy($user);
+        $profile->setName("Profile Page");
+        $profile->setPublished(true);
+        $profile->setRoles([Roles::ROLE_USER]);
+
+        $manager->persist($profile);
+        $manager->flush($profile);
     }
 
     public function getDependencies()

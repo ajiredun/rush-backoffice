@@ -7,7 +7,7 @@
         'active' : 'page',
         'items': [
             {'path' : path('rf_page'), 'title':"Pages"},
-            {'path' : '#', 'title':"Add Page"},
+            {'path' : path('rf_page_add'), 'title':"Create a Page"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -18,7 +18,7 @@
         'main': {'path' : path('rf_page'), 'title':"Page Management"},
         'items': [
             {'path' : path('rf_page'), 'title':"Pages", 'active':true},
-            {'path' : '#', 'title':"Add Page"},
+            {'path' : path('rf_page_add'), 'title':"Create a Page"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
@@ -31,11 +31,30 @@
 {% block content %}
     <div class="row">
         <div class="col-xl-12 mb-5 mb-xl-0" >
-            <form method="post">
+            <form class="rf-search-form" method="{{ getSystemFormMethod() }}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control rf-focus" name="rfsearch_pagelist_name" value="{{ searchParamsGet('pagelist_name') }}" placeholder="Page Name, Route">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control" size="" name="rfsearch_pagelist_status" id="status">
+                                <option value="">Status</option>
+                                <option {% if searchParamsGet('pagelist_status') == "PUBLISHED" %}selected="selected"{% endif %} value="PUBLISHED">Published</option>
+                                <option {% if searchParamsGet('pagelist_status') == "DRAFT" %}selected="selected"{% endif %} value="DRAFT">Draft</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control" size=""  name="rfsearch_pagelist_role" id="roles">
+                                <option value="">Role</option>
+                                {% for role, name in getConfigurableFORoles() %}
+                                    <option {% if searchParamsGet('pagelist_role')== role %}selected="selected"{% endif %} value="{{ role }}" > {{ name }} </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -52,12 +71,12 @@
         <div class="col-xl-12 mb-5 mb-xl-0" >
             {% set config = {'config':{
                 'title' : 'Pages ('~pagination.getTotalItemCount~')',
-                'users' : pagination,
-                'fields' : ['route','name','published', 'lastModifiedBy', 'lastModifiedAt', 'roles'],
-                'options' : ['view_profile','view_orders','change_role'],
+                'pages' : pagination,
+                'fields' : ['route','name','published', 'lastModifiedBy', 'lastModifiedAt', 'roles' ,'online'],
+                'options' : ['properties','contents','visualize'],
                 'paginate' : true
             }} %}
-            {% include 'admin/components/user_list.html.twig' with config %}
+            {% include 'page/components/page_list.html.twig' with config %}
         </div>
     </div>
 {% endblock %}

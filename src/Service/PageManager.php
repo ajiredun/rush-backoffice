@@ -50,6 +50,9 @@ class PageManager
     {
         //checking if there is already another page with the same route
         $route = $page->getRoute();
+        if (!$this->isRouteValid($route)) {
+            return false;
+        }
         if (!$this->isRouteExist($route)) {
             //setting the layout
             $page->setLastModifiedBy($this->security->getUser());
@@ -62,6 +65,22 @@ class PageManager
         }
 
         return false;
+    }
+
+    public function updatePage(Page $page)
+    {
+        //checking if there is already another page with the same route
+        $route = $page->getRoute();
+        if (!$this->isRouteValid($route)) {
+            return false;
+        }
+
+        $page->setLastModifiedAt(new \DateTime('now'));
+        $page->setLastModifiedBy($this->security->getUser());
+        $this->getEntityManager()->flush();
+
+        return $page;
+
     }
 
 
@@ -90,7 +109,7 @@ class PageManager
     {
         if ($this->isRouteValid($route)) {
             $page = $this->pageRepository->findOneBy(
-                ['route'=>$route, 'published'=>false]
+                ['route' => $route, 'published' => false]
             );
             if ($page) {
                 return $page;
@@ -104,7 +123,7 @@ class PageManager
     {
         if ($this->isRouteValid($route)) {
             $page = $this->pageRepository->findOneBy(
-                ['route'=>$route, 'published'=>true]
+                ['route' => $route, 'published' => true]
             );
             if ($page) {
                 return $page;
@@ -119,7 +138,7 @@ class PageManager
     {
         if ($this->isRouteValid($route)) {
             $list = $this->pageRepository->findBy(
-                ['route'=>$route, 'published'=>true]
+                ['route' => $route, 'published' => true]
             );
             if (!empty($list)) {
                 return true;
@@ -133,14 +152,12 @@ class PageManager
 
     public function isRouteExist($route)
     {
-        if ($this->isRouteValid($route)) {
-            $list = $this->pageRepository->findBy(
-                ['route'=>$route]
-            );
+        $list = $this->pageRepository->findBy(
+            ['route' => $route]
+        );
 
-            if (!empty($list)) {
-                return true;
-            }
+        if (!empty($list)) {
+            return true;
         }
 
         return false;
@@ -148,6 +165,7 @@ class PageManager
 
     public function isRouteValid($route)
     {
+
         //Rule 1 - Must start with a slash
         if ("/" === substr($route, 0, 1)) {
             return true;

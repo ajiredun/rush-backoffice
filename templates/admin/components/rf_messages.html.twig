@@ -33,7 +33,6 @@
     {% endfor %}
 {% endif %}
 
-
 {% if rfMessages is defined and rfMessages.messages is defined and rfMessages.messages.rferror is defined and rfMessages.messages.rferror is not empty %}
     {% for message in rfMessages.messages.rferror %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">

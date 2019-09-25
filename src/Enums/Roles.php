@@ -79,4 +79,11 @@ class Roles
             Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager"
         ];
     }
+
+    static function getFOList()
+    {
+        return [
+            Roles::ROLE_USER => 'Website User'
+        ];
+    }
 }

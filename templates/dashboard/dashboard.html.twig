@@ -26,4 +26,81 @@
             {% include 'admin/components/user_list.html.twig' with config %}
         </div>
     </div>
+
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0">
+                        <div class="card-body">
+                            <h2 >Page Stats</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="card card-stats mb-4 mb-xl-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Published</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ pagesPublished | length }}<span class="outof">/{{ totalPages | length }}</span></span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 mb-0 text-muted text-sm">
+                                <span class="text-nowrap">right now</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="card card-stats mb-4 mb-xl-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Published</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ pagesCreatedThisMonth | length }}<span class="outof">/{{ totalPages | length }}</span></span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 mb-0 text-muted text-sm">
+                                <span class="text-nowrap">Since 1st {{ "now"|date("M Y") }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6">
+                    <div class="card card-stats mb-4 mb-xl-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Pages</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ totalPages | length }}</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                        <i class="fas fa-columns"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 mb-0 text-muted text-sm">
+                                <span class="text-nowrap">Number of total pages</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}

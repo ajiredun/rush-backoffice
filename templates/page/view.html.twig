@@ -1,0 +1,43 @@
+{% extends 'page/components/structure.html.twig' %}
+
+{% block title %}{{ page.name }} - Rush Framework{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'page',
+        'items': [
+            {'path' : path('rf_page'), 'title':"Pages"},
+            {'path' : path('rf_page_add'), 'title':"Create a Page"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_page'), 'title':"Page Management"},
+        'items': [
+            {'path' : path('rf_page'), 'title':"Pages"},
+            {'path' : path('rf_page_add'), 'title':"Create a Page"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'page/components/header_view.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+
+{% endblock %}

@@ -3,7 +3,7 @@
         <div class=" col-sm-4 col-md-{% if column is defined %}{{ column }}{% else %}3{% endif %}">
             <h6 class="text-black-50">{{ layout.code }}</h6>
             {% if choosable is defined and choosable %}
-            <a href="#" class="rf-choose" rf-hidden="#mychoice" rf-id="{{ layout.id }}">
+            <a href="#" class="rf-choose" rf-hidden="{% if class is defined and class %}.{{ class }}{% endif %}" rf-id="{{ layout.id }}">
                 {% else %}
                 <a href="{{ path('rf_visualpack_structure', {'id':layout.id}) }}" title="View Layout" target="_blank">
             {% endif %}
@@ -14,7 +14,4 @@
             </a>
         </div>
     {% endfor %}
-    {% if choosable is defined and choosable %}
-        <input id="mychoice" type="hidden" value="0"/>
-    {% endif %}
 </div>

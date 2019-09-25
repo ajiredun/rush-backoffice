@@ -55,6 +55,8 @@ class PageRepository extends ServiceEntityRepository
     public function getWithSearchQueryBuilder(SearchParams $searchParams)
     {
         $term = $searchParams->getCurrent('name');
+        $role = $searchParams->getCurrent('role');
+        $status = $searchParams->getCurrent('status');
 
         $qb = $this->createQueryBuilder('p');
 
@@ -66,8 +68,28 @@ class PageRepository extends ServiceEntityRepository
             $qb->orWhere('p.seoTitle LIKE :term')
                 ->setParameter('term', "%$term%");
         }
-        $qb->groupBy('p.route');
-        $qb->orderBy('p.published', "ASC");
+
+        if (!empty($status)) {
+            if ($status === 'PUBLISHED') {
+                $status = true;
+            }
+
+            if ($status === 'DRAFT') {
+                $status = false;
+            }
+
+            $qb->andWhere($qb->expr()->eq('p.published', ':status'))
+                ->setParameter('status', $status);
+        }
+
+        if (!empty($role)) {
+            $qb->andWhere("p.roles LIKE :role")
+                ->setParameter('role', '%"' . $role . '"%');
+        }
+
+        $qb->orderBy('p.route', "ASC");
+
+
 
         return $qb->getQuery();
     }

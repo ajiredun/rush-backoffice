@@ -31,7 +31,7 @@
 {% block content %}
     <div class="row">
         <div class="col-xl-12 mb-5 mb-xl-0" >
-            <form method="post">
+            <form class="rf-search-form"  method="{{ getSystemFormMethod() }}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -74,7 +74,6 @@
                 'title' : 'Users ('~pagination.getTotalItemCount~')',
                 'users' : pagination,
                 'fields' : ['image','online','name', 'email', 'status', 'roles', 'createdAt'],
-                'options' : ['view_profile','view_orders','change_role'],
                 'paginate' : true
             }} %}
             {% include 'admin/components/user_list.html.twig' with config %}

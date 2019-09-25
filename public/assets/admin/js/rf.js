@@ -17,4 +17,25 @@ $(document).ready(function () {
         $('.rf-choose[rf-id="'+id+'"]').children('.canvas_structure_layout').css('border','2px solid blue');
     });
 
+    $('.rf-choose').each(function(){
+        var input = $(this).attr('rf-hidden');
+        var inputVal = $(input).val();
+        console.log(inputVal);
+        $('.rf-choose[rf-id]').children('.canvas_structure_layout').css('border','none');
+        $('.rf-choose[rf-id="'+inputVal+'"]').children('.canvas_structure_layout').css('border','2px solid blue');
+    });
+
+    $('.rf-search-form select').change(function(){
+        $(this).closest('.rf-search-form').submit();
+    });
+
 });
+
+function rfslugify(Text)
+{
+    return Text
+        .toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'')
+        ;
+}

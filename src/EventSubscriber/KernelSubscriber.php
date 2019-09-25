@@ -59,19 +59,43 @@ class KernelSubscriber implements EventSubscriberInterface
     protected function manageRfMessage($request)
     {
         if ($request->get('rfsuccess',false)) {
-            $this->rfMessages->addSuccess($request->get('rfsuccess'));
+            if (is_array($request->get('rfsuccess'))) {
+                foreach ($request->get('rfsuccess') as $message) {
+                    $this->rfMessages->addSuccess($message);
+                }
+            } else {
+                $this->rfMessages->addSuccess($request->get('rfsuccess'));
+            }
         }
 
         if ($request->get('rfinfo',false)) {
-            $this->rfMessages->addInfo($request->get('rfinfo'));
+            if (is_array($request->get('rfinfo'))) {
+                foreach ($request->get('rfinfo') as $message) {
+                    $this->rfMessages->addInfo($message);
+                }
+            } else {
+                $this->rfMessages->addInfo($request->get('rfinfo'));
+            }
         }
 
         if ($request->get('rfwarning',false)) {
-            $this->rfMessages->addWarning($request->get('rfwarning'));
+            if (is_array($request->get('rfwarning'))) {
+                foreach ($request->get('rfwarning') as $message) {
+                    $this->rfMessages->addWarning($message);
+                }
+            } else {
+                $this->rfMessages->addWarning($request->get('rfwarning'));
+            }
         }
 
         if ($request->get('rferror',false)) {
-            $this->rfMessages->addError($request->get('rferror'));
+            if (is_array($request->get('rferror'))) {
+                foreach ($request->get('rferror') as $message) {
+                    $this->rfMessages->addError($message);
+                }
+            } else {
+                $this->rfMessages->addError($request->get('rferror'));
+            }
         }
     }
 
