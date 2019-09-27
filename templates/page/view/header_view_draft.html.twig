@@ -1,15 +1,16 @@
 {%  set randImageValue = random(4) %}
 <div class="header pb-8 pt-5 pt-md-8 d-flex align-items-center" style="background-image: url('{{ asset('assets/login/login'~randImageValue~'.jpg') }}'); background-size: cover; background-position: center top;">
     <!-- Mask -->
-    <span class="mask {% if page.published %}bg-gradient-green{% else %}bg-gradient-default{% endif %} opacity-8"></span>
+    <span class="mask bg-gradient-dark opacity-8"></span>
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->
             <div class="row">
                 <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card bg-transparent {% if page.published %}border-default{% else %}border-light{% endif %} card-stats mb-4 mb-xl-0">
+                    <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0">
                         <div class="card-body">
-                            <h2 {% if page.published %}{% else %}style="color:white;"{% endif %}>{{ page.name }}</h2>
+                            <h5 class="card-title text-gray text-uppercase text-muted mb-0">Page Name</h5>
+                            <h2 class="text-white">{{ page.name }}</h2>
                         </div>
                     </div>
                 </div>
@@ -19,23 +20,12 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
-                                    {% if page.published %}
-                                        <span class="h3 text-green font-weight-bold mb-0">PUBLISHED</span>
-                                    {% else %}
                                         <span class="h3 text-blue font-weight-bold mb-0">DRAFT</span>
-                                    {% endif %}
                                 </div>
                                 <div class="col-auto">
-                                    {% if page.published %}
-                                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                                            <i class="fas fa-globe"></i>
-                                        </div>
-                                    {% else %}
                                         <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
                                             <i class="fas fa-pencil-ruler"></i>
                                         </div>
-                                    {% endif %}
-
                                 </div>
 
                             </div>

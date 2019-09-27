@@ -1,62 +1,33 @@
-{% extends 'page/components/structure.html.twig' %}
-
-{% block title %}{{ page.name }} - Rush Framework{% endblock %}
-
-{% block sidenav %}
-    {% set config = {'config':{
-        'active' : 'page',
-        'items': [
-            {'path' : path('rf_page'), 'title':"Pages"},
-            {'path' : path('rf_page_add'), 'title':"Create a Page"},
-        ]
-    }} %}
-    {% include 'admin/sidenav.html.twig'  with config %}
-{% endblock %}
-
-{% block nav %}
-    {% set config = {'config':{
-        'main': {'path' : path('rf_page'), 'title':"Page Management"},
-        'items': [
-            {'path' : path('rf_page'), 'title':"Pages"},
-            {'path' : path('rf_page_add'), 'title':"Create a Page"},
-        ]
-    }} %}
-    {% include 'admin/nav.html.twig' with config %}
-{% endblock %}
-
-{% block header %}
-    {% include 'page/components/header_view.html.twig' %}
-{% endblock %}
-
-{% block content %}
-
-{% endblock %}
+{% extends 'page/view/view_base.html.twig' %}
 
 {% block js %}
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $.confirm({
-                theme: 'supervan',
-                title: 'Confirm!',
-                content: 'Simple confirm!',
-                buttons: {
-                    confirm: function () {
-                        $.alert('Confirmed!');
-                    },
-                    cancel: function () {
-                        $.alert('Canceled!');
-                    },
-                    somethingElse: {
-                        text: 'Something else',
-                        btnClass: 'btn-blue',
-                        keys: ['enter', 'shift'],
-                        action: function(){
-                            $.alert('Something else?');
+            $('.rf-help').click(function () {
+                $.confirm({
+                    theme: 'supervan',
+                    title: 'Help Section - Page',
+                    content: 'HELP',
+                    buttons: {
+                        confirm: function () {
+                            $.alert('Confirmed!');
+                        },
+                        cancel: function () {
+                            $.alert('Canceled!');
+                        },
+                        somethingElse: {
+                            text: 'Something else',
+                            btnClass: 'btn-blue',
+                            keys: ['enter', 'shift'],
+                            action: function(){
+                                $.alert('Something else?');
+                            }
                         }
                     }
-                }
+                });
             });
+
         });
     </script>
 

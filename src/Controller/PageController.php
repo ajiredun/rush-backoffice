@@ -34,7 +34,12 @@ class PageController extends AbstractController
      */
     public function view(Request $request, Page $page)
     {
-        return $this->render('page/view.html.twig', [
+        $twig = 'page/view.html.twig';
+        if (!$page->getPublished()) {
+            $twig = 'page/view_draft.html.twig';
+        }
+
+        return $this->render($twig, [
             'page' => $page,
         ]);
     }
