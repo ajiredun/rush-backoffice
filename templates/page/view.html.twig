@@ -36,7 +36,27 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-
+            $.confirm({
+                theme: 'supervan',
+                title: 'Confirm!',
+                content: 'Simple confirm!',
+                buttons: {
+                    confirm: function () {
+                        $.alert('Confirmed!');
+                    },
+                    cancel: function () {
+                        $.alert('Canceled!');
+                    },
+                    somethingElse: {
+                        text: 'Something else',
+                        btnClass: 'btn-blue',
+                        keys: ['enter', 'shift'],
+                        action: function(){
+                            $.alert('Something else?');
+                        }
+                    }
+                }
+            });
         });
     </script>
 

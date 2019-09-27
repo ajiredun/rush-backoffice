@@ -1,0 +1,66 @@
+{% extends 'dashboard/components/structure.html.twig' %}
+
+{% block header %}
+    {% include 'dashboard/components/header_settings.html.twig' %}
+{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'settings'
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_settings'), 'title':"Settings"}
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0"><i class="fas fa-cogs text-darker"></i> System Settings</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+
+                        {% for setting in settings %}
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>{{ setting.label }}</label>
+                                            <input type="text" value="{{ setting.value }}" name="{{ setting.term }}" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <hr class="my-4"/>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-icon btn-3 btn-primary">
+                                            <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+
+                                            <span class="btn-inner--text">Apply</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

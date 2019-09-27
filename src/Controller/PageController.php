@@ -129,9 +129,11 @@ class PageController extends AbstractController
             $draft = $pageManager->getDraftPageByPublishedPage($page);
             if ($draft) {
                 $rfMessages->addInfo("We have redirected you to the DRAFT version of the PUBLISHED page.");
+
+                return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$draft->getId()],$rfMessages->getMessages()));
             }
 
-            return $this->redirectToRoute('rf_page', $rfMessages->getMessages());
+            return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
         }
 
         $form = $this->createForm(PageType::class, $page, ['edit_mode' => true]);

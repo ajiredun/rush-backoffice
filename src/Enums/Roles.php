@@ -30,6 +30,9 @@ class Roles
     const ROLE_PAGE_MANAGEMENT_VIEWER = "ROLE_PAGE_MANAGEMENT_VIEWER";
     const ROLE_PAGE_MANAGEMENT_EDITOR = "ROLE_PAGE_MANAGEMENT_EDITOR";
 
+    //BACK OFFICE SETTINGS
+    const ROLE_BO_SETTINGS = "ROLE_BO_SETTINGS";
+
 
     static function getLabel($role)
     {
@@ -63,7 +66,8 @@ class Roles
             Roles::ROLE_VISUAL_PACK_VIEWER => "Visual Pack Manager - View Only",
             Roles::ROLE_VISUAL_PACK_EDITOR => "Visual Pack Manager",
             Roles::ROLE_PAGE_MANAGEMENT_VIEWER => "Page Manager - View Only",
-            Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager"
+            Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager",
+            Roles::ROLE_BO_SETTINGS => "Back Office Settings",
         ];
     }
 
@@ -76,7 +80,8 @@ class Roles
             Roles::ROLE_MEDIA_MANAGEMENT_EDITOR => "Media Manager",
             Roles::ROLE_ROLES_MANAGEMENT => "Role Manager",
             Roles::ROLE_VISUAL_PACK_EDITOR => "Visual Pack Manager",
-            Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager"
+            Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager",
+            Roles::ROLE_BO_SETTINGS => "Back Office Settings"
         ];
     }
 
