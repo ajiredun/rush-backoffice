@@ -1,50 +1,41 @@
-{%  set randImageValue = random(4) %}
-<div class="header pb-8 pt-5 pt-md-8 d-flex align-items-center" style="background-image: url('{{ asset('assets/login/login'~randImageValue~'.jpg') }}'); background-size: cover; background-position: center top;">
+{% set randImageValue = random(4) %}
+<div class="header pb-8 pt-5 pt-md-8 d-flex align-items-center"
+     style="background-image: url('{{ asset('assets/login/login'~randImageValue~'.jpg') }}'); background-size: cover; background-position: center top;">
+
+
+    {% set draftVersion = getDraftPageOfPublishedPage(page) %}
+
+
     <!-- Mask -->
     <span class="mask bg-gradient-darker opacity-8"></span>
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->
             <div class="row">
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0" style="height:90%;">
                         <div class="card-body">
                             <h5 class="card-title text-gray text-uppercase text-muted mb-0">Page Name</h5>
                             <h2 class="text-white">{{ page.name }}</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body page_published">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
-                                        <span class="h3 text-green font-weight-bold mb-0">PUBLISHED</span>
-                                </div>
-                                <div class="col-auto">
-                                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                                            <i class="fas fa-globe"></i>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card card-stats mb-4">
                         <div class="card-body page_published">
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Draft</h5>
-                                    {% if getDraftPageOfPublishedPage(page) %}
-                                        <span class="h3 text-black-50 font-weight-bold mb-0"><a href="{{ path('rf_page_view',{'id': getDraftPageOfPublishedPage(page).id}) }}">View Draft</a> </span>
+                                    {% if draftVersion %}
+                                        <span class="h3 text-black-50 font-weight-bold mb-0"><a
+                                                    href="{{ path('rf_page_view',{'id': draftVersion.id}) }}">View Draft</a> </span>
                                     {% else %}
-                                        <span class="h3 text-black-50 font-weight-bold mb-0"><a href="{{ path('rf_page_add') }}">Create Draft</a> </span>
+                                        <span class="h3 text-black-50 font-weight-bold mb-0"><a
+                                                    href="{{ path('rf_page_add') }}">Create Draft</a> </span>
                                     {% endif %}
                                 </div>
                                 <div class="col-auto">
-                                    {% if getDraftPageOfPublishedPage(page) %}
+                                    {% if draftVersion %}
                                         <div class="icon icon-shape bg-gradient-gray-dark text-white rounded-circle shadow">
                                             <i class="fas fa-pencil-ruler"></i>
                                         </div>
@@ -59,10 +50,67 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card card-stats mb-4">
+                        <div class="card-body page_published">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Edit</h5>
+                                    <span class="h3 text-black-50 font-weight-bold mb-0">
+                                        <a class="btn-edit-page-properties"
+                                           rf-published="YES"
+                                           href="{{ path('rf_page_add') }}">PROPERTIES</a>
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="btn-edit-page-properties"
+                                       rf-published="YES"
+                                       href="{{ path('rf_page_add') }}">
+                                        <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body rf-help" rf-class="help-page-content" rf-title="Help Section - Page" style="cursor:pointer;" >
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card card-stats mb-4 mb-xl-0 shadow pb-3 border-success" style="border-width:4px;">
+                        <div class="card-body page_published">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
+                                    <span class="h3 text-green font-weight-bold mb-0">PUBLISHED</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">
+                                        on {{ page.publishedOn | date('d M Y H:i') }}</h5>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">by <a
+                                                href="{{ path('rf_user_profile', {'id':page.publishedBy.id}) }}">{{ page.publishedBy.name }}</a>
+                                    </h5>
+                                    <button class="btn mt-4 btn-sm btn-danger shadow  btn-unpublished"
+                                            rf-published="{% if draftVersion %}YES{% else %}NO{% endif %}"
+                                            title="Unpublished this page / Put this page offline. It will stop appearing in the website">
+                                        UNPUBLISH
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card card-stats mb-4">
+                        <div class="card-body rf-help" rf-class="help-page-content" rf-title="Help Section - Page"
+                             style="cursor:pointer;">
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Do you need</h5>
@@ -71,6 +119,24 @@
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-gradient-darker text-white rounded-circle shadow">
                                         <i class="fas fa-question"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'help/page-details.html.twig' %}
+                    <div class="card card-stats mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Visualize</h5>
+                                    <span class="h3 text-darker font-weight-bold mb-0"><a
+                                                title="Visualize this page on your website."
+                                                href="{{ path('rf_page_add') }}">PAGE</a></span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-indigo text-white rounded-circle shadow">
+                                        <i class="fas fa-eye"></i>
                                     </div>
                                 </div>
                             </div>

@@ -86,6 +86,16 @@ class Page
     private $seoKeywords;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $publishedOn;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $publishedBy;
+
+    /**
      * Page constructor.
      */
     public function __construct()
@@ -254,6 +264,30 @@ class Page
     public function setSeoKeywords(?string $seoKeywords): self
     {
         $this->seoKeywords = $seoKeywords;
+
+        return $this;
+    }
+
+    public function getPublishedOn(): ?\DateTimeInterface
+    {
+        return $this->publishedOn;
+    }
+
+    public function setPublishedOn(?\DateTimeInterface $publishedOn): self
+    {
+        $this->publishedOn = $publishedOn;
+
+        return $this;
+    }
+
+    public function getPublishedBy(): ?User
+    {
+        return $this->publishedBy;
+    }
+
+    public function setPublishedBy(?User $publishedBy): self
+    {
+        $this->publishedBy = $publishedBy;
 
         return $this;
     }

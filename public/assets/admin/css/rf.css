@@ -46,11 +46,11 @@
     font-size:16px;
     color:black;
     font-weight: bold;
-    height:200px;
+    min-height:200px;
     vertical-align: middle;
 }
 #canvas_structure .slot-1 {
-    height: 100px;
+    min-height: 200px;
     font-size:14px;
     vertical-align: middle;
 }
@@ -71,7 +71,7 @@
     vertical-align: middle;
 }
 #canvas_structure .slot-6 {
-    min-height:600px;
+    min-height:700px;
     vertical-align: middle;
 }
 

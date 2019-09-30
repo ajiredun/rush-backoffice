@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $("body").niceScroll();
+    $(".rf-help-content").niceScroll();
+    //$("<your div>").getNiceScroll().resize();
     $('.rf[rf-show]').on("click", function(){
         var toshow = $(this).attr('rf-show');
         var parent = $(this).attr('rf-parent');
@@ -28,6 +31,32 @@ $(document).ready(function () {
     $('.rf-search-form select').change(function(){
         $(this).closest('.rf-search-form').submit();
     });
+
+    $('.rf-help').click(function () {
+
+        var title = $(this).attr('rf-title');
+        var contentElement = $("."+$(this).attr('rf-class'));
+        $.confirm({
+            theme: 'supervan',
+            title: title,
+            columnClass: 'large',
+            content: contentElement.html(),
+            buttons: {
+                confirm: {
+                    text: 'OK',
+                    btnClass: 'btn btn-secondary',
+                    keys: ['enter', 'shift'],
+                    action: function(){
+                    }
+                }
+            },
+            onContentReady: function () {
+                $(".rf-help-content").niceScroll();
+                $(".rf-help-content").getNiceScroll().resize();
+            }
+        });
+    });
+
 
 });
 

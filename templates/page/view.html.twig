@@ -1,33 +1,183 @@
 {% extends 'page/view/view_base.html.twig' %}
 
+
+{% block content %}
+    <div class="card card-stats shadow">
+        <div class="card-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <span class="alert-inner--text">You should unpublish this page to edit its contents. Or create a draft version.</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                    <div class="card card-stats" >
+                        <div class="card-header bg-translucent-neutral border-0">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">Page Content</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body page-contents "  style="max-height:700px;overflow: auto;" id="canvas_structure">
+                            {{ page.layout.structure | raw  }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="card card-stats">
+                        <div class="card-header bg-translucent-neutral border-0">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">Content List</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body content-list"  style="max-height:700px;overflow: auto;">
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
 {% block js %}
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $('.rf-help').click(function () {
-                $.confirm({
-                    theme: 'supervan',
-                    title: 'Help Section - Page',
-                    content: 'HELP',
-                    buttons: {
-                        confirm: function () {
-                            $.alert('Confirmed!');
-                        },
-                        cancel: function () {
-                            $.alert('Canceled!');
-                        },
-                        somethingElse: {
-                            text: 'Something else',
-                            btnClass: 'btn-blue',
-                            keys: ['enter', 'shift'],
-                            action: function(){
-                                $.alert('Something else?');
-                            }
-                        }
-                    }
-                });
-            });
 
+
+            $(".page-contents").niceScroll();
+            $(".content-list").niceScroll();
+
+            $('.btn-unpublished').click(function () {
+                var hasDraft = $(this).attr('rf-published');
+                if (hasDraft == "YES") {
+                    $.confirm({
+                        theme: 'modern',
+                        title: "WARNING",
+                        columnClass: 'large',
+                        content: 'This published page already has a draft version.<br/><ul>' +
+                            '<li>You should delete the draft version first.</li><li>If you are unpublishing this ' +
+                            'current version because you want to publish the draft version, you can publish the' +
+                            ' draft version directly.</li></ul><br/><br/>',
+                        buttons: {
+                            confirm: {
+                                text: 'Unpublish & Delete the Draft',
+                                btnClass: 'btn btn-danger',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    $.confirm({
+                                        theme: 'modern',
+                                        title: "WARNING",
+                                        columnClass: 'large',
+                                        content: '<em>By clicking on ' +
+                                            '"Unpublish & Delete the Draft", it will delete the draft version, and the ' +
+                                            'current published version will become draft.</em>',
+                                        buttons: {
+                                            continue: {
+                                                text: 'Confirm',
+                                                btnClass: 'btn btn-danger',
+                                                keys: ['enter', 'shift'],
+                                                action: function () {
+                                                    // no nothing
+                                                }
+                                            },
+                                            cancel: {
+                                                text: 'Cancel',
+                                                btnClass: 'btn btn-secondary',
+                                                keys: ['enter', 'shift'],
+                                                action: function () {
+                                                    // do nothing
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            },
+                            deleteDraft: {
+                                text: 'Delete Draft ',
+                                btnClass: 'btn btn-warning',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    $.confirm({
+                                        theme: 'modern',
+                                        title: "WARNING",
+                                        columnClass: 'large',
+                                        content: '<em>By clicking on ' +
+                                            '"Delete Draft", it will delete the draft version. This means that all the modifications you did in the draft version will be lost.</em>',
+                                        buttons: {
+                                            continue: {
+                                                text: 'Confirm',
+                                                btnClass: 'btn btn-danger',
+                                                keys: ['enter', 'shift'],
+                                                action: function () {
+                                                    // no nothing
+                                                }
+                                            },
+                                            cancel: {
+                                                text: 'Cancel',
+                                                btnClass: 'btn btn-secondary',
+                                                keys: ['enter', 'shift'],
+                                                action: function () {
+                                                    // do nothing
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            },
+                            cancel: {
+                                text: 'Cancel',
+                                btnClass: 'btn btn-secondary',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    // do nothing
+                                }
+                            },
+                        }
+                    });
+                } else {
+                    $.confirm({
+                        theme: 'modern',
+                        title: "WARNING",
+                        columnClass: 'large',
+                        content: 'You are about to UNPUBLISH this page. ' +
+                            'Please note <ul><li>It will no longer appear in the Front Office (Website)</li>' +
+                            '<li>If this page contains children in the menu, all the children will no longer be ' +
+                            'available. So, make sure you have updated your website menu before proceeding.</li></ul>',
+                        buttons: {
+                            confirm: {
+                                text: 'UNPUBLISH',
+                                btnClass: 'btn btn-danger',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    // no nothing
+                                }
+                            },
+                            cancel: {
+                                text: 'Cancel',
+                                btnClass: 'btn btn-secondary',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    // do nothing
+                                }
+                            },
+                        }
+                    });
+                }
+            });
         });
     </script>
 

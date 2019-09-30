@@ -32,6 +32,8 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $home->setLastModifiedBy($user);
         $home->setName("Homepage");
         $home->setPublished(true);
+        $home->setPublishedOn(new \DateTime('now'));
+        $home->setPublishedBy($user);
 
         $manager->persist($home);
         $manager->flush($home);
@@ -44,6 +46,8 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $aboutUs->setLastModifiedBy($user);
         $aboutUs->setName("About Us");
         $aboutUs->setPublished(true);
+        $aboutUs->setPublishedOn(new \DateTime('now'));
+        $aboutUs->setPublishedBy($user);
 
         $manager->persist($aboutUs);
         $manager->flush($aboutUs);
@@ -56,6 +60,8 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $login->setLastModifiedBy($user);
         $login->setName("Login");
         $login->setPublished(true);
+        $login->setPublishedOn(new \DateTime('now'));
+        $login->setPublishedBy($user);
 
         $manager->persist($login);
         $manager->flush($login);
@@ -68,6 +74,8 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $profile->setLastModifiedBy($user);
         $profile->setName("Profile Page");
         $profile->setPublished(true);
+        $profile->setPublishedOn(new \DateTime('now'));
+        $profile->setPublishedBy($user);
         $profile->setRoles([Roles::ROLE_USER]);
 
         $manager->persist($profile);

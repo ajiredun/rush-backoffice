@@ -77,6 +77,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getSystemFormMethod', [$this, 'getSystemFormMethod']),
             new TwigFunction('getSystemInfo', [$this, 'getSystemInfo']),
             new TwigFunction('getDraftPageOfPublishedPage', [$this, 'getDraftPageOfPublishedPage']),
+            new TwigFunction('getPublishedPageOfDraftPage', [$this, 'getPublishedPageOfDraftPage']),
         ];
     }
 
@@ -88,6 +89,15 @@ class AppExtension extends AbstractExtension
             return $this->pageManager->getDraftPageByPublishedPage($page);
         } else {
             return $this->pageManager->getDraftPageByPublishedPageId($page);
+        }
+    }
+
+    public function getPublishedPageOfDraftPage($page)
+    {
+        if ($page instanceof Page) {
+            return $this->pageManager->getPublishedPageByDraftPage($page);
+        } else {
+            return $this->pageManager->getPublishedPageByDraftPageId($page);
         }
     }
 

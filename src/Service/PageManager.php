@@ -119,7 +119,27 @@ class PageManager
         return false;
     }
 
-    public function getPublishedPage($route)
+    public function getPublishedPageByDraftPage(Page $pageDraft)
+    {
+        if ($pageDraft) {
+            return $this->getPublishedPageByDraftPageId($pageDraft->getId());
+        }
+
+        return false;
+    }
+
+    public function  getPublishedPageByDraftPageId($id)
+    {
+        $pagePublished = $this->pageRepository->find($id);
+        if ($pagePublished) {
+            $routePublished = $pagePublished->getRoute();
+            return $this->getPublishedPageByRoute($routePublished);
+        }
+
+        return false;
+    }
+
+    public function getPublishedPageByRoute($route)
     {
         if ($this->isRouteValid($route)) {
             $page = $this->pageRepository->findOneBy(

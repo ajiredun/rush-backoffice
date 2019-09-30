@@ -28,6 +28,43 @@
     {% include 'page/view/header_view_published.html.twig' %}
 {% endblock %}
 
-{% block content %}
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
 
+            $('.btn-edit-page-properties').click(function (e) {
+                e.preventDefault();
+                var isPublished = $(this).attr('rf-published');
+                if (isPublished == "YES") {
+                    $.confirm({
+                        theme: 'modern',
+                        title: "WARNING",
+                        columnClass: 'large',
+                        content: "You can't edit the properties of this page because it is PUBLISHED. Please Unpublish it first. ",
+                        buttons: {
+                            confirm: {
+                                text: 'UNPUBLISHED',
+                                btnClass: 'btn btn-danger',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    $('.btn-unpublished').trigger('click')
+                                }
+                            },
+                            cancel: {
+                                text: 'Cancel',
+                                btnClass: 'btn btn-secondary',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+                                    // do nothing
+                                }
+                            },
+                        }
+                    });
+                } else {
+                    location.href = this.$target.attr('href');
+                }
+            });
+        });
+    </script>
 {% endblock %}
