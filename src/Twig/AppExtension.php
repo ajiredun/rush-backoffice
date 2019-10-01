@@ -78,10 +78,19 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getSystemInfo', [$this, 'getSystemInfo']),
             new TwigFunction('getDraftPageOfPublishedPage', [$this, 'getDraftPageOfPublishedPage']),
             new TwigFunction('getPublishedPageOfDraftPage', [$this, 'getPublishedPageOfDraftPage']),
+            new TwigFunction('get_blocks_for_slot', [$this, 'get_blocks_for_slot']),
         ];
     }
 
 
+    public function get_blocks_for_slot(array $blocks, $slot)
+    {
+        if (array_key_exists($slot, $blocks)) {
+            return $blocks[$slot];
+        } else {
+            return false;
+        }
+    }
 
     public function getDraftPageOfPublishedPage($page)
     {

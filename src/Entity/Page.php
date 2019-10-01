@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -96,6 +98,11 @@ class Page
     private $publishedBy;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Block", mappedBy="page", orphanRemoval=true)
+     */
+    private $blocks;
+
+    /**
      * Page constructor.
      */
     public function __construct()
@@ -104,6 +111,7 @@ class Page
         $this->createdAt = new \DateTime('now');
         $this->lastModifiedAt = $this->createdAt;
         $this->seoAllowRobot = true;
+        $this->blocks = new ArrayCollection();
     }
 
 
@@ -288,6 +296,37 @@ class Page
     public function setPublishedBy(?User $publishedBy): self
     {
         $this->publishedBy = $publishedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Block[]
+     */
+    public function getBlocks(): Collection
+    {
+        return $this->blocks;
+    }
+
+    public function addBlock(Block $block): self
+    {
+        if (!$this->blocks->contains($block)) {
+            $this->blocks[] = $block;
+            $block->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlock(Block $block): self
+    {
+        if ($this->blocks->contains($block)) {
+            $this->blocks->removeElement($block);
+            // set the owning side to null (unless already changed)
+            if ($block->getPage() === $this) {
+                $block->setPage(null);
+            }
+        }
 
         return $this;
     }

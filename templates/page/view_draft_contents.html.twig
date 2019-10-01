@@ -1,0 +1,218 @@
+{% extends 'page/view/view_base.html.twig' %}
+
+{% block header %}
+    {% include 'page/view/header_view_draft.html.twig' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+            <div class="card  bg-gradient-dark">
+                <div class="card-body">
+                    <div class="nav-wrapper">
+                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
+                            <li class="nav-item">
+                                <a class="nav-link mb-sm-3 mb-md-0 btn-blocks" href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">Blocks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-sm-3 mb-md-0 active"  href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}" >Contents</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <div class="card bg-default">
+                <div class="card-body">
+                    <div class="nav-wrapper">
+                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
+                            <li class="nav-item">
+                                <a id="save-content-orders" class="nav-link mb-sm-3 mb-md-0 bg-green active" href="#save" >
+                                    SAVE
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div id="canvas_structure" class="page-contents " style="width:100%;min-height:400px;max-height:700px;overflow: auto; border:3px solid white; padding:20px;"
+                 class="shadow">
+                {{ page.layout.structure | raw }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            $('.btn-publish').click(function (e) {
+                $.confirm({
+                    theme: 'modern',
+                    title: "Confirmation",
+                    columnClass: 'large',
+                    content: '<em>You really want to publish this page?</em>',
+                    buttons: {
+                        continue: {
+                            text: 'Yes',
+                            btnClass: 'btn btn-danger',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                                // no nothing
+                            }
+                        },
+                        cancel: {
+                            text: 'Cancel',
+                            btnClass: 'btn btn-secondary',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                                // do nothing
+                            }
+                        },
+                    }
+                });
+            });
+
+            $('.btn-blocks').confirm({
+                theme: 'modern',
+                title: "..before going into the blocks section",
+                columnClass: 'large',
+                content: 'Please make sure you have clicked the <em>SAVE</em> button, <br/> if you want to update the blocks. <br/> Else all unsaved modifications will be lost.',
+                buttons: {
+                    continue: {
+                        text: 'Proceed',
+                        btnClass: 'btn btn-success',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            location.href = this.$target.attr('href');
+                        }
+                    },
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn btn-secondary',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            // do nothing
+                        }
+                    },
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        #canvas_structure .slot-container {
+            width: 94%;
+            background: white;
+            border: 4px solid white;
+            margin-left: 3%;
+            margin-right: 3%;
+            background-image: url('{{ asset('assets/admin/img/drag_and_drop.jpg') }}');
+            background-size: cover;
+            background-position: center center;
+        }
+
+        #canvas_structure .slot-1 .slot-container {
+            min-height: 150px;
+        }
+
+        #canvas_structure .slot .slot-container {
+            min-height: 150px;
+        }
+
+        #canvas_structure .slot-2 .slot-container {
+            min-height: 250px;
+        }
+
+        #canvas_structure .slot-3 .slot-container {
+            min-height: 350px;
+        }
+
+        #canvas_structure .slot-4 .slot-container {
+            min-height: 450px;
+        }
+
+        #canvas_structure .slot-5 .slot-container {
+            min-height: 550px;
+        }
+
+        #canvas_structure .slot-6 .slot-container {
+            min-height: 650px;
+        }
+
+        .content-list-item {
+            width: 94%;
+            margin: 3%;
+            border: 2px solid lightgrey;
+            background: white;
+            text-align: center;
+            min-height: 50px;
+        }
+
+        .content-list-item h3 {
+            font-weight: bold;
+        }
+
+        #canvas_structure .slot {
+            background:none;
+            border:1px solid lightgrey;
+        }
+
+        #canvas_structure .slot-header {
+            margin:0;
+            padding:0;
+            padding-top: 15px;
+            padding-bottom:15px;
+            color:grey;
+        }
+
+
+        .list-group.list-group-root {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .list-group.list-group-root .list-group {
+            margin-bottom: 0;
+        }
+
+        .list-group.list-group-root .list-group-item {
+            border-radius: 0;
+            border-width: 1px 0 0 0;
+        }
+
+        .list-group.list-group-root > .list-group-item:first-child {
+            border-top-width: 0;
+        }
+
+        .list-group.list-group-root > .list-group > .list-group-item {
+            padding-left: 30px;
+        }
+
+        .list-group.list-group-root > .list-group > .list-group > .list-group-item {
+            padding-left: 45px;
+        }
+
+        .list-group-item .glyphicon {
+            margin-right: 5px;
+        }
+
+    </style>
+{% endblock %}
+
+

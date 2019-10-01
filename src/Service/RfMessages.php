@@ -9,6 +9,11 @@ class RfMessages
 
     public function __construct()
     {
+        $this->init();
+    }
+
+    public function init()
+    {
         $this->messages = [
             'rfsuccess' => [],
             'rfinfo' => [],

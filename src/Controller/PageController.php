@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Block;
 use App\Entity\Page;
 use App\Enums\Roles;
 use App\Form\Type\PageType;
+use App\Repository\BlockRepository;
 use App\Repository\LayoutRepository;
 use App\Repository\PageRepository;
 use App\Service\LayoutManager;
@@ -26,21 +28,80 @@ class PageController extends AbstractController
 {
 
     /**
-     * @Route("/page-{id}", name="rf_page_view")
+     * @Route("/page-{id}/{tab}", name="rf_page_view")
      *
      * @param Request $request
      * @param Page $page
      * @return mixed
      */
-    public function view(Request $request, Page $page)
+    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages)
     {
         $twig = 'page/view.html.twig';
         if (!$page->getPublished()) {
             $twig = 'page/view_draft.html.twig';
+            if ($tab == 'contents') {
+                $twig = 'page/view_draft_contents.html.twig';
+            }
+
+        }
+
+        $blocks = [];
+        $pageBlocks = $blockRepository->findOrderedBlocks($page);
+        foreach ($pageBlocks as $block) {
+            /**
+             * @var Block $block
+             */
+            if (array_key_exists($block->getSlot(),$blocks)) {
+                $blocks[$block->getSlot()][] = $block;
+            } else {
+                $blocks = array_merge($blocks,[$block->getSlot()=>[$block]]);
+            }
+        }
+
+        if (
+            $request->isMethod('POST') && $request->request->get('page_block_orders', false)
+        ) {
+            $json = $request->request->get('page_block_orders', false);
+            $slots = json_decode($json);
+            $em = $this->getDoctrine()->getManager();
+            foreach ($slots as $slot=>$blocks)
+            {
+                foreach ($blocks as $order => $block)
+                {
+                    if (substr( $block, 0, 3 ) === "CT_") {
+                        //new block
+                        $b = new Block();
+                        $b->setPage($page);
+                        $b->setLastModifiedBy($this->getUser());
+                        $b->setBlockOrder($order);
+                        $b->setContentType($block);
+                        $b->setSlot($slot);
+
+                        $em->persist($b);
+                        $em->flush();
+                    } else {
+                        $b = $blockRepository->find(intval($block));
+                        if ($b) {
+                            $b->setBlockOrder($order);
+                            $b->setLastModifiedAt(new \DateTime('now'));
+                            $b->setLastModifiedBy($this->getUser());
+                            $b->setSlot($slot);
+                            $em->flush();
+                        } else {
+                            $rfMessages->addError("We can't find a block with the following information: ". $block);
+                        }
+                    }
+                }
+            }
+            $rfMessages->addSuccess("We have successfully modified this page.");
+
+            return $this->redirectToRoute('rf_page_view',array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));
         }
 
         return $this->render($twig, [
             'page' => $page,
+            'tab' => $tab,
+            'blocks' => $blocks
         ]);
     }
 

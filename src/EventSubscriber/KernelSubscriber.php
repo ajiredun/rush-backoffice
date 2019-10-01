@@ -58,6 +58,9 @@ class KernelSubscriber implements EventSubscriberInterface
 
     protected function manageRfMessage($request)
     {
+        $this->rfMessages->init();
+
+
         if ($request->get('rfsuccess',false)) {
             if (is_array($request->get('rfsuccess'))) {
                 foreach ($request->get('rfsuccess') as $message) {

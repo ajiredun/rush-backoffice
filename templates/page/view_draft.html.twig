@@ -8,15 +8,17 @@
 {% block content %}
     <div class="row mb-4">
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <div class="card bg-default">
+            <div class="card bg-gradient-dark">
                 <div class="card-body">
                     <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
+                        <ul class="nav nav-pills nav-fill flex-column flex-md-row">
                             <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 active" href="#tabs-icons-text-1">Blocks</a>
+                                <a class="nav-link mb-sm-3 mb-md-0 active"
+                                   href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">Blocks</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0"  href="#tabs-icons-text-2" >Contents</a>
+                                <a class="nav-link mb-sm-3 mb-md-0 btn-contents"
+                                   href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">Contents</a>
                             </li>
                         </ul>
                     </div>
@@ -24,14 +26,18 @@
             </div>
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-            <div class="card bg-default">
+            <div class="card bg-gradient-blue">
                 <div class="card-body">
                     <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
+                        <ul class="nav nav-pills nav-fill flex-column flex-md-row">
                             <li class="nav-item">
-                                <a id="save-content-orders" class="nav-link mb-sm-3 mb-md-0 bg-green active" href="#tabs-icons-text-1" >
-                                    SAVE
-                                </a>
+                                <form id="form_save_order" method="post">
+                                    <input id="page_block_orders" name="page_block_orders" type="hidden"/>
+                                    <button type="submit" id="save-content-orders"
+                                            class="btn btn-secondary btn-block av-link mb-sm-3 mb-md-0">
+                                        SAVE
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -42,7 +48,8 @@
 
     <div class="row">
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <div id="canvas_structure" class="page-contents " style="width:100%;min-height:400px;max-height:700px;overflow: auto; border:3px solid white; padding:20px;"
+            <div id="canvas_structure" class="page-contents "
+                 style="width:100%;min-height:400px;max-height:700px;overflow: auto; border:3px solid white; padding:20px;"
                  class="shadow">
                 {{ page.layout.structure | raw }}
             </div>
@@ -56,55 +63,20 @@
                         </div>
                     </div>
                 </div>
-                {#<div id="content-list" class="card-body" style="max-height:700px;overflow: auto;">
-                    <div rf-content-code="CT_MENU" class="content-list-item">
-                        <h3>Menu</h3>
-                        <p>Choose a menu and display it.</p>
-                    </div>
-                    <div rf-content-code="2" class="content-list-item">
-                        Code 2
-                    </div>
-                    <div rf-content-code="3" class="content-list-item">
-                        Code 3
-                    </div>
-                    <div rf-content-code="4" class="content-list-item">
-                        Code 4
-                    </div>
-                    <div rf-content-code="5" class="content-list-item">
-                        Code 5
-                    </div>
-                    <div rf-content-code="6" class="content-list-item">
-                        Code 6
-                    </div>
-                    <div rf-content-code="7" class="content-list-item">
-                        Code 7
-                    </div>
-                    <div rf-content-code="8" class="content-list-item">
-                        Code 8
-                    </div>
-                    <div rf-content-code="9" class="content-list-item">
-                        Code 9
-                    </div>
-                    <div rf-content-code="10" class="content-list-item">
-                        Code 10
-                    </div>
-                    <div rf-content-code="11" class="content-list-item">
-                        Code 11
-                    </div>
-                    <div rf-content-code="12" class=" content-list-item">
-                        Code 12
-                    </div>
-                </div>#}
                 <div class="list-group list-group-root well">
 
                     <a href="#ct-cat-menu" class="list-group-item" data-toggle="collapse">
                         Menus
                     </a>
                     <div class="list-group collapse content-list" id="ct-cat-menu">
-                            <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN">Main Menu 01</a>
-                            <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN_SIMPLE">Main Menu 02</a>
-                            <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_SIDE">Side Menu</a>
-                            <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_PILLS">Menu Pills</a>
+                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN">Main Menu
+                            01</a>
+                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN_SIMPLE">Main
+                            Menu 02</a>
+                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_SIDE">Side
+                            Menu</a>
+                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_PILLS">Menu
+                            Pills</a>
                     </div>
 
                     <a href="#ct-cat-contents" class="list-group-item" data-toggle="collapse">
@@ -112,11 +84,16 @@
                     </a>
                     <div class="list-group collapse content-list" id="ct-cat-contents">
                         <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_CAROUSEL">Carousel</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_1">Paragraph Full</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Paragraph 2/3 - Image 1/3</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Image 2/3 - Paragraph 1/3</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Paragraph - 1/2 Image 1/2</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Image 1/2 - Paragraph 1/2</a>
+                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_1">Paragraph
+                            Full</a>
+                        <a href="#" class="list-group-item content-list-item"
+                           rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Paragraph 2/3 - Image 1/3</a>
+                        <a href="#" class="list-group-item content-list-item"
+                           rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Image 2/3 - Paragraph 1/3</a>
+                        <a href="#" class="list-group-item content-list-item"
+                           rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Paragraph - 1/2 Image 1/2</a>
+                        <a href="#" class="list-group-item content-list-item"
+                           rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Image 1/2 - Paragraph 1/2</a>
                     </div>
                 </div>
             </div>
@@ -132,6 +109,40 @@
         $(document).ready(function () {
             /*$(".page-contents").niceScroll();
             $(".content-list").niceScroll();*/
+
+
+            $('#save-content-orders').click(function (e) {
+                e.preventDefault();
+                $('#page_block_orders').val(calculateItemsInSlots());
+                $('#form_save_order').submit();
+            });
+
+            $('.btn-contents').confirm({
+                theme: 'modern',
+                title: "..before going into the content section",
+                columnClass: 'large',
+                content: 'Please make sure you have clicked the <em>SAVE</em> button, <br/> if you want to update the blocks. <br/> Else all unsaved modifications will be lost.',
+                buttons: {
+                    continue: {
+                        text: 'Proceed',
+                        btnClass: 'btn btn-success',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            location.href = this.$target.attr('href');
+                        }
+                    },
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn btn-secondary',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            // do nothing
+                        }
+                    },
+                }
+            });
+
+
             $('.btn-publish').click(function (e) {
                 $.confirm({
                     theme: 'modern',
@@ -176,12 +187,21 @@
 
 
             {% for slot in page.layout.slots %}
-                var contents_{{ slot }} = document.getElementById('{{ slot }}');
-                var contents_sortable_{{ slot }} = Sortable.create(contents_{{ slot }}, {
-                    group: 'shared',
-                    delayOnTouchOnly: true,
-                    animation: 300
-                });
+            {% for b in get_blocks_for_slot(blocks, slot) %}
+                $('#{{ slot }}').append('<a href="#" class="list-group-item content-list-item" rf-content-code="{{ b.id }}">BLOCK ' +
+                    ' {{ b.contentType }}</a>');
+            {% endfor %}
+            {% endfor %}
+
+
+
+            {% for slot in page.layout.slots %}
+            var contents_{{ slot }} = document.getElementById('{{ slot }}');
+            var contents_sortable_{{ slot }} = Sortable.create(contents_{{ slot }}, {
+                group: 'shared',
+                delayOnTouchOnly: true,
+                animation: 300
+            });
             {% endfor %}
 
             $('#save-content-orders').click(function () {
@@ -197,12 +217,12 @@
             var slot_orders = [];
             $('#{{ slot }}').find('.content-list-item').each(function () {
                 slot_orders.push($(this).attr('rf-content-code'));
-                console.log($(this).attr('rf-content-code'));
             });
             orders['{{ slot }}'] = slot_orders;
             {% endfor %}
             var orders_string = JSON.stringify(orders);
-            console.log(orders_string);
+
+            return orders_string;
         }
 
         function renderCanvasSlotsEditable() {
@@ -273,16 +293,16 @@
         }
 
         #canvas_structure .slot {
-            background:none;
-            border:1px solid lightgrey;
+            background: none;
+            border: 1px solid lightgrey;
         }
 
         #canvas_structure .slot-header {
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
             padding-top: 15px;
-            padding-bottom:15px;
-            color:grey;
+            padding-bottom: 15px;
+            color: grey;
         }
 
 
