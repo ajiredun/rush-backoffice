@@ -9,6 +9,7 @@ use App\Form\Type\PageType;
 use App\Repository\BlockRepository;
 use App\Repository\LayoutRepository;
 use App\Repository\PageRepository;
+use App\Service\CTManager;
 use App\Service\LayoutManager;
 use App\Service\PageManager;
 use App\Service\RfMessages;
@@ -28,14 +29,20 @@ class PageController extends AbstractController
 {
 
     /**
-     * @Route("/page-{id}/{tab}", name="rf_page_view")
      *
+     * @Route("/page-{id}/{tab}", name="rf_page_view")
      * @param Request $request
      * @param Page $page
-     * @return mixed
+     * @param string $tab
+     * @param BlockRepository $blockRepository
+     * @param RfMessages $rfMessages
+     * @param CTManager $CTManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
-    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages)
+    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages, CTManager $CTManager)
     {
+
         $twig = 'page/view.html.twig';
         if (!$page->getPublished()) {
             $twig = 'page/view_draft.html.twig';
@@ -98,8 +105,13 @@ class PageController extends AbstractController
             return $this->redirectToRoute('rf_page_view',array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));
         }
 
+
+        //get content list
+        $contentTypeList = $CTManager->getContentTypesCategorised();
+
         return $this->render($twig, [
             'page' => $page,
+            'contentTypeList' => $contentTypeList,
             'tab' => $tab,
             'blocks' => $blocks
         ]);
@@ -250,6 +262,22 @@ class PageController extends AbstractController
                     }
                 }
             }
+        }
+
+        return new Response($checked);
+    }
+
+    /**
+     *
+     * @Route("/view_list/{code}", name="rf_page_viewlist")
+     *
+     */
+    public function getBlockViewList(Request $request, $code = null, CTManager $CTManager)
+    {
+        $checked = "KO";
+        $ct = $CTManager->getContentTypeByCode($code);
+        if ($ct != null) {
+            $checked = $ct->getViewList();
         }
 
         return new Response($checked);

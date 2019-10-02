@@ -119,3 +119,7 @@
     min-height:600px;
     vertical-align: middle;
 }
+
+.ct-view-list p {
+    font-size:12px;
+}

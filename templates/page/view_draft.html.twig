@@ -65,10 +65,24 @@
                 </div>
                 <div class="list-group list-group-root well">
 
-                    <a href="#ct-cat-menu" class="list-group-item" data-toggle="collapse">
+                    {% for code, category in contentTypeList %}
+                        {#{% if category.list is not empty %}#}
+                            <a href="#ct-cat-{{ code }}" class="list-group-item" data-toggle="collapse">
+                                {{ category.label }}
+                            </a>
+                            <div class="list-group collapse content-list" id="ct-cat-{{ code }}">
+                                {% for ct in category.list %}
+                                    {{ ct.viewList | raw }}
+                                {% endfor %}
+                            </div>
+                       {# {% endif %}#}
+                    {% endfor %}
+
+
+                    <a href="#ct-cat-menus" class="list-group-item" data-toggle="collapse">
                         Menus
                     </a>
-                    <div class="list-group collapse content-list" id="ct-cat-menu">
+                    <div class="list-group collapse content-list" id="ct-cat-menus">
                         <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN">Main Menu
                             01</a>
                         <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN_SIMPLE">Main
@@ -171,8 +185,8 @@
             });
             renderCanvasSlotsEditable();
 
-            $('.content-list').each(function (index) {
-                var el = $(this)[0];
+            var els = document.getElementsByClassName("content-list");
+            Array.prototype.forEach.call(els, function(el) {
                 Sortable.create(el, {
                     group: {
                         name: 'shared',
@@ -188,8 +202,14 @@
 
             {% for slot in page.layout.slots %}
             {% for b in get_blocks_for_slot(blocks, slot) %}
-                $('#{{ slot }}').append('<a href="#" class="list-group-item content-list-item" rf-content-code="{{ b.id }}">BLOCK ' +
-                    ' {{ b.contentType }}</a>');
+                getBlockViewList('{{ b.contentType }}',$('#{{ slot }}'),'{{ b.id }}','{{ b.contentType }}');
+
+                {#{% if getContentTypeByCode(b.contentType) != null %}
+                    $('#{{ slot }}').append('{{ getContentTypeByCode(b.contentType).viewList | raw }}');
+                {% else %}
+                    $('#{{ slot }}').append('<a href="#" class="list-group-item content-list-item" rf-content-code="{{ b.id }}">BLOCK ' +
+                        ' {{ b.contentType }}</a>');
+                {% endif %}#}
             {% endfor %}
             {% endfor %}
 
@@ -231,6 +251,16 @@
                 var slotCode = slot.attr('data-slot');
                 var slotContainer = "<h4 class='slot-header'>" + slotCode + "</h4><div id='" + slotCode + "' class='slot-container'></div>";
                 slot.html(slotContainer);
+            });
+        }
+
+        function getBlockViewList(code, el, id, contentType) {
+            $.get("{{ path('rf_page_viewlist') }}/"+code, function(data, status){
+                if (data == "KO") {
+                    el.append('<a href="#" class="list-group-item content-list-item" rf-content-code="'+id+'">BLOCK '+contentType+'</a>');
+                } else {
+                    el.append(data);
+                }
             });
         }
     </script>

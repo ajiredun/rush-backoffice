@@ -8,6 +8,7 @@ use App\Enums\LayoutCode;
 use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Repository\VisualPackRepository;
+use App\Service\CTManager;
 use App\Service\PageManager;
 use App\Service\SearchParams;
 use App\Service\SystemManager;
@@ -39,22 +40,30 @@ class AppExtension extends AbstractExtension
     protected $pageManager;
 
     /**
+     * @var CTManager
+     */
+    protected $CTManager;
+
+    /**
      * AppExtension constructor.
      * @param SearchParams $searchParams
      * @param VisualPackRepository $visualPackRepository
      * @param SystemManager $systemManager
      * @param PageManager $pageManager
+     * @param CTManager $CTManager
      */
     public function __construct(
         SearchParams $searchParams,
         VisualPackRepository $visualPackRepository,
         SystemManager $systemManager,
-        PageManager $pageManager
+        PageManager $pageManager,
+        CTManager $CTManager
     ){
         $this->searchParams = $searchParams;
         $this->visualPackRepository = $visualPackRepository;
         $this->systemManager = $systemManager;
         $this->pageManager = $pageManager;
+        $this->CTManager = $CTManager;
     }
 
 
@@ -79,9 +88,15 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getDraftPageOfPublishedPage', [$this, 'getDraftPageOfPublishedPage']),
             new TwigFunction('getPublishedPageOfDraftPage', [$this, 'getPublishedPageOfDraftPage']),
             new TwigFunction('get_blocks_for_slot', [$this, 'get_blocks_for_slot']),
+            new TwigFunction('getContentTypeByCode', [$this, 'getContentTypeByCode']),
         ];
     }
 
+
+    public function getContentTypeByCode($code)
+    {
+        return $this->CTManager->getContentTypeByCode($code);
+    }
 
     public function get_blocks_for_slot(array $blocks, $slot)
     {

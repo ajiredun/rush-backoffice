@@ -23,5 +23,11 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Service\CTManager:
+        arguments: [!tagged rf.content_types]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    _instanceof:
+        App\ContentType\Base\ContentTypeInterface:
+            tags: ['rf.content_types']

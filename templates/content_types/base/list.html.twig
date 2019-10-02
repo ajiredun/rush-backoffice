@@ -1,0 +1,11 @@
+<div class="row ct-view-list grabbable content-list-item" rf-content-code="{{ ct.code }}" style="width: 100%; margin-right:0;margin-left:0;">
+    <div class="col-md-4" style="padding:0;">
+        <img class="card-img-top" src="{{ asset(ct.viewListImage) }}" alt="{{ ct.label }}">
+    </div>
+    <div class="col-md-8">
+        {% block body %}
+            <h4 class="card-title">{{ ct.label }}</h4>
+            <p class="card-text">{% block p %}{% endblock %}</p>
+        {% endblock %}
+    </div>
+</div>
