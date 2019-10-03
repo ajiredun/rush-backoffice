@@ -127,7 +127,7 @@
                                     <button type="submit" id="create_page" class="btn btn-icon btn-3 btn-primary">
                                         <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
 
-                                        <span class="btn-inner--text">Create</span>
+                                        <span class="btn-inner--text">{% if editPage is defined and editPage %}Update{% else %}Create{% endif %}</span>
                                     </button>
                                 </div>
                             </div>

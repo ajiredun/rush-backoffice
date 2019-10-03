@@ -6,43 +6,38 @@
 
 
 {% block content %}
-    <div class="row mb-4">
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <div class="card  bg-gradient-dark">
-                <div class="card-body">
-                    <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
-                            <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 btn-blocks" href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">Blocks</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 active"  href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}" >Contents</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-            <div class="card bg-default">
-                <div class="card-body">
-                    <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row" >
-                            <li class="nav-item">
-                                <a id="save-content-orders" class="nav-link mb-sm-3 mb-md-0 bg-green active" href="#save" >
-                                    SAVE
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="card mb-2 shadow">
+        <div class="card-body align-items-center mx-auto">
+            <ul class="nav nav-pills nav-pills-circle align-items-center mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link rounded-circle btn-blocks" title="Blocks"
+                       href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">
+                        <span class="nav-link-icon d-block"><i class="fas fa-cubes"></i></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link rounded-circle active" title="Contents"
+                       href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">
+                        <span class="nav-link-icon d-block"><i class="fas fa-file-signature"></i></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form id="form_save_order" method="post">
+                        <input id="page_block_orders" name="page_block_orders" type="hidden"/>
+                        <button type="submit" id="save-content-orders" title="SAVE"
+                                class="nav-link rounded-circle bg-gradient-danger text-white"
+                                style="border:none;cursor:pointer;">
+                            <span class="nav-link-icon d-block"><i class="fas fa-save"></i></span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
-
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <div id="canvas_structure" class="page-contents " style="width:100%;min-height:400px;max-height:700px;overflow: auto; border:3px solid white; padding:20px;"
+            <div id="canvas_structure" class="page-contents "
+                 style="width:100%;min-height:400px;max-height:700px;background:white;overflow: auto; border:3px solid white; padding:20px;"
                  class="shadow">
                 {{ page.layout.structure | raw }}
             </div>
@@ -108,7 +103,20 @@
                     },
                 }
             });
+
+            {% for slot in page.layout.slots %}
+            {% for b in get_blocks_for_slot(blocks, slot) %}
+            getBlockViewDetail('{{ b.contentType }}', '{{ slot }}', '{{ b.id }}', '{{ render(controller(
+                'App\\Controller\\PageController::blockDetail', {id: b.id}
+            ))  |replace({"\n":' ', "\r":' '})| raw }}');
+            {% endfor %}
+            {% endfor %}
         });
+        function getBlockViewDetail(code, el, id, data) {
+            var slot = $('.slot[data-slot="'+el+'"]');
+            console.log(slot,id);
+            slot.append('<a href="#" class="list-group-item content-list-item" rf-content-code="' + id + '">' + data + '</a>');
+        }
     </script>
 
 {% endblock %}
@@ -169,18 +177,17 @@
         }
 
         #canvas_structure .slot {
-            background:none;
-            border:1px solid lightgrey;
+            background: none;
+            border: 1px solid lightgrey;
         }
 
         #canvas_structure .slot-header {
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
             padding-top: 15px;
-            padding-bottom:15px;
-            color:grey;
+            padding-bottom: 15px;
+            color: grey;
         }
-
 
         .list-group.list-group-root {
             padding: 0;

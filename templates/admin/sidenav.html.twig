@@ -11,6 +11,13 @@
         </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
+            {#<li class="nav-item">
+                <button style="border:none;cursor:pointer; background: none;" class="nav-link rf-speak rounded-circle text-white" title="Speak">
+                    <span class="avatar avatar-sm bg-gradient-indigo rounded-circle">
+                  <i class="fas fa-microphone"></i>
+                </span>
+                </button>
+            </li>#}
             <li class="nav-item dropdown">
                 <a class="nav-link" href="{{ path('rf_user_profile',{'id':app.user.id}) }}" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">

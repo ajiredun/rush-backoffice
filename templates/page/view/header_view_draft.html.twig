@@ -55,10 +55,10 @@
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Edit</h5>
                                     <span class="h3 text-black-50 font-weight-bold mb-0"><a
-                                                href="{{ path('rf_page_add') }}">PROPERTIES</a> </span>
+                                                href="{{ path('rf_page_edit', {'id':page.id}) }}">PROPERTIES</a> </span>
                                 </div>
                                 <div class="col-auto">
-                                    <a href="{{ path('rf_page_add') }}">
+                                    <a href="{{ path('rf_page_edit', {'id':page.id}) }}">
                                         <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
                                             <i class="fas fa-edit"></i>
                                         </div>

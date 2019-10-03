@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    $("body").niceScroll();
-    $(".rf-help-content").niceScroll();
     //$("<your div>").getNiceScroll().resize();
     $('.rf[rf-show]').on("click", function(){
         var toshow = $(this).attr('rf-show');
@@ -68,3 +66,5 @@ function rfslugify(Text)
         .replace(/[^\w-]+/g,'')
         ;
 }
+
+

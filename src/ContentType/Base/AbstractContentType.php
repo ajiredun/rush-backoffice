@@ -47,16 +47,16 @@ abstract class AbstractContentType implements ContentTypeInterface
         // TODO: Implement setProperties() method.
     }
 
-    public function getViewList()
+    public function getViewList($params = [])
     {
         $class = $this->getClassName();
-        return $this->twig->render("content_types/$class/list.html.twig", ['ct'=>$this]);
+        return $this->twig->render("content_types/$class/list.html.twig", array_merge($params, ['ct'=>$this]));
     }
 
-    public function getViewDetail()
+    public function getViewDetail($params = [])
     {
         $class = $this->getClassName();
-        return $this->twig->render("content_types/$class/detail.html.twig", ['ct'=>$this]);
+        return $this->twig->render("content_types/$class/detail.html.twig", array_merge($params, ['ct'=>$this]));
     }
 
     public function getViewListImage()

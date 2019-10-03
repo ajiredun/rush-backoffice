@@ -9,6 +9,7 @@ use App\Form\Type\PageType;
 use App\Repository\BlockRepository;
 use App\Repository\LayoutRepository;
 use App\Repository\PageRepository;
+use App\Service\BlockManager;
 use App\Service\CTManager;
 use App\Service\LayoutManager;
 use App\Service\PageManager;
@@ -40,7 +41,7 @@ class PageController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages, CTManager $CTManager)
+    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages, CTManager $CTManager, BlockManager $blockManager)
     {
 
         $twig = 'page/view.html.twig';
@@ -52,18 +53,7 @@ class PageController extends AbstractController
 
         }
 
-        $blocks = [];
-        $pageBlocks = $blockRepository->findOrderedBlocks($page);
-        foreach ($pageBlocks as $block) {
-            /**
-             * @var Block $block
-             */
-            if (array_key_exists($block->getSlot(),$blocks)) {
-                $blocks[$block->getSlot()][] = $block;
-            } else {
-                $blocks = array_merge($blocks,[$block->getSlot()=>[$block]]);
-            }
-        }
+        $blocks = $blockManager->getPageBlocksBySlots($page);
 
         if (
             $request->isMethod('POST') && $request->request->get('page_block_orders', false)
@@ -71,6 +61,16 @@ class PageController extends AbstractController
             $json = $request->request->get('page_block_orders', false);
             $slots = json_decode($json);
             $em = $this->getDoctrine()->getManager();
+
+            $beforeUpdate = $blockManager->getPageBlocks($page);
+            $toRemove = [];
+
+            foreach ($beforeUpdate as $block) {
+                if (!$this->isPresentInSlots($block->getId(),$slots)) {
+                    $toRemove[] = $block;
+                }
+            }
+
             foreach ($slots as $slot=>$blocks)
             {
                 foreach ($blocks as $order => $block)
@@ -100,6 +100,12 @@ class PageController extends AbstractController
                     }
                 }
             }
+
+            foreach ($toRemove as $block) {
+                $em->remove($block);
+            }
+            $em->flush();
+
             $rfMessages->addSuccess("We have successfully modified this page.");
 
             return $this->redirectToRoute('rf_page_view',array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));
@@ -228,7 +234,7 @@ class PageController extends AbstractController
 
             if ($pageManager->updatePage($page)) {
                 $rfMessages->addSuccess($page->getName() . " has been created modified");
-                return $this->redirectToRoute('rf_page', $rfMessages->getMessages());
+                return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
             }
         }
 
@@ -269,18 +275,53 @@ class PageController extends AbstractController
 
     /**
      *
-     * @Route("/view_list/{code}", name="rf_page_viewlist")
+     * @Route("/view_list/{id}", name="rf_page_viewlist")
      *
      */
-    public function getBlockViewList(Request $request, $code = null, CTManager $CTManager)
+    public function getBlockViewList(Request $request, Block $block, CTManager $CTManager)
     {
+
+        $code = $block->getContentType();
+
         $checked = "KO";
         $ct = $CTManager->getContentTypeByCode($code);
         if ($ct != null) {
-            $checked = $ct->getViewList();
+            $checked = $ct->getViewList(['allow_buttons'=> true,'block'=>$block]);
         }
 
         return new Response($checked);
+    }
+
+    /**
+     * @Route("/view_detail/{id}", name="rf_page_viewdetail")
+     *
+     * @param Block $block
+     * @param CTManager $CTManager
+     * @return Response
+     */
+    public function blockDetail(Block $block, CTManager $CTManager)
+    {
+        $code = $block->getContentType();
+
+        $checked = "KO";
+        $ct = $CTManager->getContentTypeByCode($code);
+        if ($ct != null) {
+            $checked = $ct->getViewDetail(['block'=>$block]);
+        }
+
+        return new Response($checked);
+    }
+
+
+    protected function isPresentInSlots($presence, $slots)
+    {
+        foreach ($slots as $slot) {
+            if (in_array($presence, $slot)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

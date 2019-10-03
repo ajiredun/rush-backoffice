@@ -1,6 +1,7 @@
 {% extends 'page/view/view_base.html.twig' %}
 
 {% block header %}
+    <div class="se-pre-con"><div class="loader"></div></div>
     {% include 'page/view/header_view_draft.html.twig' %}
 {% endblock %}
 
@@ -8,54 +9,48 @@
 {% block content %}
     <div class="row mb-4">
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-            <div class="card bg-gradient-dark">
-                <div class="card-body">
-                    <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row">
-                            <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 active"
-                                   href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">Blocks</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-sm-3 mb-md-0 btn-contents"
-                                   href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">Contents</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-            <div class="card bg-gradient-blue">
-                <div class="card-body">
-                    <div class="nav-wrapper">
-                        <ul class="nav nav-pills nav-fill flex-column flex-md-row">
-                            <li class="nav-item">
-                                <form id="form_save_order" method="post">
-                                    <input id="page_block_orders" name="page_block_orders" type="hidden"/>
-                                    <button type="submit" id="save-content-orders"
-                                            class="btn btn-secondary btn-block av-link mb-sm-3 mb-md-0">
-                                        SAVE
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 
     <div class="row">
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
             <div id="canvas_structure" class="page-contents "
-                 style="width:100%;min-height:400px;max-height:700px;overflow: auto; border:3px solid white; padding:20px;"
+                 style="width:100%;min-height:400px;max-height:700px; background:white; overflow: auto; border:3px solid white; padding:20px;"
                  class="shadow">
                 {{ page.layout.structure | raw }}
             </div>
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-            <div class="card card-stats">
+            <div class="card mb-2 shadow">
+                <div class="card-body align-items-center mx-auto">
+                    <ul class="nav nav-pills nav-pills-circle align-items-center mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link rounded-circle active" title="Blocks"
+                               href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">
+                                <span class="nav-link-icon d-block"><i class="fas fa-cubes"></i></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link rounded-circle btn-contents" title="Contents"
+                               href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">
+                                <span class="nav-link-icon d-block"><i class="fas fa-file-signature"></i></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="form_save_order" method="post">
+                                <input id="page_block_orders" name="page_block_orders" type="hidden"/>
+                                <button type="submit" id="save-content-orders" title="SAVE"
+                                        class="nav-link rounded-circle bg-gradient-danger text-white"
+                                        style="border:none;cursor:pointer;">
+                                    <span class="nav-link-icon d-block"><i class="fas fa-save"></i></span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
                 <div class="card-header bg-translucent-neutral border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
@@ -66,49 +61,17 @@
                 <div class="list-group list-group-root well">
 
                     {% for code, category in contentTypeList %}
-                        {#{% if category.list is not empty %}#}
-                            <a href="#ct-cat-{{ code }}" class="list-group-item" data-toggle="collapse">
-                                {{ category.label }}
-                            </a>
-                            <div class="list-group collapse content-list" id="ct-cat-{{ code }}">
-                                {% for ct in category.list %}
-                                    {{ ct.viewList | raw }}
-                                {% endfor %}
-                            </div>
-                       {# {% endif %}#}
+                        {% if category.list is not empty %}
+                        <a href="#ct-cat-{{ code }}" class="list-group-item" data-toggle="collapse">
+                            {{ category.label }}
+                        </a>
+                        <div class="list-group collapse content-list" id="ct-cat-{{ code }}">
+                            {% for ct in category.list %}
+                                {{ ct.viewList | raw }}
+                            {% endfor %}
+                        </div>
+                         {% endif %}
                     {% endfor %}
-
-
-                    <a href="#ct-cat-menus" class="list-group-item" data-toggle="collapse">
-                        Menus
-                    </a>
-                    <div class="list-group collapse content-list" id="ct-cat-menus">
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN">Main Menu
-                            01</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_MAIN_SIMPLE">Main
-                            Menu 02</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_SIDE">Side
-                            Menu</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_MENU_PILLS">Menu
-                            Pills</a>
-                    </div>
-
-                    <a href="#ct-cat-contents" class="list-group-item" data-toggle="collapse">
-                        Media & Texts
-                    </a>
-                    <div class="list-group collapse content-list" id="ct-cat-contents">
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_CAROUSEL">Carousel</a>
-                        <a href="#" class="list-group-item content-list-item" rf-content-code="CT_CONTENTS_PARAGRAPH_1">Paragraph
-                            Full</a>
-                        <a href="#" class="list-group-item content-list-item"
-                           rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Paragraph 2/3 - Image 1/3</a>
-                        <a href="#" class="list-group-item content-list-item"
-                           rf-content-code="CT_CONTENTS_PARAGRAPH_2.3_1.3">Image 2/3 - Paragraph 1/3</a>
-                        <a href="#" class="list-group-item content-list-item"
-                           rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Paragraph - 1/2 Image 1/2</a>
-                        <a href="#" class="list-group-item content-list-item"
-                           rf-content-code="CT_CONTENTS_PARAGRAPH_1.2_1.2">Image 1/2 - Paragraph 1/2</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -124,6 +87,11 @@
             /*$(".page-contents").niceScroll();
             $(".content-list").niceScroll();*/
 
+            $('body').on('click','.ct-block-remove',function () {
+                if (confirm('You sure?')) {
+                    $(this).closest('.ct-view-list').remove();
+                }
+            });
 
             $('#save-content-orders').click(function (e) {
                 e.preventDefault();
@@ -156,7 +124,6 @@
                 }
             });
 
-
             $('.btn-publish').click(function (e) {
                 $.confirm({
                     theme: 'modern',
@@ -186,7 +153,7 @@
             renderCanvasSlotsEditable();
 
             var els = document.getElementsByClassName("content-list");
-            Array.prototype.forEach.call(els, function(el) {
+            Array.prototype.forEach.call(els, function (el) {
                 Sortable.create(el, {
                     group: {
                         name: 'shared',
@@ -195,38 +162,37 @@
                     },
                     delayOnTouchOnly: true,
                     animation: 150,
-                    sort: false
+                    sort: false,
+                    onEnd: function (evt) {
+                        resetViewListActions();
+                    },
                 });
             });
 
-
             {% for slot in page.layout.slots %}
             {% for b in get_blocks_for_slot(blocks, slot) %}
-                getBlockViewList('{{ b.contentType }}',$('#{{ slot }}'),'{{ b.id }}','{{ b.contentType }}');
-
-                {#{% if getContentTypeByCode(b.contentType) != null %}
-                    $('#{{ slot }}').append('{{ getContentTypeByCode(b.contentType).viewList | raw }}');
-                {% else %}
-                    $('#{{ slot }}').append('<a href="#" class="list-group-item content-list-item" rf-content-code="{{ b.id }}">BLOCK ' +
-                        ' {{ b.contentType }}</a>');
-                {% endif %}#}
+            getBlockViewList('{{ b.contentType }}', $('#{{ slot }}'), '{{ b.id }}');
             {% endfor %}
             {% endfor %}
-
-
 
             {% for slot in page.layout.slots %}
             var contents_{{ slot }} = document.getElementById('{{ slot }}');
             var contents_sortable_{{ slot }} = Sortable.create(contents_{{ slot }}, {
                 group: 'shared',
                 delayOnTouchOnly: true,
-                animation: 300
+                animation: 300,
+                onEnd: function (evt) {
+                    resetViewListActions();
+                },
             });
             {% endfor %}
 
             $('#save-content-orders').click(function () {
                 calculateItemsInSlots()
             });
+
+
+            $(".se-pre-con").fadeOut("slow");
 
 
         });
@@ -254,14 +220,30 @@
             });
         }
 
-        function getBlockViewList(code, el, id, contentType) {
-            $.get("{{ path('rf_page_viewlist') }}/"+code, function(data, status){
-                if (data == "KO") {
-                    el.append('<a href="#" class="list-group-item content-list-item" rf-content-code="'+id+'">BLOCK '+contentType+'</a>');
-                } else {
-                    el.append(data);
+        function resetViewListActions() {
+            $('#canvas_structure .ct-view-list-actions').show();
+        }
+
+        function getBlockViewList(code, el, id) {
+
+            $.ajax({
+                url: "{{ path('rf_page_viewlist',{'id':0}) }}" + id,
+                type: 'GET',
+                async: false,
+                cache: true,
+                timeout: 30000,
+                error: function(){
+                    return true;
+                },
+                success: function(data){
+                    if (data == "KO") {
+                        el.append('<a href="#" class="list-group-item content-list-item" rf-content-code="' + id + '">' + code + '</a>');
+                    } else {
+                        el.append(data);
+                    }
                 }
             });
+
         }
     </script>
 
@@ -334,7 +316,6 @@
             padding-bottom: 15px;
             color: grey;
         }
-
 
         .list-group.list-group-root {
             padding: 0;
