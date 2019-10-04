@@ -155,19 +155,32 @@
 }
 
 .ct-view-list{
-    border-radius:50px;
+    border-radius:10px;
     overflow: hidden;
 }
 
 .img-ct-list {
-    width:120px;
-    height:120px;
+    width:50px;
+    height:50px;
+    display:none;
 }
+
+.img-ct-list-top {
+    max-width:250px;
+    max-height:200px;
+}
+
+#canvas_structure .img-ct-list-top {
+    display:none;
+}
+
 #canvas_structure .img-ct-list {
+    display:inline;
+    margin-right:10px;
     width:100%;
     height:100%;
-    max-width:180px;
-    max-height:180px;
+    max-width:100px;
+    max-height:100px;
 }
 
 .grabbable {
@@ -184,7 +197,7 @@
     cursor: -webkit-grabbing;
 }
 
-.nav-pills-circle .nav-link-icon i, .nav-pills-circle .nav-link-icon svg {
+.card-with-big-icons .nav-pills-circle .nav-link-icon i, .card-with-big-icons .nav-pills-circle .nav-link-icon svg {
     font-size: 1.3rem;
 }
 
@@ -221,4 +234,8 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.block-detail  .card-header {
+    padding: .75rem 1.25rem;
 }

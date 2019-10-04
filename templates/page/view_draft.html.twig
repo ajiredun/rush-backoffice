@@ -1,7 +1,9 @@
 {% extends 'page/view/view_base.html.twig' %}
 
 {% block header %}
-    <div class="se-pre-con"><div class="loader"></div></div>
+    <div class="se-pre-con">
+        <div class="loader"></div>
+    </div>
     {% include 'page/view/header_view_draft.html.twig' %}
 {% endblock %}
 
@@ -22,7 +24,7 @@
             </div>
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-            <div class="card mb-2 shadow">
+            <div class="card mb-2 shadow card-with-big-icons">
                 <div class="card-body align-items-center mx-auto">
                     <ul class="nav nav-pills nav-pills-circle align-items-center mx-auto">
                         <li class="nav-item">
@@ -58,19 +60,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="list-group list-group-root well">
+                <div class="list-group list-group-root well" style="max-height:700px;overflow: auto;">
 
                     {% for code, category in contentTypeList %}
                         {% if category.list is not empty %}
-                        <a href="#ct-cat-{{ code }}" class="list-group-item" data-toggle="collapse">
-                            {{ category.label }}
-                        </a>
-                        <div class="list-group collapse content-list" id="ct-cat-{{ code }}">
-                            {% for ct in category.list %}
-                                {{ ct.viewList | raw }}
-                            {% endfor %}
-                        </div>
-                         {% endif %}
+                            <a href="#ct-cat-{{ code }}" class="list-group-item" data-toggle="collapse">
+                                {{ category.label }}
+                            </a>
+                            <div class="list-group collapse content-list" id="ct-cat-{{ code }}">
+                                {% for ct in category.list %}
+                                    {{ ct.viewList | raw }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -84,10 +86,9 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            /*$(".page-contents").niceScroll();
-            $(".content-list").niceScroll();*/
 
-            $('body').on('click','.ct-block-remove',function () {
+
+            $('body').on('click', '.ct-block-remove', function () {
                 if (confirm('You sure?')) {
                     $(this).closest('.ct-view-list').remove();
                 }
@@ -171,7 +172,8 @@
 
             {% for slot in page.layout.slots %}
             {% for b in get_blocks_for_slot(blocks, slot) %}
-            getBlockViewList('{{ b.contentType }}', $('#{{ slot }}'), '{{ b.id }}');
+            {# getBlockViewList('{{ b.contentType }}', $('#{{ slot }}'), '{{ b.id }}');  #}
+            $('#{{ slot }}').append('{{ render(controller('App\\Controller\\PageController::blockViewList', {id: b.id})) |replace({"\n":' ', "\r":' '})| raw }}');
             {% endfor %}
             {% endfor %}
 
@@ -193,7 +195,6 @@
 
 
             $(".se-pre-con").fadeOut("slow");
-
 
         });
 
@@ -224,7 +225,7 @@
             $('#canvas_structure .ct-view-list-actions').show();
         }
 
-        function getBlockViewList(code, el, id) {
+        {# function getBlockViewList(code, el, id) {
 
             $.ajax({
                 url: "{{ path('rf_page_viewlist',{'id':0}) }}" + id,
@@ -244,7 +245,7 @@
                 }
             });
 
-        }
+        }#}
     </script>
 
 {% endblock %}
@@ -345,6 +346,10 @@
 
         .list-group-item .glyphicon {
             margin-right: 5px;
+        }
+
+        .ct-view-list .card-header {
+            padding: .75rem 1.25rem;
         }
 
     </style>

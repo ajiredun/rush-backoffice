@@ -112,8 +112,10 @@
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                         {% if 'properties' in config.options %}
                                             <a class="dropdown-item" href="{{ path('rf_page_edit',{'id':page.id}) }}">Edit Properties</a>
+                                        {% endif %}{% if 'blocks' in config.options %}
+                                            <a class="dropdown-item" href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">Edit Blocks</a>
                                         {% endif %}{% if 'contents' in config.options %}
-                                            <a class="dropdown-item" href="{{ path('rf_page_view', {'id':page.id}) }}">Edit Contents</a>
+                                            <a class="dropdown-item" href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">Edit Contents</a>
                                         {% endif %}{% if 'visualize' in config.options %}
                                             {% if page.published %}
                                                 <a class="dropdown-item" href="{{ path('rf_user_profile',{'id':page.id}) }}#role">View in Front Office</a>

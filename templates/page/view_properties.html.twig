@@ -1,0 +1,53 @@
+{% extends 'page/components/structure.html.twig' %}
+
+{% block title %}Edit Properties{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'page'
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_page_view',{'id':page.id,'tab':'contents'}), 'title':"< Back To "~page.name}
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'page/components/header.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="card shadow">
+        <div class="card-body">
+            {#{{ form_start(form) }}#}
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" id="edit-block-properties" class="btn btn-icon btn-3 btn-danger">
+                                <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+                                <span class="btn-inner--text">Done</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#{{ form_end(form) }}#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+
+        });
+    </script>
+
+{% endblock %}

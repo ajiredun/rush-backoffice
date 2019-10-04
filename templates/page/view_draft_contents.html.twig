@@ -42,6 +42,7 @@
                 {{ page.layout.structure | raw }}
             </div>
         </div>
+
     </div>
 
 {% endblock %}
@@ -107,15 +108,27 @@
             {% for slot in page.layout.slots %}
             {% for b in get_blocks_for_slot(blocks, slot) %}
             getBlockViewDetail('{{ b.contentType }}', '{{ slot }}', '{{ b.id }}', '{{ render(controller(
-                'App\\Controller\\PageController::blockDetail', {id: b.id}
+                'App\\Controller\\PageController::blockViewDetail', {id: b.id}
             ))  |replace({"\n":' ', "\r":' '})| raw }}');
             {% endfor %}
             {% endfor %}
+
+
+            $('.block-content-edit').click(function () {
+               const el = $(this);
+               const blockId = el.attr('rf-content-code');
+
+               window.location.href = '{{ path('rf_page_viewproperties', {'page':page.id,'block':'0'}) }}'+blockId;
+            });
+
+
+
+
+
         });
         function getBlockViewDetail(code, el, id, data) {
             var slot = $('.slot[data-slot="'+el+'"]');
-            console.log(slot,id);
-            slot.append('<a href="#" class="list-group-item content-list-item" rf-content-code="' + id + '">' + data + '</a>');
+            slot.append( data);
         }
     </script>
 
@@ -217,6 +230,9 @@
 
         .list-group-item .glyphicon {
             margin-right: 5px;
+        }
+        .slot {
+            padding:10px;
         }
 
     </style>

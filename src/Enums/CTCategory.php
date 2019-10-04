@@ -7,6 +7,7 @@ namespace App\Enums;
 class CTCategory
 {
     const MENU = 'menu';
+    const BASIC = 'basic';
     const DEFAULT = 'default';
 
     static function getLabel($value)
@@ -23,21 +24,21 @@ class CTCategory
     {
         return [
             CTCategory::MENU => 'Menus',
+            CTCategory::BASIC => 'Basic',
             CTCategory::DEFAULT => 'Default'
         ];
     }
 
     static function getList()
     {
-        return [
-            CTCategory::MENU => [
-                'label'=> CTCategory::getLabel(CTCategory::MENU),
-                'list' => []
-            ],
-            CTCategory::DEFAULT =>  [
-                'label'=> CTCategory::getLabel(CTCategory::DEFAULT),
-                'list' => []
-            ],
-        ];
+        $array = [];
+
+        foreach (CTCategory::getLabels() as $category=>$label)
+        {
+            $array[$category] = ['label'=>$label, 'list'=>[]];
+        }
+
+
+        return $array;
     }
 }

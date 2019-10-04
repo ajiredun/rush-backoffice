@@ -278,7 +278,7 @@ class PageController extends AbstractController
      * @Route("/view_list/{id}", name="rf_page_viewlist")
      *
      */
-    public function getBlockViewList(Request $request, Block $block, CTManager $CTManager)
+    public function blockViewList(Request $request, Block $block, CTManager $CTManager)
     {
 
         $code = $block->getContentType();
@@ -286,7 +286,7 @@ class PageController extends AbstractController
         $checked = "KO";
         $ct = $CTManager->getContentTypeByCode($code);
         if ($ct != null) {
-            $checked = $ct->getViewList(['allow_buttons'=> true,'block'=>$block]);
+            $checked = $ct->getViewList(['allow_buttons'=> true,'block'=>$block, 'ct'=>$ct]);
         }
 
         return new Response($checked);
@@ -299,18 +299,40 @@ class PageController extends AbstractController
      * @param CTManager $CTManager
      * @return Response
      */
-    public function blockDetail(Block $block, CTManager $CTManager)
+    public function blockViewDetail(Block $block, CTManager $CTManager)
     {
         $code = $block->getContentType();
 
         $checked = "KO";
         $ct = $CTManager->getContentTypeByCode($code);
         if ($ct != null) {
-            $checked = $ct->getViewDetail(['block'=>$block]);
+            $checked = $ct->getViewDetail(['block'=>$block, 'ct'=>$ct]);
         }
 
         return new Response($checked);
     }
+
+
+    /**
+     * @Route("/view_properties/{page}/{block}", name="rf_page_viewproperties")
+     *
+     * @param Request $request
+     * @param Page $page
+     * @param Block $block
+     * @param CTManager $CTManager
+     * @return Response
+     */
+    public function blockViewProperties(Request $request,Page $page, Block $block, CTManager $CTManager)
+    {
+
+
+        return $this->render('page/view_properties.html.twig', [
+            'page'=>$page,
+            'block' => $block
+        ]);
+
+    }
+
 
 
     protected function isPresentInSlots($presence, $slots)

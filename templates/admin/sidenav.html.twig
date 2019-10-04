@@ -97,11 +97,21 @@
                         <i class="ni ni-atom text-purple"></i> Visual Packs
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if "content_types" == config.active %}active{% endif %}" href="{{ path('rf_media', {'type':'gallery'}) }}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link {% if "content_types" == config.active %}active{% endif %}" href="#" data-toggle="dropdown">
                         <i class="ni ni-books text-orange"></i> Content Types
                     </a>
+                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right"
+                         aria-labelledby="navbar-default_dropdown_1">
+                        <a class="dropdown-item" href="#">Menu</a>
+                        <a class="dropdown-item" href="#">Card</a>
+                    </div>
                 </li>
+
+
+
+
+
                 <li class="nav-item">
                     <a class="nav-link {% if "settings" == config.active %}active{% endif %}" href="{{ path('rf_settings') }}">
                         <i class="fas fa-cogs text-darker"></i> Settings
