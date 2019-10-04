@@ -71,6 +71,9 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('roleLabel', [$this, 'roleLabel']),
+            new TwigFilter('timeSince', [$this, 'timeSince']),
+            new TwigFilter('rfDate', [$this, 'rfDate']),
+            new TwigFilter('replaceSingleQuote', [$this, 'replaceSingleQuote']),
         ];
     }
 
@@ -90,6 +93,59 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_blocks_for_slot', [$this, 'get_blocks_for_slot']),
             new TwigFunction('getContentTypeByCode', [$this, 'getContentTypeByCode']),
         ];
+    }
+
+    function replaceSingleQuote($string)
+    {
+        return str_replace("'","\'",$string);
+    }
+
+    function rfDate($timestamp)
+    {
+        if ($timestamp instanceof \DateTime) {
+            $datetime = $timestamp;
+        } else {
+            $datetime = date_create($timestamp);
+        }
+
+        return $datetime->format('d M Y H:s');
+    }
+
+    function timeSince($timestamp){
+        $datetime1=new \DateTime("now");
+        if ($timestamp instanceof \DateTime) {
+            $datetime2=$timestamp;
+        } else {
+            $datetime2=date_create($timestamp);
+        }
+
+        $diff=date_diff($datetime1, $datetime2);
+        $timemsg='';
+        if($diff->y > 0){
+            $timemsg = $diff->y .' yr'. ($diff->y > 1?"s":'');
+
+        }
+        else if($diff->m > 0){
+            $timemsg = $diff->m . ' month'. ($diff->m > 1?"s":'').' ago';
+        }
+        else if($diff->d > 0){
+            $timemsg = $diff->d .' day'. ($diff->d > 1?"s":'').' ago';
+        }
+        else if($diff->h > 0){
+            $timemsg = $diff->h .' hr'.($diff->h > 1 ? "s":'').' ago';
+        }
+        else if($diff->i > 0){
+            $timemsg = $diff->i .' min'. ($diff->i > 1?"s":'').' ago';
+        }
+        else if($diff->s > 0){
+            $timemsg = 'just now';
+        }
+        else if($diff->s == 0){
+            $timemsg = 'now';
+        }
+
+        //$timemsg = $timemsg.' ago';
+        return $timemsg;
     }
 
 

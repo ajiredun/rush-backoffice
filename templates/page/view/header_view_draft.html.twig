@@ -14,8 +14,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                     <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0" style="height:90%;">
                         <div class="card-body">
+                            <h5 class="card-title text-gray text-uppercase text-muted mb-0">URL</h5>
+                            <h2 class="text-white">{{ page.route }}</h2>
                             <h5 class="card-title text-gray text-uppercase text-muted mb-0">Page Name</h5>
-                            <h2 class="text-white"><a href="{{ path('rf_page_view', {'id':page.id}) }}">{{ page.name }}</a></h2>
+                            <h2 class="text-white"><a class="text-white" href="{{ path('rf_page_view', {'id':page.id}) }}">{{ page.name }}</a></h2>
                         </div>
                     </div>
                 </div>
@@ -91,7 +93,7 @@
                                     <h5 class="card-title text-uppercase text-muted mb-0">by <a
                                                 href="{{ path('rf_user_profile', {'id':page.lastModifiedBy.id}) }}">{{ page.lastModifiedBy.name }}</a>
                                     </h5>
-                                    <button class="btn mt-4 btn-sm btn-primary shadow  btn-publish"
+                                    <button class="btn mt-4 btn-sm btn-danger shadow  btn-publish"
                                             rf-published="{% if publishedVersion %}YES{% else %}NO{% endif %}"
                                             title="Publish this page. This will overwrite the currently published page.">
                                         PUBLISH

@@ -12,6 +12,9 @@ class HalfImageHalfTextCT extends AbstractContentType
 
     const CODE = "CT_HALF_IMAGE_HALF_TEXT";
 
+    const IMAGE_ON_LEFT = "left";
+    const IMAGE_ON_RIGHT = "right";
+
 
     public function getLabel()
     {

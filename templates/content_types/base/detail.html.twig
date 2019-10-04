@@ -1,18 +1,59 @@
 <div class="card block-detail shadow" rf-content-code="{{ block.id }}">
-    <div class="card-header bg-default border-0">
+    <div class="card-header {% if block.roles is not empty %}bg-dark{% else %}bg-default{% endif %} border-0">
         <div class="row align-items-center">
             <div class="col-8">
                 <h3 class="mb-0 text-white"> {{ ct.label }} <span style="font-size:10px;" title="({{ ct.code }})"> (ID: {{ block.id }})</span></h3>
             </div>
             <div class="col-4">
                 <h3 class="mb-0">
-                    <button class="btn btn-sm btn-secondary block-content-edit " rf-content-code="{{ block.id }}"> <i class="fa fa-edit"></i> Edit</button>
+                    <button class="btn btn-sm btn-secondary block-content-edit " rf-content-code="{{ block.id }}" title="Last edited : {{ block.lastModifiedAt | timeSince }} , By: {{ block.lastModifiedBy.name }} "> <i class="fa fa-edit"></i> Edit</button>
                 </h3>
             </div>
         </div>
     </div>
-    <div class="card-body align-items-center mx-auto">
+    <div class="card-body align-items-center">
+
+        {% if block.roles is not empty %}
+            <p>Roles: &nbsp;
+                {% for role in block.roles %}
+                    {{ role | roleLabel }} &nbsp; &nbsp;
+                {% endfor %}
+            </p>
+        {% endif %}
+
         {% block body %}
+            {% if block.properties is not empty %}
+                <div class="table-responsive">
+                    <div>
+                        <table class="table align-items-center">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">
+                                        Properties
+                                    </th>
+                                    <th scope="col">
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                {% for property, value in block.properties %}
+                                    <tr>
+                                        <td>
+                                            {{ property | upper }}
+                                        </td>
+                                        <td style="max-width:300px; overflow: hidden;">
+                                            {{ value | raw | replaceSingleQuote }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <p>You should edit this content.</p>
+            {% endif %}
         {% endblock %}
     </div>
 </div>

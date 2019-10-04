@@ -50,6 +50,17 @@
                     </div>
                 </div>
             </div>
+            <!-- Form -->
+            <form class="rf-search-ai-form mt-4 mb-3 d-md-none" action="{{ path('rf_ai') }}">
+                <div class="input-group input-group-rounded input-group-merge">
+                    <input type="search" name="search" class="form-control rf-search-ai form-control-rounded form-control-prepended" placeholder="Rush AI" aria-label="Search">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <span class="fa fa-robot"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <!-- Navigation -->
             <ul class="navbar-nav">
                 {% if config.items is defined and config.items is not empty %}

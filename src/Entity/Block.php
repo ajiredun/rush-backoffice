@@ -58,7 +58,7 @@ class Block
     /**
      * @ORM\Column(type="json")
      */
-    private $data = [];
+    private $dependencies = [];
 
     /**
      * @ORM\Column(type="json")
@@ -167,14 +167,14 @@ class Block
         return $this;
     }
 
-    public function getData(): ?array
+    public function getDependencies(): ?array
     {
-        return $this->data;
+        return $this->dependencies;
     }
 
-    public function setData(array $data): self
+    public function setDependencies(array $dependencies): self
     {
-        $this->data = $data;
+        $this->dependencies = $dependencies;
 
         return $this;
     }

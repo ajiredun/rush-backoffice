@@ -5,19 +5,29 @@ namespace App\ContentType\Base;
 
 
 use App\Enums\CTCategory;
-use App\Enums\CTProperty;
+use App\Form\Type\ContentType\BaseContentType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Twig\Environment;
 
 abstract class AbstractContentType implements ContentTypeInterface
 {
     const CODE = "CT_ABSTRACT_CONTENT_TYPE";
 
+    /**
+     * @var Environment
+     */
     protected $twig;
 
-    public function __construct(Environment $twig)
+    /**
+     * @var FormFactoryInterface
+     */
+    protected $formFactory;
+
+    public function __construct(Environment $twig, FormFactoryInterface $formFactory)
     {
         $this->twig = $twig;
+        $this->formFactory = $formFactory;
     }
 
     public abstract function getLabel();
@@ -32,19 +42,17 @@ abstract class AbstractContentType implements ContentTypeInterface
         return CTCategory::DEFAULT;
     }
 
-    public function getForm()
+    public function getForm(array $data)
     {
-        return null;
-    }
+        $formName = "App\\Form\\Type\\ContentType\\".$this->getClassName()."Type";
 
-    public function getProperties()
-    {
-        return [];
-    }
+        try {
+            $form = $this->createForm($formName, $data);
+        } catch(\Exception $e) {
+            $form = $this->createForm(BaseContentType::class, $data);
+        }
 
-    public function setProperties(Form $form)
-    {
-        // TODO: Implement setProperties() method.
+        return $form;
     }
 
     public function getViewList($params = [])
@@ -67,25 +75,32 @@ abstract class AbstractContentType implements ContentTypeInterface
 
     public function getDependencies()
     {
-        return $this->getProperty(CTProperty::DEPENDENCIES);
+        /*return [
+            'MenuCT',
+            'HalfImageHalfTextCT'
+        ];*/
+
+        return [];
     }
 
-    /**
-     * @param $property
-     * @return mixed|null
-     */
-    public function getProperty($property)
+
+    /*public function getProperty($property)
     {
         if (!empty($this->getProperties()) && isset($this->getProperties()[$property])) {
              return $this->getProperties()[$property];
         }
 
         return null;
-    }
+    }*/
 
     public function getClassName()
     {
         return (new \ReflectionClass($this))->getShortName();
+    }
+
+    protected function createForm($type, $data = null, array $options = array())
+    {
+        return $this->formFactory->create($type, $data, $options);
     }
 
 }

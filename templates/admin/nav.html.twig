@@ -15,6 +15,18 @@
             </ul>
         {% endif %}
 
+        <!-- Form -->
+        <form class="rf-search-ai-form  navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"  action="{{ path('rf_ai') }}">
+            <div class="form-group mb-0">
+                <div class="input-group input-group-alternative">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-robot"></i></span>
+                    </div>
+                    <input class="form-control rf-search-ai" name="search"  placeholder="Rush AI" type="text">
+                </div>
+            </div>
+        </form>
+
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
             {#<li class="nav-item">

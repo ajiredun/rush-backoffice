@@ -91,4 +91,9 @@ class Roles
             Roles::ROLE_USER => 'Website User'
         ];
     }
+
+    static function getFOListForm()
+    {
+        return array_flip(Roles::getFOList());
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Block;
 use App\Entity\Page;
 use App\Enums\Roles;
+use App\Form\Type\ContentType\BaseContentType;
 use App\Form\Type\PageType;
 use App\Repository\BlockRepository;
 use App\Repository\LayoutRepository;
@@ -316,17 +317,34 @@ class PageController extends AbstractController
     /**
      * @Route("/view_properties/{page}/{block}", name="rf_page_viewproperties")
      *
+     *
      * @param Request $request
      * @param Page $page
      * @param Block $block
-     * @param CTManager $CTManager
-     * @return Response
+     * @param BlockManager $blockManager
+     * @return mixed
      */
-    public function blockViewProperties(Request $request,Page $page, Block $block, CTManager $CTManager)
+    public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, RfMessages $rfMessages)
     {
+        $defaultData = array_merge(['roles'=>$block->getRoles()],$block->getProperties());
+        $form = $blockManager->getContentType($block)->getForm($defaultData);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $params = ['roles'=>$data['roles']];
+            unset($data['roles']);
+            $params['properties'] = $data;
+
+            $blockManager->updateBlock($block, $params);
+
+            $rfMessages->addSuccess("The block has been modified successfully.");
+            return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));
+        }
 
         return $this->render('page/view_properties.html.twig', [
+            'form' => $form->createView(),
             'page'=>$page,
             'block' => $block
         ]);

@@ -10,7 +10,7 @@
         <div class="card-body align-items-center mx-auto">
             <ul class="nav nav-pills nav-pills-circle align-items-center mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link rounded-circle btn-blocks" title="Blocks"
+                    <a class="nav-link rounded-circle btn-blocks  bg-gradient-danger text-white" title="Blocks"
                        href="{{ path('rf_page_view', {'id':page.id, 'tab':'blocks'}) }}">
                         <span class="nav-link-icon d-block"><i class="fas fa-cubes"></i></span>
                     </a>
@@ -20,16 +20,6 @@
                        href="{{ path('rf_page_view', {'id':page.id, 'tab':'contents'}) }}">
                         <span class="nav-link-icon d-block"><i class="fas fa-file-signature"></i></span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <form id="form_save_order" method="post">
-                        <input id="page_block_orders" name="page_block_orders" type="hidden"/>
-                        <button type="submit" id="save-content-orders" title="SAVE"
-                                class="nav-link rounded-circle bg-gradient-danger text-white"
-                                style="border:none;cursor:pointer;">
-                            <span class="nav-link-icon d-block"><i class="fas fa-save"></i></span>
-                        </button>
-                    </form>
                 </li>
             </ul>
         </div>
@@ -80,36 +70,12 @@
                 });
             });
 
-            $('.btn-blocks').confirm({
-                theme: 'modern',
-                title: "..before going into the blocks section",
-                columnClass: 'large',
-                content: 'Please make sure you have clicked the <em>SAVE</em> button, <br/> if you want to update the blocks. <br/> Else all unsaved modifications will be lost.',
-                buttons: {
-                    continue: {
-                        text: 'Proceed',
-                        btnClass: 'btn btn-success',
-                        keys: ['enter', 'shift'],
-                        action: function () {
-                            location.href = this.$target.attr('href');
-                        }
-                    },
-                    cancel: {
-                        text: 'Cancel',
-                        btnClass: 'btn btn-secondary',
-                        keys: ['enter', 'shift'],
-                        action: function () {
-                            // do nothing
-                        }
-                    },
-                }
-            });
-
             {% for slot in page.layout.slots %}
             {% for b in get_blocks_for_slot(blocks, slot) %}
+
             getBlockViewDetail('{{ b.contentType }}', '{{ slot }}', '{{ b.id }}', '{{ render(controller(
                 'App\\Controller\\PageController::blockViewDetail', {id: b.id}
-            ))  |replace({"\n":' ', "\r":' '})| raw }}');
+            ))  | replace({"\n":' ', "\r":' '}) | raw  }}');
             {% endfor %}
             {% endfor %}
 

@@ -1,5 +1,20 @@
 $(document).ready(function () {
-    //$("<your div>").getNiceScroll().resize();
+
+
+    $('.rf-media-form-type').each(function(){
+        $(this).after('<br/><img class="rf-media-form-type-image" src="'+$('.rf-media-form-type').val()+'" style="max-height:200px;" />');
+    });
+
+    $('.rf-media-form-type').click(function () {
+        $(this).parent().find('.rf-media-form-type-image').attr('src', $(this).val());
+    });
+
+    setInterval(function() {
+        $('.rf-media-form-type').each(function(){
+            $(this).parent().find('.rf-media-form-type-image').attr('src', $(this).val());
+        });
+    }, 5000);
+
     $('.rf[rf-show]').on("click", function(){
         var toshow = $(this).attr('rf-show');
         var parent = $(this).attr('rf-parent');

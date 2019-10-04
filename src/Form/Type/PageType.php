@@ -59,7 +59,7 @@ class PageType extends AbstractType
             ->add('roles',
                 ChoiceType::class,
                 [
-                    'choices' => Roles::getFOList(),
+                    'choices' => Roles::getFOListForm(),
                     'multiple' => true,
                     'expanded' => false,
                     'label' => "Roles to access this page.",

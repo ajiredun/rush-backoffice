@@ -15,8 +15,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                     <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0" style="height:90%;">
                         <div class="card-body">
+                            <h5 class="card-title text-gray text-uppercase text-muted mb-0">URL</h5>
+                            <h2 class="text-white">{{ page.route }}</h2>
                             <h5 class="card-title text-gray text-uppercase text-muted mb-0">Page Name</h5>
-                            <h2 class="text-white">{{ page.name }}</h2>
+                            <h2 class="text-white"><a class="text-white" href="{{ path('rf_page_view', {'id':page.id}) }}">{{ page.name }}</a></h2>
                         </div>
                     </div>
                 </div>

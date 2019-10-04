@@ -14,11 +14,7 @@ interface ContentTypeInterface
 
     public function getCategory();
 
-    public function getForm();
-
-    public function getProperties();
-
-    public function setProperties(Form $form);
+    public function getForm(array $data);
 
     public function getViewList();
 

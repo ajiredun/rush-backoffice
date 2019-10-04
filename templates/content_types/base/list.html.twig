@@ -3,7 +3,7 @@
     <div class="card-header bg-default border-0" style="width:100%;">
         <div class="row align-items-center">
             <div class="col-8">
-                <h3 class="mb-0 text-white"> {{ ct.label }} <span style="font-size:10px; color:grey;" title="({{ ct.code }})"> (id: {% if block is defined and block %}{{ block.id }}{% else %}{{ ct.code }}{% endif %})</span></h3>
+                <h3 class="mb-0 text-white" title="(id: {% if block is defined and block %}{{ block.id }}{% else %}{{ ct.code }}{% endif %})"> {{ ct.label }}</h3>
 
             </div>
             <div class="col-4 ct-view-list-actions" style="display:{% if allow_buttons is defined and allow_buttons %}block{% else %}none{% endif %};">
@@ -15,8 +15,10 @@
     </div>
     <div class="card-body">
         {% block body %}
-            <img class="img-ct-list" src="{{ asset(ct.viewListImage) }}" alt="{{ ct.label }}">
-            {% block p %}{% endblock %}
+            <p>
+                <img class="img-ct-list" src="{{ asset(ct.viewListImage) }}" alt="{{ ct.label }}">
+                {% block p %}{% endblock %}
+            </p>
         {% endblock %}
     </div>
 </div>

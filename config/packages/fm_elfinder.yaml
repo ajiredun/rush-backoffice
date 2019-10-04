@@ -4,6 +4,7 @@ fm_elfinder:
         files:
             include_assets: true
             relative_path: true
+            editor: form
             connector:
                 roots:
                     uploads:
@@ -12,6 +13,7 @@ fm_elfinder:
         files_viewer:
             include_assets: true
             relative_path: true
+            editor: form
             connector:
                 roots:
                     uploads:
@@ -22,6 +24,7 @@ fm_elfinder:
         gallery:
             include_assets: true
             relative_path: true
+            editor: form
             connector:
                 roots:
                     uploads:
@@ -33,6 +36,7 @@ fm_elfinder:
         gallery_viewer:
             include_assets: true
             relative_path: true
+            editor: form
             connector:
                 roots:
                     uploads:

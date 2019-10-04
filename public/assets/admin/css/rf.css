@@ -176,11 +176,13 @@
 
 #canvas_structure .img-ct-list {
     display:inline;
-    margin-right:10px;
+    margin-right:3px;
+    margin-left:3px;
+    float:right;
     width:100%;
     height:100%;
-    max-width:100px;
-    max-height:100px;
+    max-width:150px;
+    max-height:120px;
 }
 
 .grabbable {
@@ -236,6 +238,13 @@
     100% { transform: rotate(360deg); }
 }
 
+.block-detail {
+    margin-bottom:10px;
+}
 .block-detail  .card-header {
     padding: .75rem 1.25rem;
+}
+
+.tox-tinymce {
+    min-height:400px;
 }
