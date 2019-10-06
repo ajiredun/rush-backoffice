@@ -1,0 +1,149 @@
+
+<script>
+    //Arial Black=arial black,avant garde; Indie Flower=indie flower, cursive; Times New Roman=times new roman,times; Lato=lato; Courgette=courgette;Dancing Script=dancing script;Didact Gothic=didact gothic;Exo=exo;Mansalva=mansalva;Montserrat=montserrat;Pacifico=pacifico;Quicksamd=quicksand;Raleway=raleway
+    tinymce.init({
+        selector: '.{{ config.element }}',
+        plugins: 'print preview paste importcss directionality code visualblocks visualchars fullscreen image link media template codesample table hr anchor insertdatetime advlist lists wordcount textpattern noneditable help emoticons',
+        menubar: 'file edit view insert format tools table help',
+        toolbar: 'undo redo | bold italic underline | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | emoticons | fullscreen  preview print | image media template link ',
+        toolbar_sticky: true,
+        content_css: [
+            '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//fonts.googleapis.com/css?family=Mansalva:400',
+            '//fonts.googleapis.com/css?family=Courgette|Dancing+Script|Didact+Gothic|Exo|Indie+Flower|Mansalva|Montserrat|Pacifico|Quicksand|Raleway',
+            '//www.tiny.cloud/css/codepen.min.css',
+            '{{ getSystemInfo('tinymce_css') }}'
+        ],
+        font_formats: '{{ getSystemInfo('tinymce_fonts') }}',
+        fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 42pt 72pt',
+        image_class_list: [
+            { title: 'None', value: '' },
+            { title: 'On the right of the content', value: 'rf-img-float-right' },
+            { title: 'On the left of the content', value: 'rf-img-float-left' },
+            { title: 'Sizes:', value: '' },
+            { title: 'Desktop: Full, Mobile: Full', value: 'rf-img-md-100-sm-100' },
+            { title: 'Desktop: Half, Mobile: Full', value: 'rf-img-md-50-sm-100' },
+            { title: 'Desktop: Half, Mobile: Half', value: 'rf-img-md-50-sm-50' },
+            { title: 'Desktop: Quarter, Mobile: Half', value: 'rf-img-md-25-sm-50' },
+            { title: 'Desktop: Quarter, Mobile: Full', value: 'rf-img-md-25-sm-100' },
+        ],
+        importcss_append: true,
+        height: 400,
+        file_picker_callback: function (callback, value, meta) {
+            /* Provide file and text for the link dialog */
+            if (meta.filetype === 'file') {
+                $.confirm({
+                    title: 'File Chooser',
+                    content: 'url:{{ path('rf_file_selector') }}',
+                    onContentReady: function () {
+                        var self = this;
+                    },
+                    columnClass: 'medium',
+                    buttons: {
+                        continue: {
+                            text: 'Yes',
+                            btnClass: 'btn btn-danger',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                                callback(this.$content.find('.rf-file-form-type').val());
+                            }
+                        },
+                        cancel: {
+                            text: 'Cancel',
+                            btnClass: 'btn btn-secondary',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                            }
+                        },
+                    }
+                });
+            }
+
+            /* Provide image and alt text for the image dialog */
+            if (meta.filetype === 'image') {
+
+
+                $.confirm({
+                    title: 'Media Chooser',
+                    content: 'url:{{ path('rf_media_selector') }}',
+                    onContentReady: function () {
+                        var self = this;
+                    },
+                    columnClass: 'medium',
+                    buttons: {
+                        continue: {
+                            text: 'Yes',
+                            btnClass: 'btn btn-danger',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                                callback(this.$content.find('.rf-media-form-type').val(), { class: 'rf-img-md-100-sm-100' });
+                            }
+                        },
+                        cancel: {
+                            text: 'Cancel',
+                            btnClass: 'btn btn-secondary',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                            }
+                        },
+                    }
+                });
+
+            }
+
+            /* Provide alternative source and posted for the media dialog */
+            if (meta.filetype === 'media') {
+
+                $.confirm({
+                    title: 'Media Chooser',
+                    content: 'url:{{ path('rf_media_selector') }}',
+                    onContentReady: function () {
+                        var self = this;
+                    },
+                    columnClass: 'medium',
+                    buttons: {
+                        continue: {
+                            text: 'Yes',
+                            btnClass: 'btn btn-danger',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                                callback(this.$content.find('.rf-media-form-type').val());
+                            }
+                        },
+                        cancel: {
+                            text: 'Cancel',
+                            btnClass: 'btn btn-secondary',
+                            keys: ['enter', 'shift'],
+                            action: function () {
+                            }
+                        },
+                    }
+                });
+            }
+        },
+        templates: [
+            { title: 'Two columns - Half Half', description: 'Two column contents', content: '<div class="row"><div class="col-md-6"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div><div class="col-md-6"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div></div><p></p>' },
+            { title: 'Two columns - One Third - Two Third', description: 'Two column contents', content: '<div class="row"><div class="col-md-4"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div><div class="col-md-8"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div></div><p></p>' },
+            { title: 'Two columns - Two Third - One Third', description: 'Two column contents', content: '<div class="row"><div class="col-md-8"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div><div class="col-md-4"><h3 style="text-align: center;">Sub header</h3><p style="text-align: center;">Text here</p></div></div><p></p>' },
+
+            { title: 'Button Primary', description: 'Add a primary button', content: '<button class="btn btn-primary">Button Text Here</button>' },
+            { title: 'Button Secondary', description: 'Add a secondary button', content: '<button class="btn btn-secondary">Button Text Here</button>' },
+            { title: 'Button Info', description: 'Add a info button', content: '<button class="btn btn-info">Button Text Here</button>' },
+            { title: 'Button Success', description: 'Add a success button', content: '<button class="btn btn-success">Button Text Here</button>' },
+            { title: 'Button Warning', description: 'Add a warning button', content: '<button class="btn btn-warning">Button Text Here</button>' },
+            { title: 'Button Error', description: 'Add a error button', content: '<button class="btn btn-error">Button Text Here</button>' },
+
+            { title: 'Link Primary', description: 'Add a primary Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-primary">Link Text Here</a>' },
+            { title: 'Link Secondary', description: 'Add a secondary Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-secondary">Link Text Here</a>' },
+            { title: 'Link Info', description: 'Add a info Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-info">Link Text Here</a>' },
+            { title: 'Link Success', description: 'Add a success Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-success">Link Text Here</a>' },
+            { title: 'Link Warning', description: 'Add a warning Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-warning">Link Text Here</a>' },
+            { title: 'Link Error', description: 'Add a error Link ', content: '<a href="http://www.ajiredun.com" class="btn btn-error">Link Text Here</a>' },
+        ],
+        height: 600,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quicktable',
+        noneditable_noneditable_class: "mceNonEditable",
+        contextmenu: "link table",
+    });
+</script>

@@ -98,7 +98,7 @@ class Page
     private $publishedBy;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Block", mappedBy="page", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Block", mappedBy="page", orphanRemoval=true,cascade={"persist"})
      */
     private $blocks;
 
@@ -113,6 +113,26 @@ class Page
         $this->seoAllowRobot = true;
         $this->blocks = new ArrayCollection();
     }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+            $blocks = $this->getBlocks();
+            $blocksArray = new ArrayCollection();
+            foreach ($blocks as $b) {
+                /**
+                 * @var Block $b
+                 */
+                $blockClone = clone $b;
+                $blockClone->setPage($this);
+                $blocksArray->add($blockClone);
+            }
+            $this->blocks = $blocksArray;
+            $this->lastModifiedAt = new \DateTime('now');
+        }
+    }
+
 
 
     public function getId(): ?int

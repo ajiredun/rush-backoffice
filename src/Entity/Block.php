@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ApiResource()
@@ -76,6 +78,14 @@ class Block
         $this->blockOrder = 0;
         $this->createdAt = new \DateTime('now');
         $this->lastModifiedAt = new \DateTime('now');
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+            $this->lastModifiedAt = (new \DateTime('now'));
+        }
     }
 
     public function getId(): ?int

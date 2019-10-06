@@ -117,7 +117,6 @@
 
 
 
-
                         </div>
                     </div>
                     <div class="pl-lg-4">
@@ -127,7 +126,7 @@
                                     <button type="submit" id="create_page" class="btn btn-icon btn-3 btn-primary">
                                         <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
 
-                                        <span class="btn-inner--text">{% if editPage is defined and editPage %}Update{% else %}Create{% endif %}</span>
+                                        <span class="btn-inner--text">{% if clonePage is defined and clonePage %}Clone{% else %}{% if editPage is defined and editPage %}Update{% else %}Create{% endif %}{% endif %}</span>
                                     </button>
                                 </div>
                             </div>
@@ -169,6 +168,9 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
+
+            {% if editPage is not defined  %}
+
             $('.my_page_name').keyup(function () {
                 var value = $(this).val();
                 if (value != '') {
@@ -187,6 +189,8 @@
                     checkRoute(value);
                 }
             });
+
+            {% endif %}
 
             $('#create_page').click(function (event) {
 

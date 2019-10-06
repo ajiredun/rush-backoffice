@@ -25,7 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/page")
- * @IsGranted(Roles::ROLE_VIEWER)
+ * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_VIEWER)
  */
 class PageController extends AbstractController
 {
@@ -163,6 +163,7 @@ class PageController extends AbstractController
 
     /**
      * @Route("/add", name="rf_page_add")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
      *
      * @param Request $request
      * @param RfMessages $rfMessages
@@ -188,7 +189,7 @@ class PageController extends AbstractController
 
             if ($pageManager->createPage($page)) {
                 $rfMessages->addSuccess($page->getName() . " has been created successfully");
-                return $this->redirectToRoute('rf_page', $rfMessages->getMessages());
+                return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
             }
         }
 
@@ -199,6 +200,7 @@ class PageController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="rf_page_edit")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
      *
      * @param Request $request
      * @param RfMessages $rfMessages
@@ -242,6 +244,149 @@ class PageController extends AbstractController
         return $this->render('page/add.html.twig', [
             'form' => $form->createView(),
             'editPage' => true
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/publish/{id}", name="rf_page_publish")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
+     *
+     * @param Request $request
+     * @param Page $page
+     * @param RfMessages $rfMessages
+     * @param PageManager $pageManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     */
+    public function publish(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager)
+    {
+
+        if ($page->getPublished()) {
+            $rfMessages->addWarning('"'.$page->getName() . "\" is already PUBLISHED.");
+
+            return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
+        }
+
+        //check if the page has a published version
+        if ($currentlyPublished = $pageManager->getPublishedPageByDraftPage($page)) {
+            $pageManager->deletePage($currentlyPublished);
+        }
+
+        $duplicatedPage = $pageManager->duplicatePage($page);
+
+        if ($pageManager->publishPage($duplicatedPage)) {
+            $rfMessages->addSuccess("This page has been successfully published.");
+            $rfMessages->addInfo("Don't forget to add it in the menu, only if you want to ;)");
+        }
+
+        return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$duplicatedPage->getId()],$rfMessages->getMessages()));
+    }
+
+    /**
+     *
+     * @Route("/create-draft/{id}", name="rf_page_createdraft")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
+     *
+     * @param Request $request
+     * @param Page $page
+     * @param RfMessages $rfMessages
+     * @param PageManager $pageManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     */
+    public function createDraft(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager)
+    {
+
+        if ($duplicatedPage = $pageManager->duplicatePage($page)) {
+            $rfMessages->addSuccess("Draft version generated successfully.");
+        }
+
+        return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$duplicatedPage->getId()],$rfMessages->getMessages()));
+    }
+
+
+    /**
+     * @Route("/delete/{id}", name="rf_page_delete")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
+     * @param Request $request
+     * @param RfMessages $rfMessages
+     * @param PageManager $pageManager
+     * @return mixed
+     */
+    public function delete(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager)
+    {
+        $route = $page->getRoute();
+
+        if ($pageManager->deletePage($page)) {
+            $rfMessages->addSuccess($page->getName() . " has been deleted successfully.");
+            if ($pageManager->isRouteExist($route)) {
+                if ($redirectedPage = $pageManager->getDraftPageByRoute($route)) {
+                    $rfMessages->addInfo("We have redirected you to the draft version of the page.");
+                } else {
+                    if ($redirectedPage = $pageManager->getPublishedPageByRoute($route)) {
+                        $rfMessages->addInfo("We have redirected you to the published version of the page.");
+                    }
+                }
+
+                return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$redirectedPage->getId()],$rfMessages->getMessages()));
+            }
+
+        }
+
+        return $this->redirectToRoute('rf_page', $rfMessages->getMessages());
+    }
+
+    /**
+     * @Route("/duplicate/{id}", name="rf_page_duplicate")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
+     * @param Request $request
+     * @param RfMessages $rfMessages
+     * @param PageManager $pageManager
+     * @param LayoutManager $layoutManager
+     * @return mixed
+     */
+    public function duplicate(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager, LayoutManager $layoutManager)
+    {
+
+        $exName = $page->getName();
+        $exRoute = $page->getRoute();
+
+        $page->setName('');
+        $page->setRoute('');
+
+        $form = $this->createForm(PageType::class, $page, ['clone_mode' => true]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Page $page
+             */
+            $page = $form->getData();
+            if ("/" !== substr($page->getRoute(), 0, 1)) {
+                $page->setRoute("/".$page->getRoute());
+            }
+
+
+            if (!$pageManager->isRouteExist($page->getRoute())) {
+                $duplicatedPage = $pageManager->duplicatePage($page);
+
+                $page->setName($exName);
+                $page->setRoute($exRoute);
+                $this->getDoctrine()->getManager()->flush();
+
+                $rfMessages->addSuccess("Here you are! We have put the new page in draft version by default.");
+
+                return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$duplicatedPage->getId()],$rfMessages->getMessages()));
+            } else {
+                $rfMessages->addError("The URL already exists");
+            }
+        }
+
+        return $this->render('page/add.html.twig', [
+            'form' => $form->createView(),
+            'page' => $page,
+            'clonePage' => true
         ]);
     }
 

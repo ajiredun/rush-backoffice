@@ -81,7 +81,7 @@
 
                         {% if 'lastModifiedAt' in config.fields %}
                             <td>
-                                {{ page.lastModifiedAt | date('d m Y H:i') }}
+                                <span title="{{ page.lastModifiedAt | rfDate }}">{{ page.lastModifiedAt | timeSince }}</span>
                             </td>
                         {% endif %}
 

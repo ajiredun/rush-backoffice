@@ -84,6 +84,56 @@ class PageManager
     }
 
 
+    public function duplicatePage(Page $page)
+    {
+        $pageClone = clone $page;
+        $pageClone->setLastModifiedBy($this->security->getUser());
+
+
+        //explicitly duplicate the page as draft
+        $this->initPublishInfo($pageClone);
+
+        $this->getEntityManager()->persist($pageClone);
+        $this->getEntityManager()->flush();
+
+        return $pageClone;
+    }
+
+    /**
+     * @param $id
+     * @return object|null
+     */
+    public function getPageById($id)
+    {
+        return $this->pageRepository->find($id);
+    }
+
+    /**
+     * @param Page $page
+     * @return bool
+     * @throws \Exception
+     */
+    public function publishPage(Page $page)
+    {
+        $page->setPublishedBy($this->security->getUser());
+        $page->setPublishedOn(new \DateTime('now'));
+        $page->setPublished(true);
+
+        $this->getEntityManager()->flush();
+
+        return true;
+    }
+
+    public function deletePage(Page $page)
+    {
+        $this->getEntityManager()->remove($page);
+        $this->getEntityManager()->flush();
+
+        return true;
+    }
+
+
+
     public function getDraftPageByPublishedPage(Page $pagePublished)
     {
         if ($pagePublished) {
@@ -194,6 +244,14 @@ class PageManager
         }
 
         return false;
+    }
+
+
+    protected function initPublishInfo(Page $page)
+    {
+        $page->setPublishedOn(null);
+        $page->setPublishedBy(null);
+        $page->setPublished(false);
     }
 
     /**

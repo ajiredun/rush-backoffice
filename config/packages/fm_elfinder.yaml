@@ -10,6 +10,8 @@ fm_elfinder:
                     uploads:
                         driver: LocalFileSystem
                         path: rush/files
+                        upload_allow: ['all']
+                        upload_max_size: 50M
         files_viewer:
             include_assets: true
             relative_path: true
@@ -32,7 +34,7 @@ fm_elfinder:
                         path: rush/gallery
                         upload_allow: ['all']
                         upload_deny: ['application/msword', 'application/pdf' ,'application/postscript', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-                        upload_max_size: 4M # also file upload sizes restricted in php.ini
+                        upload_max_size: 50M # also file upload sizes restricted in php.ini
         gallery_viewer:
             include_assets: true
             relative_path: true
@@ -45,3 +47,5 @@ fm_elfinder:
                         upload_allow: ['all']
                         upload_deny: ['application/msword', 'application/pdf' ,'application/postscript', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
                         upload_max_size: 4M # also file upload sizes restricted in php.ini
+                        attributes:
+                            - { pattern: '/(.*?)/', read: true, write: false, locked: true }

@@ -91,7 +91,7 @@
                             </td>
                         {% endif %}{% if 'createdAt' in config.fields %}
                             <td>
-                                {{ user.createdAt | date('d M Y H:i') }}
+                                <span title="{{ user.createdAt | rfDate }}">{{ user.createdAt | timeSince }}</span>
                             </td>
                         {% endif %}{% if 'roles' in config.fields %}
                             <td>

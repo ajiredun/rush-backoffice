@@ -119,8 +119,10 @@ class PageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Page::class,
             'edit_mode' => false,
+            'clone_mode' => false,
         ]);
 
         $resolver->setAllowedTypes('edit_mode', 'bool');
+        $resolver->setAllowedTypes('clone_mode', 'bool');
     }
 }

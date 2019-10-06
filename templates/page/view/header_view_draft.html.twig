@@ -9,15 +9,58 @@
     <span class="mask bg-gradient-dark opacity-8"></span>
     <div class="container-fluid">
         <div class="header-body">
-
             <div class="row">
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                    <div class="card bg-transparent border-light card-stats mb-4 mb-xl-0" style="height:90%;">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card bg-transparent card-stats mb-4 mb-xl-0" style="height:90%;">
                         <div class="card-body">
                             <h5 class="card-title text-gray text-uppercase text-muted mb-0">URL</h5>
-                            <h2 class="text-white">{{ page.route }}</h2>
+                            <h2 class="text-white"><span class="text-gray"
+                                                         style="font-size:12px;">{{ getSystemInfo('fo_url') }}</span> {{ page.route }}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card bg-transparent card-stats mb-4 mb-xl-0" style="height:90%;">
+                        <div class="card-body">
                             <h5 class="card-title text-gray text-uppercase text-muted mb-0">Page Name</h5>
-                            <h2 class="text-white"><a class="text-white" href="{{ path('rf_page_view', {'id':page.id}) }}">{{ page.name }}</a></h2>
+                            <h2 class="text-white"><a class="text-white"
+                                                      href="{{ path('rf_page_view', {'id':page.id}) }}">{{ page.name }}</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="card card-stats mb-4 mb-xl-0 shadow pb-3 border-primary" style="border-width:4px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
+                                    <span class="h3 text-blue font-weight-bold mb-0">DRAFT</span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
+                                        <i class="fas fa-pencil-ruler"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">
+                                        <span title="{{ page.lastModifiedAt | rfDate }}">{{ page.lastModifiedAt | timeSince }}</span>
+                                    </h5>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">by <a
+                                                href="{{ path('rf_user_profile', {'id':page.lastModifiedBy.id}) }}">{{ page.lastModifiedBy.name }}</a>
+                                    </h5>
+                                    <button class="btn mt-4 btn-sm btn-danger shadow  btn-publish"
+                                            rf-published="{% if publishedVersion %}YES{% else %}NO{% endif %}"
+                                            title="Publish this page. This will overwrite the currently published page.">
+                                        PUBLISH
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,9 +98,9 @@
                         <div class="card-body page_published">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Edit</h5>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">PROPERTIES</h5>
                                     <span class="h3 text-black-50 font-weight-bold mb-0"><a
-                                                href="{{ path('rf_page_edit', {'id':page.id}) }}">PROPERTIES</a> </span>
+                                                href="{{ path('rf_page_edit', {'id':page.id}) }}">EDIT</a> </span>
                                 </div>
                                 <div class="col-auto">
                                     <a href="{{ path('rf_page_edit', {'id':page.id}) }}">
@@ -73,35 +116,42 @@
 
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                    <div class="card card-stats mb-4 mb-xl-0 shadow pb-3 border-primary" style="border-width:4px;">
+                    <div class="card card-stats mb-4">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
-                                    <span class="h3 text-blue font-weight-bold mb-0">DRAFT</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Draft</h5>
+                                    <span class="h3 text-darker font-weight-bold mb-0">
+                                        <a class="btn-delete-page"
+                                           title="Visualize this page on your website."
+                                           href="{{ path('rf_page_delete', {'id':page.id}) }}">DELETE?</a></span>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="icon icon-shape bg-gradient-blue text-white rounded-circle shadow">
-                                        <i class="fas fa-pencil-ruler"></i>
+                                    <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                                        <i class="fas fa-times"></i>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">
-                                        on {{ page.createdAt | date('d M Y H:i') }}</h5>
-                                    <h5 class="card-title text-uppercase text-muted mb-0">by <a
-                                                href="{{ path('rf_user_profile', {'id':page.lastModifiedBy.id}) }}">{{ page.lastModifiedBy.name }}</a>
-                                    </h5>
-                                    <button class="btn mt-4 btn-sm btn-danger shadow  btn-publish"
-                                            rf-published="{% if publishedVersion %}YES{% else %}NO{% endif %}"
-                                            title="Publish this page. This will overwrite the currently published page.">
-                                        PUBLISH
-                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="card card-stats mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="card-title text-uppercase text-muted mb-0">PAGE</h5>
+                                    <span class="h3 text-darker font-weight-bold mb-0"><a
+                                                title="Visualize this page on your website."
+                                                href="{{ path('rf_page_duplicate', {'id':page.id}) }}">DUPLICATE</a></span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="icon icon-shape bg-gradient-cyan text-white rounded-circle shadow">
+                                        <i class="fas fa-copy"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'help/page-details.html.twig' %}
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                     <div class="card card-stats mb-4">

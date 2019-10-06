@@ -27,12 +27,11 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div id="canvas_structure" class="page-contents "
-                 style="width:100%;min-height:400px;max-height:700px;background:white;overflow: auto; border:3px solid white; padding:20px;"
+                 style="width:100%;min-height:400px;max-height:1700px;background:white;overflow: auto; border:3px solid white; padding:20px;"
                  class="shadow">
                 {{ page.layout.structure | raw }}
             </div>
         </div>
-
     </div>
 
 {% endblock %}
@@ -43,31 +42,16 @@
     <script>
         $(document).ready(function () {
 
-            $('.btn-publish').click(function (e) {
-                $.confirm({
+            $('body').on('click', '.btn-view-html', function () {
+
+                $.alert({
                     theme: 'modern',
-                    title: "Confirmation",
+                    title: "HTML Viewer",
                     columnClass: 'large',
-                    content: '<em>You really want to publish this page?</em>',
-                    buttons: {
-                        continue: {
-                            text: 'Yes',
-                            btnClass: 'btn btn-danger',
-                            keys: ['enter', 'shift'],
-                            action: function () {
-                                // no nothing
-                            }
-                        },
-                        cancel: {
-                            text: 'Cancel',
-                            btnClass: 'btn btn-secondary',
-                            keys: ['enter', 'shift'],
-                            action: function () {
-                                // do nothing
-                            }
-                        },
-                    }
+                    content: $('#' + $(this).attr('rf-pane')).show().html(),
                 });
+
+                $('#' + $(this).attr('rf-pane')).hide();
             });
 
             {% for slot in page.layout.slots %}
@@ -86,10 +70,6 @@
 
                window.location.href = '{{ path('rf_page_viewproperties', {'page':page.id,'block':'0'}) }}'+blockId;
             });
-
-
-
-
 
         });
         function getBlockViewDetail(code, el, id, data) {
