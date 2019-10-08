@@ -34,6 +34,19 @@ class ApiToken
      */
     private $user;
 
+    /**
+     * ApiToken constructor.
+     * @param $user
+     * @throws \Exception
+     */
+    public function __construct($user)
+    {
+        $this->token = bin2hex(random_bytes(60));
+        $this->user = $user;
+        $this->expiresAt = new \DateTime('+3 hours');
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,6 +62,11 @@ class ApiToken
         $this->token = $token;
 
         return $this;
+    }
+
+    public function renewExpiresAt()
+    {
+        $this->expiresAt = new \DateTime('+3 hours');
     }
 
     public function getExpiresAt(): ?\DateTimeInterface

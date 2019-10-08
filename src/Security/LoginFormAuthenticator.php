@@ -5,7 +5,9 @@ namespace App\Security;
 use App\Entity\User;
 use App\Enums\UserStatus;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -100,6 +102,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         return new RedirectResponse($this->urlGenerator->generate('rf_dashboard'));
     }
+
+    /*public function start(Request $request, AuthenticationException $authException = null)
+    {
+
+        if (null !== $request->getPathInfo()) {
+            $path = $request->getPathInfo();
+            if (strpos($path, '/api') !== false) {
+                return new JsonResponse(
+                    [
+                        'error' => 'Authentication error',
+                        'message' => 'You need to log in fist.'
+                    ],
+                    403
+                );
+            }
+        }
+
+        return parent::start($request, $authException);
+    }*/
 
     protected function getLoginUrl()
     {

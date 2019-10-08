@@ -19,6 +19,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+                    - App\Security\ApiTokenAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 86400
@@ -41,14 +43,14 @@ security:
         - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/forgot-password$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/efconnect, role: !php/const App\Enums\Roles::ROLE_VIEWER }
-        - { path: ^/elfinder/files_viewer, role: !php/const App\Enums\Roles::ROLE_VIEWER }
-        - { path: ^/elfinder/files, role: !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR }
-        - { path: ^/elfinder/gallery_viewer, role: !php/const App\Enums\Roles::ROLE_VIEWER }
-        - { path: ^/elfinder/gallery, role: !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR }
-        - { path: ^/, roles: !php/const App\Enums\Roles::ROLE_VIEWER }
+        - { path: ^/efconnect, role: ROLE_VIEWER }
+        - { path: ^/elfinder/files_viewer, role: ROLE_VIEWER }
+        - { path: ^/elfinder/files, role: ROLE_MEDIA_MANAGEMENT_EDITOR }
+        - { path: ^/elfinder/gallery_viewer, role: ROLE_VIEWER }
+        - { path: ^/elfinder/gallery, role: ROLE_MEDIA_MANAGEMENT_EDITOR }
+        - { path: ^/, roles: ROLE_VIEWER }
         # - { path: ^/profile, roles: ROLE_USER }
 
     role_hierarchy:
-        !php/const App\Enums\Roles::ROLE_VIEWER: [!php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_VIEWER, !php/const App\Enums\Roles::ROLE_VISUAL_PACK_VIEWER, !php/const App\Enums\Roles::ROLE_PAGE_MANAGEMENT_VIEWER]
-        !php/const App\Enums\Roles::ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH, !php/const App\Enums\Roles::ROLE_VIEWER, !php/const App\Enums\Roles::ROLE_USER_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_MEDIA_MANAGEMENT_EDITOR,  !php/const App\Enums\Roles::ROLE_ROLES_MANAGEMENT,  !php/const App\Enums\Roles::ROLE_VISUAL_PACK_EDITOR,  !php/const App\Enums\Roles::ROLE_PAGE_MANAGEMENT_EDITOR, !php/const App\Enums\Roles::ROLE_BO_SETTINGS ]
+        ROLE_VIEWER: [ROLE_USER_MANAGEMENT_VIEWER, ROLE_MEDIA_MANAGEMENT_VIEWER, ROLE_VISUAL_PACK_VIEWER, ROLE_PAGE_MANAGEMENT_VIEWER]
+        ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH, ROLE_VIEWER, ROLE_USER_MANAGEMENT_EDITOR,  ROLE_MEDIA_MANAGEMENT_EDITOR,  ROLE_ROLES_MANAGEMENT,  ROLE_VISUAL_PACK_EDITOR,  ROLE_PAGE_MANAGEMENT_EDITOR, ROLE_BO_SETTINGS ]
