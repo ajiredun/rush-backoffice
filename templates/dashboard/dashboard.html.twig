@@ -101,6 +101,29 @@
         </div>
     </div>
 
+    <div class="row mt-5">
+        <div class="col-xl-8 mb-5 mb-xl-0 mh400" >
+            {% set config = {'config':{
+                'title' : 'Recently published pages',
+                'pages' : last5PublishedPages,
+                'fields' : ['route','name', 'lastModifiedBy', 'lastModifiedAt','online'],
+                'options' : ['properties','contents','blocks','visualize'],
+                'paginate' : false
+            }} %}
+            {% include 'page/components/page_list.html.twig' with config %}
+        </div>
+
+        <div class="col-xl-4 mb-5 mb-xl-0 mh400" >
+            {% set config = {'config':{
+                'title' : 'Recent drafts',
+                'dark': true,
+                'pages' : last5DraftPages,
+                'fields' : ['name', 'lastModifiedAt'],
+                'paginate' : false
+            }} %}
+            {% include 'page/components/page_list.html.twig' with config %}
+        </div>
+    </div>
 
 
 {% endblock %}

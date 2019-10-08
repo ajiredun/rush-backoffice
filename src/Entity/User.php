@@ -95,11 +95,17 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Page", mappedBy="lastModifiedBy", orphanRemoval=true)
      */
     private $pages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ApiToken", mappedBy="user", orphanRemoval=true)
+     */
+    private $apiTokens;
     
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
         $this->pages = new ArrayCollection();
+        $this->apiTokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -359,6 +365,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($page->getLastModifiedBy() === $this) {
                 $page->setLastModifiedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ApiToken[]
+     */
+    public function getApiTokens(): Collection
+    {
+        return $this->apiTokens;
+    }
+
+    public function addApiToken(ApiToken $apiToken): self
+    {
+        if (!$this->apiTokens->contains($apiToken)) {
+            $this->apiTokens[] = $apiToken;
+            $apiToken->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApiToken(ApiToken $apiToken): self
+    {
+        if ($this->apiTokens->contains($apiToken)) {
+            $this->apiTokens->removeElement($apiToken);
+            // set the owning side to null (unless already changed)
+            if ($apiToken->getUser() === $this) {
+                $apiToken->setUser(null);
             }
         }
 

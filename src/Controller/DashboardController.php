@@ -38,6 +38,9 @@ class DashboardController extends AbstractController
         $pagesCreatedThisMonth = $pageRepository->findPagesCreatedByMonth();
         $totalPages = $pageRepository->findAll();
 
+        $last5PublishedPages = $pageRepository->findBy(['published'=>true],['lastModifiedAt'=>'DESC']);
+        $last5DraftPages =  $pageRepository->findBy(['published'=>false],['lastModifiedAt'=>'DESC']);
+
         return $this->render('dashboard/dashboard.html.twig', [
             'users' => $users,
             'usersOnline' => $usersOnline,
@@ -46,6 +49,8 @@ class DashboardController extends AbstractController
             'totalPages' => $totalPages,
             'pagesCreatedThisMonth' => $pagesCreatedThisMonth,
             'pagesPublished' => $pagesPublished,
+            'last5PublishedPages' => $last5PublishedPages,
+            'last5DraftPages' => $last5DraftPages
         ]);
     }
 
