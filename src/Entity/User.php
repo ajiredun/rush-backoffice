@@ -10,8 +10,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use App\Enums\Roles;
 
 /**
+ * @ApiResource(
+ *     accessControl="is_granted('ROLE_API_USER', object)",
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiResource()
  */
 class User implements UserInterface
 {

@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 class SecurityController extends AbstractController
 {
@@ -80,47 +81,36 @@ class SecurityController extends AbstractController
     {
         $errorMessage = "Authentication error";
 
-        if ($this->getUser()) {
-            $apiToken = $userManager->generateToken($this->getUser());
-            return new JsonResponse(
-                [
-                    'message' => "Authentification Successful",
-                    'token' => $apiToken->getToken()
-                ],
-                200
-            );
-        } else {
-            if (
-                $request->isMethod('POST') &&
-                $request->request->get('email', false) &&
-                $request->request->get('password', false)
-            ) {
-                $username = $request->request->get('email', false);
-                $password = $request->request->get('password', false);
+        if (
+            $request->isMethod('POST') &&
+            $request->request->get('email', false) &&
+            $request->request->get('password', false)
+        ) {
+            $username = $request->request->get('email', false);
+            $password = $request->request->get('password', false);
 
-                $user = $userManager->getUserByEmail($username);
-                if ($user) {
-                    $isPasswordMatched = $userManager->verifyPassword($user, $password);
-                    if ($isPasswordMatched) {
-                        /**
-                         * @var ApiToken $apiToken
-                         */
-                        $apiToken = $userManager->generateToken($user);
-                        return new JsonResponse(
-                            [
-                                'message' => "Authentification Successful",
-                                'token' => $apiToken->getToken()
-                            ],
-                            200
-                        );
-                    } else {
-                        $errorMessage = "Invalid credentials.";
-                    }
+            $user = $userManager->getUserByEmail($username);
+            if ($user) {
+                $isPasswordMatched = $userManager->verifyPassword($user, $password);
+                if ($isPasswordMatched) {
+                    /**
+                     * @var ApiToken $apiToken
+                     */
+                    $apiToken = $userManager->generateToken($user);
+                    return new JsonResponse(
+                        [
+                            'message' => "Authentification Successful",
+                            'token' => $apiToken->getToken()
+                        ],
+                        200
+                    );
                 } else {
-                    $errorMessage = "No user was found with this email.";
+                    $errorMessage = "Invalid credentials.";
                 }
-
+            } else {
+                $errorMessage = "No user was found with this email.";
             }
+
         }
 
         return new JsonResponse(
@@ -134,7 +124,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/api/logout", name="app_api_logout")
      */
-    public function apiLogout(Request $request, UserManager $userManager, EntityManagerInterface $entityManager): Response
+    public function apiLogout(Request $request, Security $security, UserManager $userManager, EntityManagerInterface $entityManager): Response
     {
         $errorMessage = "There was no active session.";
         if ($this->getUser()) {
@@ -144,6 +134,9 @@ class SecurityController extends AbstractController
             if (!is_null($apiToken)) {
                 $apiToken->setExpiresAt(new \DateTime('now'));
                 $entityManager->flush();
+
+                $anonToken = new AnonymousToken('50cdf89882454', 'anon.', array());
+                $security->setToken($anonToken);
 
                 return new JsonResponse(
                     [
@@ -198,7 +191,7 @@ class SecurityController extends AbstractController
                             'lastname' => $request->request->get('input_lastname'),
                             'email' => $email,
                             'password' => $request->request->get('input_password'),
-                        ], [Roles::ROLE_VIEWER]);
+                        ], []);
 
                         $success = "Please activate your account by clicking on the link we sent by mail.";
                     } else {

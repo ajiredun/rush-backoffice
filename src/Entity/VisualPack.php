@@ -8,7 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     accessControl="is_granted('ROLE_API_USER', object)",
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\VisualPackRepository")
  */
 class VisualPack

@@ -24,7 +24,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         return $request->headers->has('rf-auth')
-            && 0 === strpos($request->headers->get('rf-auth'), 'Bearer ');
+            && 0 === strpos($request->headers->get('rf-auth'), 'Bearer ')
+            && !empty(substr($request->headers->get('rf-auth'), 7));
     }
 
     public function getCredentials(Request $request)

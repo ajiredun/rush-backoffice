@@ -33,6 +33,9 @@ class Roles
     //BACK OFFICE SETTINGS
     const ROLE_BO_SETTINGS = "ROLE_BO_SETTINGS";
 
+    //API USER
+    const ROLE_API_USER = "ROLE_API_USER";
+
 
     static function getLabel($role)
     {
@@ -68,6 +71,7 @@ class Roles
             Roles::ROLE_PAGE_MANAGEMENT_VIEWER => "Page Manager - View Only",
             Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager",
             Roles::ROLE_BO_SETTINGS => "Back Office Settings",
+            Roles::ROLE_API_USER => "Anonymous Web User"
         ];
     }
 

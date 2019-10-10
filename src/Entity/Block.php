@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     accessControl="is_granted('ROLE_API_USER', object)",
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\BlockRepository")
  */
 class Block
