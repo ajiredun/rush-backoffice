@@ -2,17 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     attributes={
+ *          "pagination_items_per_page"=10
+ *     },
  *     accessControl="is_granted('ROLE_API_USER', object)",
- *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST",
+ *     normalizationContext={"groups"={"page:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"page:write"}, "swagger_definition_name"="Write"},
  * )
+ *
+ * @ApiFilter(BooleanFilter::class, properties={"published"})
+ * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
  */
 class Page
@@ -22,88 +36,112 @@ class Page
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"page:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
+     * @Groups({"page:read"})
+     * @Assert\NotBlank()
     private $route;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"page:read", "page:write"})
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     maxMessage="Describe your cheese in 50 chars or less"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"page:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"page:read"})
      */
     private $lastModifiedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="pages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"page:read"})
      */
     private $lastModifiedBy;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Layout", inversedBy="pages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"page:read", "page:write"})
      */
     private $layout;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"page:read", "page:write"})
      */
     private $published;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"page:read", "page:write"})
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read", "page:write"})
      */
     private $seoTitle;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read", "page:write"})
      */
     private $seoMetaDescription;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"page:read", "page:write"})
      */
     private $seoAllowRobot;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read", "page:write"})
      */
     private $seoAuthor;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read", "page:write"})
      */
     private $seoKeywords;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"page:read"})
      */
     private $publishedOn;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @Groups({"page:read"})
      */
     private $publishedBy;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Block", mappedBy="page", orphanRemoval=true,cascade={"persist"})
+     * @Groups({"page:read", "page:write"})
+     * @ApiSubresource()
      */
     private $blocks;
 

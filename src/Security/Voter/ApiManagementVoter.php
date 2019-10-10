@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use App\Entity\Page;
 use App\Entity\User;
 use App\Enums\Roles;
@@ -18,13 +19,16 @@ class ApiManagementVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-
         $user = $token->getUser();
         if (!$user instanceof UserInterface) {
             if ($subject instanceof Page) {
                 if (empty($subject->getRoles())) {
                     return true;
                 }
+            }
+
+            if ($subject instanceof Paginator) {
+                return true;
             }
 
             return false;

@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -20,6 +21,7 @@ class Block
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("page:read")
      */
     private $id;
 
@@ -47,11 +49,13 @@ class Block
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("page:read")
      */
     private $slot;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("page:read")
      */
     private $blockOrder;
 
@@ -62,16 +66,19 @@ class Block
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("page:read")
      */
     private $dependencies = [];
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("page:read")
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("page:read")
      */
     private $contentType;
 
