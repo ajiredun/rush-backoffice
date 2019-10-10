@@ -6,13 +6,32 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}},
+ *     collectionOperations={
+     *      "get"={"security"="is_granted('ROLE_FOO')"},
+     *      "post"={"security"="is_granted('ROLE_FOO')"}
+ *      },
+ *     itemOperations={
+     *     "get"={"security"="is_granted('ROLE_FOO')"},
+     *     "put"={"security"="is_granted('ROLE_FOO')"},
+     * }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
  */
 class Page
 {
+
+    /*
+     * accessControl="is_granted('ROLE_FOO')",
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+     *
+     */
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -22,11 +41,13 @@ class Page
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("write")
      */
     private $route;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $name;
 

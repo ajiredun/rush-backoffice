@@ -103,7 +103,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('rf_dashboard'));
     }
 
-    /*public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null)
     {
 
         if (null !== $request->getPathInfo()) {
@@ -111,8 +111,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             if (strpos($path, '/api') !== false) {
                 return new JsonResponse(
                     [
-                        'error' => 'Authentication error',
-                        'message' => 'You need to log in fist.'
+                        'message' => 'Access Denied!'
                     ],
                     403
                 );
@@ -120,7 +119,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         return parent::start($request, $authException);
-    }*/
+    }
 
     protected function getLoginUrl()
     {

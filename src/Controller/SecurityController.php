@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Service\UserManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -21,9 +26,26 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        // if ($this->getUser()) {
-        //    $this->redirectToRoute('target_path');
-        // }
+
+        if ($accessDenied = $request->attributes->get('_security.403_error', false)) {
+            if ($accessDenied instanceof AccessDeniedException && !is_null($accessDenied->getSubject()) && $accessDenied->getSubject()->attributes->get('_route', false)) {
+                return new JsonResponse(
+                    [
+                        'message' => 'Access Denied!'
+                    ],
+                    403
+                );
+            }
+
+            if ($accessDenied instanceof AccessDeniedException && !is_null($accessDenied->getMessage()) && $accessDenied->getMessage()=="UNAUTHORISED_API_REQUEST") {
+                return new JsonResponse(
+                    [
+                        'message' => 'Access Denied!'
+                    ],
+                    403
+                );
+            }
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -48,6 +70,96 @@ class SecurityController extends AbstractController
             'messageError' => $messageError,
             'messageSuccess' => $messageSuccess
         ]);
+    }
+
+
+    /**
+     * @Route("/api/login", name="app_api_login")
+     */
+    public function apiLogin(Request $request, UserManager $userManager): Response
+    {
+        $errorMessage = "Authentication error";
+
+        if ($this->getUser()) {
+            $apiToken = $userManager->generateToken($this->getUser());
+            return new JsonResponse(
+                [
+                    'message' => "Authentification Successful",
+                    'token' => $apiToken->getToken()
+                ],
+                200
+            );
+        } else {
+            if (
+                $request->isMethod('POST') &&
+                $request->request->get('email', false) &&
+                $request->request->get('password', false)
+            ) {
+                $username = $request->request->get('email', false);
+                $password = $request->request->get('password', false);
+
+                $user = $userManager->getUserByEmail($username);
+                if ($user) {
+                    $isPasswordMatched = $userManager->verifyPassword($user, $password);
+                    if ($isPasswordMatched) {
+                        /**
+                         * @var ApiToken $apiToken
+                         */
+                        $apiToken = $userManager->generateToken($user);
+                        return new JsonResponse(
+                            [
+                                'message' => "Authentification Successful",
+                                'token' => $apiToken->getToken()
+                            ],
+                            200
+                        );
+                    } else {
+                        $errorMessage = "Invalid credentials.";
+                    }
+                } else {
+                    $errorMessage = "No user was found with this email.";
+                }
+
+            }
+        }
+
+        return new JsonResponse(
+            [
+                'message' => $errorMessage,
+            ],
+            401
+        );
+    }
+
+    /**
+     * @Route("/api/logout", name="app_api_logout")
+     */
+    public function apiLogout(Request $request, UserManager $userManager, EntityManagerInterface $entityManager): Response
+    {
+        $errorMessage = "There was no active session.";
+        if ($this->getUser()) {
+
+            $apiToken = $userManager->getActiveApiToken($this->getUser());
+
+            if (!is_null($apiToken)) {
+                $apiToken->setExpiresAt(new \DateTime('now'));
+                $entityManager->flush();
+
+                return new JsonResponse(
+                    [
+                        'message' => "Logged out!",
+                    ],
+                    200
+                );
+            }
+        }
+
+        return new JsonResponse(
+            [
+                'message' => $errorMessage,
+            ],
+            200
+        );
     }
 
     /**

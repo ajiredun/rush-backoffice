@@ -4,11 +4,13 @@
 namespace App\Service;
 
 
+use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Enums\UserStatus;
 use App\Event\UserCreateEvent;
 use App\Event\UserPasswordEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -83,19 +85,74 @@ class UserManager
         ));
     }
 
+    public function verifyPassword(User $user, $password)
+    {
+        return $this->passwordEncoder->isPasswordValid($user, $password);
+    }
+
+    public function generateToken(User $user)
+    {
+        $userTokens = $user->getApiTokens();
+        $token = null;
+        foreach ($userTokens as $apiToken)
+        {
+            if (!$apiToken->isExpired()) {
+                return $apiToken;
+            }
+        }
+
+        if (is_null($token)) {
+            //all tokens have been expired or no tokens at all
+            $token = new ApiToken($user);
+            $user->addApiToken($token);
+
+            $this->em->persist($token);
+            $this->em->flush();
+
+            return $token;
+        }
+
+        return $token;
+    }
+
+    public function getActiveApiToken(User $user)
+    {
+        $userTokens = $user->getApiTokens();
+        $token = null;
+        foreach ($userTokens as $apiToken)
+        {
+            if (!$apiToken->isExpired()) {
+                return $apiToken;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @param $email
      * @return bool
      */
     public function isUserExist($email)
     {
-        $ur = $this->em->getRepository(User::class);
-        $user = $ur->findOneBy(array('email'=>$email));
+        $user = $this->getUserByEmail($email);
 
         if ($user) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param $email
+     * @return User|null
+     */
+    public function getUserByEmail($email)
+    {
+        $ur = $this->em->getRepository(User::class);
+        $user = $ur->findOneBy(array('email'=>$email));
+
+        return $user;
     }
 }
