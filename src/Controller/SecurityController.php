@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -28,7 +29,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
 
-        if ($accessDenied = $request->attributes->get('_security.403_error', false)) {
+        if ($accessDenied = $request->attributes->get(Security::ACCESS_DENIED_ERROR, false)) {
             if ($accessDenied instanceof AccessDeniedException && !is_null($accessDenied->getSubject()) && $accessDenied->getSubject()->attributes->get('_route', false)) {
                 return new JsonResponse(
                     [
@@ -100,6 +101,8 @@ class SecurityController extends AbstractController
                     return new JsonResponse(
                         [
                             'message' => "Authentification Successful",
+                            'user' => $user->getName(),
+                            'email' => $user->getEmail(),
                             'token' => $apiToken->getToken()
                         ],
                         200
@@ -124,7 +127,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/api/logout", name="app_api_logout")
      */
-    public function apiLogout(Request $request, Security $security, UserManager $userManager, EntityManagerInterface $entityManager): Response
+    public function apiLogout(Request $request, TokenStorageInterface $tokenStorage, UserManager $userManager, EntityManagerInterface $entityManager): Response
     {
         $errorMessage = "There was no active session.";
         if ($this->getUser()) {
@@ -136,7 +139,7 @@ class SecurityController extends AbstractController
                 $entityManager->flush();
 
                 $anonToken = new AnonymousToken('50cdf89882454', 'anon.', array());
-                $security->setToken($anonToken);
+                $tokenStorage->setToken($anonToken);
 
                 return new JsonResponse(
                     [
