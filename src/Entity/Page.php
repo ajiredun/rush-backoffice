@@ -44,6 +44,8 @@ class Page
      * @ORM\Column(type="string", length=255)
      * @Groups({"page:read"})
      * @Assert\NotBlank()
+     * @Groups({"page:read"})
+     */
     private $route;
 
     /**

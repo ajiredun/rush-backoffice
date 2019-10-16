@@ -40,6 +40,8 @@ class DashboardController extends AbstractController
 
         $last5PublishedPages = $pageRepository->findBy(['published'=>true],['lastModifiedAt'=>'DESC']);
         $last5DraftPages =  $pageRepository->findBy(['published'=>false],['lastModifiedAt'=>'DESC']);
+        
+        dump($last5PublishedPages);
 
         return $this->render('dashboard/dashboard.html.twig', [
             'users' => $users,

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     accessControl="is_granted('ROLE_API_USER', object)",
  *     accessControlMessage="UNAUTHORISED_API_REQUEST"
  * )
+ * @ApiFilter(BooleanFilter::class, properties={"active"})
  * @ORM\Entity(repositoryClass="App\Repository\VisualPackRepository")
  */
 class VisualPack
