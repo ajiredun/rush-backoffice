@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -20,42 +21,50 @@ class Layout
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"page:read","pages:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"page:read","pages:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"page:read","pages:read"})
      */
     private $visual;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"page:read","pages:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read","pages:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"page:read","pages:read"})
      */
     private $structure;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"page:read","pages:read"})
      */
     private $slots = [];
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\VisualPack", inversedBy="layouts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"page:read","pages:read"})
      */
     private $visualPack;
 

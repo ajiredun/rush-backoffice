@@ -22,6 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     accessControlMessage="UNAUTHORISED_API_REQUEST",
  *     normalizationContext={"groups"={"page:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"page:write"}, "swagger_definition_name"="Write"},
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"pages:read"}}
+ *         }
+ *     }
  * )
  *
  * @ApiFilter(BooleanFilter::class, properties={"published"})
@@ -36,7 +41,7 @@ class Page
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"page:read"})
+     * @Groups({"page:read","pages:read"})
      */
     private $id;
 
@@ -44,13 +49,13 @@ class Page
      * @ORM\Column(type="string", length=255)
      * @Groups({"page:read"})
      * @Assert\NotBlank()
-     * @Groups({"page:read"})
+     * @Groups({"page:read","pages:read"})
      */
     private $route;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      * @Assert\NotBlank()
      * @Assert\Length(
      *     min=2,
@@ -82,49 +87,49 @@ class Page
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Layout", inversedBy="pages")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $layout;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $published;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $seoTitle;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $seoMetaDescription;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $seoAllowRobot;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $seoAuthor;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $seoKeywords;
 
