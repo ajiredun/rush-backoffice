@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
+use App\Entity\Block;
 use App\Entity\Page;
 use App\Entity\User;
 use App\Enums\Roles;
@@ -27,6 +28,12 @@ class ApiManagementVoter extends Voter
                 }
             }
 
+            if ($subject instanceof Block) {
+                if (empty($subject->getRoles())) {
+                    return true;
+                }
+            }
+
             if ($subject instanceof Paginator) {
                 return true;
             }
@@ -40,6 +47,19 @@ class ApiManagementVoter extends Voter
                 return true;
             }
             $roleMatch = array_intersect($pageRoles, $user->getRoles());
+            if (count($roleMatch) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        if ($subject instanceof Block) {
+            $roles = $subject->getRoles();
+            if (empty($roles)) {
+                return true;
+            }
+            $roleMatch = array_intersect($roles, $user->getRoles());
             if (count($roleMatch) > 0) {
                 return true;
             } else {

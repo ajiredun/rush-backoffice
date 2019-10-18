@@ -147,7 +147,7 @@ class Page
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Block", mappedBy="page", orphanRemoval=true,cascade={"persist"})
-     * @Groups({"page:read", "page:write"})
+     * @Groups({"page:read", "page:write","pages:read"})
      * @ApiSubresource()
      */
     private $blocks;

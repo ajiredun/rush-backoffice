@@ -21,7 +21,7 @@ class Block
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $id;
 
@@ -49,13 +49,13 @@ class Block
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $slot;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $blockOrder;
 
@@ -78,7 +78,7 @@ class Block
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $contentType;
 
