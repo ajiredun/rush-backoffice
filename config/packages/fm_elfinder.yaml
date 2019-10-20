@@ -3,7 +3,7 @@ fm_elfinder:
     instances:
         files:
             include_assets: true
-            relative_path: true
+            relative_path: false
             editor: form
             connector:
                 roots:
@@ -14,7 +14,7 @@ fm_elfinder:
                         upload_max_size: 50M
         files_viewer:
             include_assets: true
-            relative_path: true
+            relative_path: false
             editor: form
             connector:
                 roots:
@@ -25,7 +25,7 @@ fm_elfinder:
                             - { pattern: '/(.*?)/', read: true, write: false, locked: true }
         gallery:
             include_assets: true
-            relative_path: true
+            relative_path: false
             editor: form
             connector:
                 roots:
@@ -37,7 +37,7 @@ fm_elfinder:
                         upload_max_size: 50M # also file upload sizes restricted in php.ini
         gallery_viewer:
             include_assets: true
-            relative_path: true
+            relative_path: false
             editor: form
             connector:
                 roots:
