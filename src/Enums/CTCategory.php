@@ -10,6 +10,7 @@ class CTCategory
     const BASIC = 'basic';
     const DEFAULT = 'default';
     const SLIDER = 'slider';
+    const USER_ACCOUNT = 'user_account';
 
     static function getLabel($value)
     {
@@ -27,7 +28,8 @@ class CTCategory
             CTCategory::MENU => 'Menus',
             CTCategory::BASIC => 'Basic',
             CTCategory::DEFAULT => 'Default',
-            CTCategory::SLIDER => 'Slider'
+            CTCategory::SLIDER => 'Slider',
+            CTCategory::USER_ACCOUNT => 'User Account',
         ];
     }
 

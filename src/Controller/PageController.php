@@ -471,7 +471,7 @@ class PageController extends AbstractController
      */
     public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, RfMessages $rfMessages)
     {
-        $defaultData = array_merge(['roles'=>$block->getRoles()],$block->getProperties());
+        $defaultData = array_merge(['roles'=>$block->getRoles()], $block->getProperties());
         $form = $blockManager->getContentType($block)->getForm($defaultData);
 
         $form->handleRequest($request);
