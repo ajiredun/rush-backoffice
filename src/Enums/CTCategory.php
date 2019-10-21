@@ -9,6 +9,7 @@ class CTCategory
     const MENU = 'menu';
     const BASIC = 'basic';
     const DEFAULT = 'default';
+    const SLIDER = 'slider';
 
     static function getLabel($value)
     {
@@ -25,7 +26,8 @@ class CTCategory
         return [
             CTCategory::MENU => 'Menus',
             CTCategory::BASIC => 'Basic',
-            CTCategory::DEFAULT => 'Default'
+            CTCategory::DEFAULT => 'Default',
+            CTCategory::SLIDER => 'Slider'
         ];
     }
 
