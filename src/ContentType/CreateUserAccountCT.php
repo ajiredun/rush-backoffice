@@ -9,7 +9,7 @@ use App\Enums\CTCategory;
 
 class CreateUserAccountCT extends AbstractContentType
 {
-    const CODE = "CT_CREATE_ACCOUNT";
+    const CODE = "CT_CREATE_USER_ACCOUNT";
 
     public function getLabel()
     {
