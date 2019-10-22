@@ -153,6 +153,11 @@ class Page
     private $blocks;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $routeParams;
+
+    /**
      * Page constructor.
      */
     public function __construct()
@@ -397,6 +402,18 @@ class Page
                 $block->setPage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRouteParams(): ?string
+    {
+        return $this->routeParams;
+    }
+
+    public function setRouteParams(?string $routeParams): self
+    {
+        $this->routeParams = $routeParams;
 
         return $this;
     }
