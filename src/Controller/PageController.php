@@ -112,6 +112,19 @@ class PageController extends AbstractController
             return $this->redirectToRoute('rf_page_view',array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));
         }
 
+        foreach ($blockManager->getPageBlocks($page) as $block) {
+            /**
+             * @var Block $block
+             */
+            if (!is_null($blockManager->getContentType($block)->getRouteParams())) {
+                $blockParams = $blockManager->getContentType($block)->getRouteParams();
+                $pageRouteParams = $page->getRouteParams();
+                if (strpos($pageRouteParams, $blockParams) === false) {
+                    //route params not present
+                    $rfMessages->addWarning("Please add ".$blockParams." in your Page's Route Parameters");
+                }
+            }
+        }
 
         //get content list
         $contentTypeList = $CTManager->getContentTypesCategorised();

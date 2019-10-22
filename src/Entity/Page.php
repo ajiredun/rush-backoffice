@@ -154,6 +154,7 @@ class Page
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"page:read", "page:write","pages:read"})
      */
     private $routeParams;
 

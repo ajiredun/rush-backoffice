@@ -21,4 +21,6 @@ interface ContentTypeInterface
     public function getViewDetail();
 
     public function getDependencies();
+
+    public function getRouteParams();
 }

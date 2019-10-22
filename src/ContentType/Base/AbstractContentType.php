@@ -37,6 +37,11 @@ abstract class AbstractContentType implements ContentTypeInterface
         return static::CODE;
     }
 
+    public function getRouteParams()
+    {
+        return null;
+    }
+
     public function getCategory()
     {
         return CTCategory::DEFAULT;

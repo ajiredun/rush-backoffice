@@ -309,6 +309,34 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/api/activate/{activation}", name="api_activate")
+     */
+    public function apiActivate($activation, Request $request)
+    {
+
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->findOneBy(array('activation'=>$activation));
+
+        if ($user) {
+            $user->setActivation(null);
+            $user->setStatus(UserStatus::ACTIVE);
+            $entityManager->flush();
+
+            $response['success'] = true;
+            $response['message'] = 'Your account has been activated successfully.';
+        } else {
+            $response['message'] = 'Invalid activation link';
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * @Route("/forgot-password", name="app_forgot_password")
      */
     public function forgotPassword(Request $request, UserManager $userManager)

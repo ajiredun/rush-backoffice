@@ -76,6 +76,13 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
+                                            {{ form_row(form.routeParams) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
                                             <h3>Choose your page layout.</h3>
                                             {{ form_row(form.layout) }}
                                             {% set config = {

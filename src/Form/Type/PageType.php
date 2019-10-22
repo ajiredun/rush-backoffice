@@ -48,6 +48,15 @@ class PageType extends AbstractType
                     ),
                 ]
             )
+            ->add('routeParams',
+                TextType::class,
+                [
+                    'label' => 'Route Parameteres',
+                    'attr' => array(
+                        'class' => "my_page_route_params",
+                    ),
+                ]
+            )
             ->add('layout', HiddenType::class, [
                     'attr' => array(
                         'class' => "my_page_layout",
