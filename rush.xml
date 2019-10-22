@@ -12,7 +12,12 @@
     <setting>
         <term>fo_url</term>
         <label>Website URL</label>
-        <value>front.dev.ajiredun.com</value>
+        <value>https://front.dev.ajiredun.com</value>
+    </setting>
+    <setting>
+        <term>management_email</term>
+        <label>Management Email</label>
+        <value>dev@dev.ajiredun.com</value>
     </setting>
     <setting>
         <term>form_list_method</term>

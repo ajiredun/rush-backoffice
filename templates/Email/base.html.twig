@@ -94,7 +94,7 @@
                         <tr>
                             <td align="right" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">
                                 {% block preHeader %}
-                                    Website: <a href="{{ app.request.getSchemeAndHttpHost() }}" >{{ app.request.getSchemeAndHttpHost() }}</a>
+                                    Website: <a href="{{ getSystemInfo('fo_url') }}" >{{ getSystemInfo('fo_name') }}</a>
                                 {% endblock %}
                             </td>
                         </tr>

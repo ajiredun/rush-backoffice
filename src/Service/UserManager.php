@@ -21,12 +21,30 @@ class UserManager
     private $em;
     private $passwordEncoder;
     private $eventDispatcher;
+    private $systemManager;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, EventDispatcherInterface $eventDispatcher, SystemManager $systemManager)
     {
         $this->em = $em;
         $this->passwordEncoder = $passwordEncoder;
         $this->eventDispatcher = $eventDispatcher;
+        $this->systemManager = $systemManager;
+    }
+
+    /**
+     * @return SystemManager
+     */
+    public function getSystemManager(): SystemManager
+    {
+        return $this->systemManager;
+    }
+
+    /**
+     * @param SystemManager $systemManager
+     */
+    public function setSystemManager(SystemManager $systemManager): void
+    {
+        $this->systemManager = $systemManager;
     }
 
     /**
@@ -48,6 +66,19 @@ class UserManager
         return $this->createUserBase($user, $roles, $status);
     }
 
+    public function createUserFromWebsite(array $data, $roles = [], $status = UserStatus::INACTIVE)
+    {
+        $user = new User();
+        $user->setStatus($status);
+        $user->setFirstname($data['firstname']);
+        $user->setLastname($data['lastname']);
+        $user->setEmail($data['email']);
+        $user->setRoles($roles);
+        $this->setPassword($user, $data['password'], false);
+
+        return $this->createUserBase($user, $roles, $status, true);
+    }
+
     public function createUserFromObject(User $user, $roles = [], $status = UserStatus::INACTIVE)
     {
         $this->setPassword($user, $user->getPassword(), false);
@@ -55,11 +86,11 @@ class UserManager
         return $this->createUserBase($user, $roles, $status);
     }
 
-    protected function createUserBase(User $user, $roles = [], $status = UserStatus::INACTIVE)
+    protected function createUserBase(User $user, $roles = [], $status = UserStatus::INACTIVE, $fromFrontoffice = false)
     {
         $user->setStatus($status);
         $user->setRoles($roles);
-        $event = new UserCreateEvent($user);
+        $event = new UserCreateEvent($user,$fromFrontoffice);
         $this->eventDispatcher->dispatch($event, UserCreateEvent::NAME);
 
         $this->em->persist($user);

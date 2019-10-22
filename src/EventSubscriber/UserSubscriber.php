@@ -9,6 +9,7 @@ use App\Event\UserCreateEvent;
 use App\Event\UserPasswordEvent;
 use App\Service\MailManager;
 use App\Service\RfMessages;
+use App\Service\SystemManager;
 use App\Util\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -16,12 +17,14 @@ class UserSubscriber implements EventSubscriberInterface
 {
     protected $mailManager;
     protected $rfMessages;
+    protected $systemManager;
 
 
-    public function __construct(MailManager $mailManager, RfMessages $rfMessages)
+    public function __construct(MailManager $mailManager, RfMessages $rfMessages, SystemManager $systemManager)
     {
         $this->mailManager = $mailManager;
         $this->rfMessages = $rfMessages;
+        $this->systemManager = $systemManager;
     }
 
 
@@ -58,7 +61,7 @@ class UserSubscriber implements EventSubscriberInterface
             $this->rfMessages->addWarning('The user is already active, so we have not sent the activation mail.');
             return;
         }
-        $this->mailManager->sendActivationMail($user);
+        $this->mailManager->sendActivationMail($user, $event->isFrontOffice());
 
     }
 

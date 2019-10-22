@@ -29,6 +29,17 @@ class BaseContentType extends AbstractType
                     'help' => "If the content have a title section, this text will be used."
                 ]
             )
+            ->add('displays', ChoiceType::class, [
+                    'choices' => array(
+                        'mobile' => 'show_in_mobile',
+                        'tablet' => 'show_in_tablet',
+                        'desktop' => 'show_in_desktop',
+                    ),
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => "Show this block in:"
+                ]
+            )
             ->add('roles',
                 ChoiceType::class,
                 [

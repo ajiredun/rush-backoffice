@@ -17,19 +17,6 @@ class CreateUserAccountCTType extends BaseContentType
 {
     protected function addFields(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('autoplay', ChoiceType::class, [
-                    'choices' => array(
-                        'Yes' => true,
-                        'No' => false
-                    ),
-                    'multiple' => false,
-                    'expanded' => false,
-                    'label' => "Auto Play the slider?",
-                    'help' => "The slide will move by itself.",
-                    'required' => false
-                ]
-            )
-        ;
+
     }
 }

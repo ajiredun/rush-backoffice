@@ -6,6 +6,7 @@ use App\Entity\ApiToken;
 use App\Entity\User;
 use App\Enums\Roles;
 use App\Enums\UserStatus;
+use App\Service\RfMessages;
 use App\Service\UserManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -215,6 +216,70 @@ class SecurityController extends AbstractController
             'input_firstname' => $request->request->get('input_firstname'),
             'input_lastname' => $request->request->get('input_lastname')
         ]);
+    }
+
+    /**
+     * @Route("/api/register", name="api_register")
+     */
+    public function apiRegister(Request $request, UserManager $userManager, RfMessages $rfMessages)
+    {
+
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+
+        if (
+        $request->isMethod('POST')
+        ) {
+            $contents = json_decode($request->getContent(), true);
+
+
+            $response['input'] = $contents;
+
+            if (!empty($contents)) {
+                if (
+                    (isset($contents['input_email']) && !empty($contents['input_email'])) &&
+                    (isset($contents['input_firstname']) && !empty($contents['input_firstname'])) &&
+                    (isset($contents['input_lastname']) && !empty($contents['input_lastname'])) &&
+                    (isset($contents['input_password']) && !empty($contents['input_password'])) &&
+                    (isset($contents['input_confirm_password']) && !empty($contents['input_confirm_password'])) &&
+                    (isset($contents['input_mobile']) && !empty($contents['input_mobile']))
+                ) {
+                    if ($request->request->get('input_password') === $request->request->get('input_confirm_password')) {
+                        $email = $contents['input_email'];
+                        if (!$userManager->isUserExist($email)) {
+                            $user = $userManager->createUserFromWebsite([
+                                'firstname' => $contents['input_firstname'],
+                                'lastname' => $contents['input_lastname'],
+                                'email' => $email,
+                                'password' => $contents['input_password']
+                            ], []);
+
+                            $warnings = $rfMessages->getMessages()['rfwarning'];
+                            if (!empty($warnings)) {
+                                $response['message'] = $warnings[0];
+                            } else {
+                                $response['success'] = true;
+                                $response['message'] = "Please activate your account by clicking on the link we sent by mail.";
+                            }
+
+                        } else {
+                            $response['message'] = "An account with this email address already exists.";
+                        }
+
+                    } else {
+                        $response['message'] = "The two passwords don't match.";
+                    }
+                } else {
+                    $response['message'] = "Please fill in all the details";
+                }
+            } else {
+                $response['message'] = "Invalid information";
+            }
+        }
+
+        return new JsonResponse($response);
     }
 
     /**

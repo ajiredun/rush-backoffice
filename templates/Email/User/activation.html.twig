@@ -39,7 +39,12 @@
                                     <tr>
                                         <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #95a5a6; text-align:center;line-height: 30px;" st-content="fulltext-paragraph">
                                             Hi {{ user.firstname }}, <br/>
-                                            To activate your account, please click on <a target="_blank" href="{{ url('app_activate',{'activation':user.activation}) }}">this link</a>.
+                                            {% if frontOffice %}
+                                                To activate your account, please click on <a target="_blank" href="{{ getSystemInfo('fo_url') }}/activate/{{ user.activation }}">this link</a>.
+                                            {% else %}
+                                                To activate your account, please click on <a target="_blank" href="{{ url('app_activate',{'activation':user.activation}) }}">this link</a>.
+                                            {% endif %}
+
                                         </td>
                                     </tr>
                                     <!-- End of content -->
