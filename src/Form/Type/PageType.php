@@ -55,6 +55,7 @@ class PageType extends AbstractType
                     'attr' => array(
                         'class' => "my_page_route_params",
                     ),
+                    'required' => false
                 ]
             )
             ->add('layout', HiddenType::class, [

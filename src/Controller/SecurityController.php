@@ -82,7 +82,7 @@ class SecurityController extends AbstractController
     public function apiLogin(Request $request, UserManager $userManager): Response
     {
         $errorMessage = "Authentication error";
-
+        $errorMessage = $request->request->all();
         if (
             $request->isMethod('POST') &&
             $request->request->get('email', false) &&
@@ -102,9 +102,13 @@ class SecurityController extends AbstractController
                     return new JsonResponse(
                         [
                             'message' => "Authentification Successful",
+                            'success' => true,
                             'user' => $user->getName(),
                             'email' => $user->getEmail(),
-                            'token' => $apiToken->getToken()
+                            'token' => $apiToken->getToken(),
+                            'roles' => $user->getRoles(),
+                            'user_id' => $user->getId(),
+                            'user_name' => $user->getName()
                         ],
                         200
                     );
@@ -120,8 +124,9 @@ class SecurityController extends AbstractController
         return new JsonResponse(
             [
                 'message' => $errorMessage,
+                'success' => false
             ],
-            401
+            200
         );
     }
 
@@ -246,7 +251,7 @@ class SecurityController extends AbstractController
                     (isset($contents['input_confirm_password']) && !empty($contents['input_confirm_password'])) &&
                     (isset($contents['input_mobile']) && !empty($contents['input_mobile']))
                 ) {
-                    if ($request->request->get('input_password') === $request->request->get('input_confirm_password')) {
+                    if ($contents['input_password'] === $contents['input_confirm_password']) {
                         $email = $contents['input_email'];
                         if (!$userManager->isUserExist($email)) {
                             $user = $userManager->createUserFromWebsite([
