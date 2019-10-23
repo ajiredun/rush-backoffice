@@ -99,14 +99,14 @@ class UserManager
         return $user;
     }
 
-    public function setPassword(User $user, $password = null, $propagation = true)
+    public function setPassword(User $user, $password = null, $propagation = true, $frontOffice = false)
     {
         if (empty($password)) {
             $password = rand(1000000000,1000000000000);
         }
 
         if ($propagation) {
-            $event = new UserPasswordEvent($user, $password);
+            $event = new UserPasswordEvent($user, $password, $frontOffice);
             $this->eventDispatcher->dispatch($event, UserPasswordEvent::NAME);
         }
 

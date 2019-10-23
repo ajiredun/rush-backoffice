@@ -67,6 +67,6 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function userPassword_mail(UserPasswordEvent $event)
     {
-        $this->mailManager->sendForgotPasswordMail($event->getUser(), $event->getPassword());
+        $this->mailManager->sendForgotPasswordMail($event->getUser(), $event->getPassword(), $event->isFrontOffice());
     }
 }

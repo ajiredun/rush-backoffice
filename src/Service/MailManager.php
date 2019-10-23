@@ -53,10 +53,9 @@ class MailManager
                         ['user' => $user, 'frontOffice' => false]
                     ),
                     'text/html'
-                )
-            ;
+                );
         } else {
-            $message = (new \Swift_Message( $this->getSystemManager()->getValue('fo_name') .' - Activation'))
+            $message = (new \Swift_Message($this->getSystemManager()->getValue('fo_name') . ' - Activation'))
                 ->setFrom($this->getSystemManager()->getValue('management_email'))
                 ->setTo($user->getEmail())
                 ->setBody(
@@ -66,28 +65,40 @@ class MailManager
                         ['user' => $user, 'frontOffice' => true]
                     ),
                     'text/html'
-                )
-            ;
+                );
         }
 
         $this->mailer->send($message);
         $this->rfMessages->addInfo('Activation mail sent successfully.');
     }
 
-    public function sendForgotPasswordMail(User $user, $password)
+    public function sendForgotPasswordMail(User $user, $password, $frontOffice = false)
     {
-        $message = (new \Swift_Message('Rush Framework - Forgot Password'))
-            ->setFrom(MailManager::SYSTEM_EMAIL)
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->templating->render(
-                // templates/emails/registration.html.twig
-                    'Email/User/password.html.twig',
-                    ['user' => $user, 'password' => $password]
-                ),
-                'text/html'
-            )
-        ;
+        if (!$frontOffice) {
+            $message = (new \Swift_Message('Rush Framework - Forgot Password'))
+                ->setFrom(MailManager::SYSTEM_EMAIL)
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->templating->render(
+                    // templates/emails/registration.html.twig
+                        'Email/User/password.html.twig',
+                        ['user' => $user, 'password' => $password]
+                    ),
+                    'text/html'
+                );
+        } else {
+            $message = (new \Swift_Message($this->getSystemManager()->getValue('fo_name') . ' - Forgot Password'))
+                ->setFrom($this->getSystemManager()->getValue('management_email'))
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->templating->render(
+                    // templates/emails/registration.html.twig
+                        'Email/User/password.html.twig',
+                        ['user' => $user, 'password' => $password]
+                    ),
+                    'text/html'
+                );
+        }
 
         $this->mailer->send($message);
         $this->rfMessages->addInfo('Forgot password mail sent successfully.');

@@ -370,6 +370,37 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/api/forgot-password", name="api_forgot_password")
+     */
+    public function apiForgotPassword(Request $request, UserManager $userManager)
+    {
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+
+        if ($request->isMethod('POST')) {
+            if (!empty($request->request->get('input_email'))) {
+                $email = $request->request->get('input_email');
+                $ur = $this->getDoctrine()->getRepository(User::class);
+                $user = $ur->findOneBy(array('email'=>$email));
+                if ($user) {
+                    $userManager->setPassword($user, null, true, true);
+                    $this->getDoctrine()->getManager()->flush();
+                    $response['success'] = true;
+                    $response['message'] = "We sent you an Email.";
+                } else {
+                    $response['message'] = "There is no account with this email address.";
+                }
+            } else {
+                $response['message'] = "Please enter the recovery email address.";
+            }
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      */
     public function logout()
