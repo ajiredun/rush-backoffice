@@ -66,13 +66,13 @@ class Block
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $dependencies = [];
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("page:read")
+     * @Groups({"page:read","pages:read"})
      */
     private $roles = [];
 

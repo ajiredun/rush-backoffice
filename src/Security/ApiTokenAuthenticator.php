@@ -35,6 +35,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request)
     {
+        if ($request->get('rf-auth', false)) {
+            return $request->get('rf-auth');
+        }
+
+
         $authorizationHeader = $request->headers->get('rf-auth');
 
         return substr($authorizationHeader, 7);
@@ -42,20 +47,19 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-
         $token = $this->apiTokenRepo->findOneBy([
             'token' => $credentials
         ]);
 
         if (!$token) {
             throw new CustomUserMessageAuthenticationException(
-                'Invalid API Token'
+                'INVALID_TOKEN'
             );
         }
 
         if ($token->isExpired()) {
             throw new CustomUserMessageAuthenticationException(
-                'Token expired'
+                'TOKEN_EXPIRED'
             );
         }
 
