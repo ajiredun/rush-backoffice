@@ -30,6 +30,10 @@ class Roles
     const ROLE_PAGE_MANAGEMENT_VIEWER = "ROLE_PAGE_MANAGEMENT_VIEWER";
     const ROLE_PAGE_MANAGEMENT_EDITOR = "ROLE_PAGE_MANAGEMENT_EDITOR";
 
+    //PAGE MANAGEMENT
+    const ROLE_OBJECT_MENU_VIEWER = "ROLE_OBJECT_MENU_VIEWER";
+    const ROLE_OBJECT_MENU_EDITOR = "ROLE_OBJECT_MENU_EDITOR";
+
     //BACK OFFICE SETTINGS
     const ROLE_BO_SETTINGS = "ROLE_BO_SETTINGS";
 
@@ -71,7 +75,9 @@ class Roles
             Roles::ROLE_PAGE_MANAGEMENT_VIEWER => "Page Manager - View Only",
             Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager",
             Roles::ROLE_BO_SETTINGS => "Back Office Settings",
-            Roles::ROLE_API_USER => "Anonymous Web User"
+            Roles::ROLE_API_USER => "Anonymous Web User",
+            Roles::ROLE_OBJECT_MENU_VIEWER => "O Menu - View Only",
+            Roles::ROLE_OBJECT_MENU_EDITOR => "O Menu",
         ];
     }
 
@@ -85,7 +91,8 @@ class Roles
             Roles::ROLE_ROLES_MANAGEMENT => "Role Manager",
             Roles::ROLE_VISUAL_PACK_EDITOR => "Visual Pack Manager",
             Roles::ROLE_PAGE_MANAGEMENT_EDITOR => "Page Manager",
-            Roles::ROLE_BO_SETTINGS => "Back Office Settings"
+            Roles::ROLE_BO_SETTINGS => "Back Office Settings",
+            Roles::ROLE_OBJECT_MENU_EDITOR => "O Menu Manager"
         ];
     }
 

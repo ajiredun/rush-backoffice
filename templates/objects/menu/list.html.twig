@@ -1,0 +1,60 @@
+{% extends 'objects/components/structure.html.twig' %}
+
+{% block title %}O Menu List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'object_menu',
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
+            {'path' : path('rf_user_add'), 'title':"Add Menu"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_object_menu_list'), 'title':"O Menu Management"},
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus", 'active':true},
+            {'path' : path('rf_user_add'), 'title':"Add Menu"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0" >
+            <form class="rf-search-form"  method="{{ getSystemFormMethod() }}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control rf-focus" name="rfsearch_object_menu_list_name" value="{{ searchParamsGet('object_menu_list_name') }}" placeholder="name">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-darker"><i class="fa fa-search"></i> </button>
+                            <a href="{{ path('rf_object_menu_list') }}" class="btn btn-outline-darker btn-sm"><i class="fa fa-times"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row user-list-content">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            {% set config = {'config':{
+                'title' : 'Menus ('~pagination.getTotalItemCount~')',
+                'classname': "menu",
+                'objects' : pagination,
+                'fields' : ['online','name','lastModifiedBy', 'lastModifiedAt'],
+                'paginate' : true,
+                'options': ['view', 'edit']
+            }} %}
+            {% include 'objects/components/object_list.html.twig' with config %}
+        </div>
+    </div>
+{% endblock %}

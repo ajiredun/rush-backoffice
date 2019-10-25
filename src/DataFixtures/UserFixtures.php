@@ -66,19 +66,6 @@ class UserFixtures extends Fixture
         $manager->persist($user3);
 
 
-        $user4 = new User();
-        $user4->setFirstname('Web API');
-        $user4->setLastname('Anonymous');
-        $user4->setEmail('ajir.edun+webapi@gmail.com');
-        $user4->setStatus(UserStatus::ACTIVE);
-        $user4->setPassword($this->passwordEncoder->encodePassword(
-            $user4,
-            'webuser'
-        ));
-        $user4->setRoles([Roles::ROLE_API_USER]);
-
-        $manager->persist($user4);
-
 
         $manager->flush();
     }

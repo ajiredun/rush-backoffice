@@ -1,0 +1,160 @@
+{% if config.dark is not defined %}
+    {% set dark = false %}
+{% else %}
+    {% set dark = true %}
+{% endif %}
+
+<div class="card {% if dark %}bg-default{% endif %} shadow">
+    <div class="card-header {% if dark %}bg-transparent{% endif %}  border-0">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <h3 class="{% if dark %}text-white{% endif %} mb-0">{{ config.title }}</h3>
+            </div>
+            <div class="col-4 text-right">
+                {% if config.title_options is defined and config.title_options is not empty %}
+                    {% for item in config.title_options %}
+                        <a href="{{ item.path }}" class="btn rf btn-icon btn-3 btn-sm" {% if item.class is defined %}{{ item.class }}{% else %} btn-outline-grey{% endif %} type="button">
+                            {% if item.icon is defined %}
+                                <span class="btn-inner--icon">{{ item.icon | raw }}</span>
+                            {% endif %}
+                            <span class="btn-inner--text">{{ item.name }}</span>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    <div class="table-responsive">
+        {% if config.objects is empty %}
+            <h3>No Objects</h3>
+        {% else %}
+            <table class="table align-items-center {% if dark %}table-dark{% endif %} table-flush">
+                <thead class="{% if dark %}thead-dark{% else %}thead-light{% endif %}">
+                <tr>
+                    {% if 'name' in config.fields %}
+                        <th scope="col">Name</th>
+                    {% endif %}
+                    {% if 'email' in config.fields %}
+                        <th scope="col">Email</th>
+                    {% endif %}
+                    {% if 'status' in config.fields %}
+                        <th scope="col">Status</th>
+                    {% endif %}
+                    {% if 'lastModifiedAt' in config.fields %}
+                        <th scope="col">Created on</th>
+                    {% endif %}
+                    {% if 'lastModifiedBy' in config.fields %}
+                        <th scope="col">Created on</th>
+                    {% endif %}
+                    {% if 'createdAt' in config.fields %}
+                        <th scope="col">Created on</th>
+                    {% endif %}
+                    {% if 'roles' in config.fields %}
+                        <th scope="col">Roles</th>
+                    {% endif %}
+                    {% if config.options is defined %}
+                        <th scope="col"></th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in config.objects %}
+                    <tr>
+                        {% if 'name' in config.fields %}
+                            <td>
+                                {{ object.name }}
+                            </td>
+                        {% endif %}
+
+                        {% if 'email' in config.fields %}
+                            <td>
+                                {{ object.email }}
+                            </td>
+                        {% endif %}
+
+                        {% if 'status' in config.fields %}
+                            <td>
+                                {% if object.status == 'active' %}
+                                    <span class="badge badge-dot mr-2"><i class="bg-gradient-primary"></i> ACTIVE</span>
+                                {% endif %}
+                                {% if object.status == 'inactive' %}
+                                    <span class="badge badge-dot mr-2"><i class="bg-blue"></i> INACTIVE</span>
+                                {% endif %}
+                                {% if object.status == 'blocked' %}
+                                    <span class="badge badge-dot mr-2"><i class="bg-red"></i> BLOCKED</span>
+                                {% endif %}
+                                {% if object.status == 'archived' %}
+                                    <span class="badge badge-dot mr-2"><i
+                                                class="bg-gradient-gray-dark"></i> ARCHIVED</span>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+
+                        {% if 'lastModifiedAt' in config.fields %}
+                            <td>
+                                <span title="{{ object.lastModifiedAt | rfDate }}">{{ object.lastModifiedAt | timeSince }}</span>
+                            </td>
+                        {% endif %}
+
+                        {% if 'lastModifiedBy' in config.fields %}
+                            <td>
+                                {% set userConfig = {'user': object.lastModifiedBy } %}
+                                {% include 'admin/components/user_icon.html.twig' with userConfig %}
+                            </td>
+                        {% endif %}
+
+                        {% if 'createdAt' in config.fields %}
+                            <td>
+                                <span title="{{ object.createdAt | rfDate }}">{{ object.createdAt | timeSince }}</span>
+                            </td>
+                        {% endif %}
+
+                        {% if 'roles' in config.fields %}
+                            <td>
+                                {% for role in object.roles %}
+                                    <div >
+                                        {{ role | roleLabel }}
+                                    </div>
+                                {% endfor %}
+                            </td>
+                        {% endif %}
+
+                        {% if config.options is defined %}
+                            <td class="text-right">
+                                <div class="dropdown">
+                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                        {% if 'view' in config.options %}
+                                            <a class="dropdown-item" href="{{ path('rf_object_'~config.classname~'_view',{'id':object.id}) }}">View</a>
+                                        {% endif %}
+
+                                        {% if 'edit' in config.options %}
+                                            <a class="dropdown-item" href="{{ path('rf_object_'~config.classname~'_edit',{'id':object.id}) }}">Edit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+    <div class="card-footer {% if dark %}bg-transparent{% endif %}  border-0">
+        <div class="row align-items-center">
+            <div class="col-12">
+                {% if config.paginate is defined and config.paginate %}
+                    <div>
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
