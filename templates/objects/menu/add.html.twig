@@ -1,0 +1,197 @@
+{% extends 'objects/components/structure.html.twig' %}
+
+{% block title %}O Menu List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'object_menu',
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_object_menu_list'), 'title':"O Menu Management"},
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu", 'active':true},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block content %}
+    <div class="row menu-creator">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Add Menu</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="nestedMenu" class="list-group col nested-sortable  rf-nested">
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="menuContents" class="list-group col nested-sortable" style="max-height:600px; overflow: auto;">
+                                <div class="list-group-item" rf-type="virtual_logo">
+                                    <div class="title">
+                                        Logo with Homepage Link
+                                    </div>
+
+                                    <div class="views">
+                                        <label class="checkbox-inline public">
+                                            <input type="checkbox" value="public">Appear in Public
+                                        </label>
+                                        <label class="checkbox-inline authenticated">
+                                            <input type="checkbox" value="authenticated">Appear when logged in
+                                        </label>
+                                    </div>
+                                    <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; display: none; margin-top:5px; border-radius:10px;"></div>
+                                </div>
+                                {% for page in pages %}
+                                    <div class="list-group-item" rf-type="{{ page.id }}">
+                                        <div class="title">
+                                            {{ page.name }}
+                                        </div>
+                                        <div class="views">
+                                            <label class="checkbox-inline public">
+                                                <input type="checkbox" value="public">Appear in Public
+                                            </label>
+                                            <label class="checkbox-inline authenticated">
+                                                <input type="checkbox" value="authenticated">Appear when logged in
+                                            </label>
+                                        </div>
+                                        <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
+                                    </div>
+                                {% endfor %}
+                                <div class="list-group-item" rf-type="virtual_user_account">
+                                    <div class="title">
+                                        Account Section
+                                    </div>
+
+                                    <div class="views">
+                                        <label class="checkbox-inline public">
+                                            <input type="checkbox" value="public">Appear in Public
+                                        </label>
+                                        <label class="checkbox-inline authenticated">
+                                            <input type="checkbox" value="authenticated">Appear when logged in
+                                        </label>
+                                    </div>
+                                    <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {#<div id="nestedMenu" class="list-group col nested-sortable">
+                        <div class="list-group-item" rf-type="1">Titel 1
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;"></div>
+                        </div>
+                        <div class="list-group-item" rf-type="2">Titel 2
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;"></div>
+                        </div>
+                        <div class="list-group-item" rf-type="3">Titel3
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;">
+                                <div class="list-group-item" rf-type="4">Titel 4</div>
+                                <div class="list-group-item" rf-type="5">Titel 5</div>
+                                <div class="list-group-item" rf-type="6">Titel 6</div>
+                            </div>
+                        </div>
+                        <div class="list-group-item" rf-type="7">Titel 7
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;"></div>
+                        </div>
+                        <div class="list-group-item" rf-type="8">Titel 8
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;"></div>
+                        </div>
+                        <div class="list-group-item" rf-type="9">Titel 9
+                            <div class="list-group nested-sortable" style="min-height:25px;background: gainsboro;"></div>
+                        </div>
+                        <div class="list-group-item" rf-type="10">Titel10
+                            <div class="list-group nested-sortable">
+                                <div class="list-group-item" rf-type="11">Titel 11</div>
+                                <div class="list-group-item" rf-type="12">Titel 12</div>
+                            </div>
+                        </div>
+                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" id="sendButton">Button</button>
+    <style>
+
+        #nestedMenu {
+            width: 92%;
+            min-height: 400px;
+            padding: 4%;
+            background: gainsboro;
+        }
+
+        .menu-creator .list-group-item {
+            border: 1px solid #2c76bf;
+        }
+
+        .menu-creator .list-group-item .views .checkbox-inline {
+            padding: 5px;
+        }
+
+        .menu-creator .list-group-item .title {
+            padding-bottom: 10px;
+            color: black;
+        }
+
+        .rf-nested  .rf-nested .rf-nested {
+            display:none;
+        }
+
+        .list-group-item .views {
+            display: none;
+        }
+
+        #nestedMenu .views {
+            display: block;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            initSortable();
+
+            $('#sendButton').click(function () {
+
+
+            });
+        });
+
+        function initSortable() {
+            var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+
+            var sortables = [];
+
+            // Loop through each nested sortable element
+            for (var i = 0; i < nestedSortables.length; i++) {
+                sortables[i] = new Sortable(nestedSortables[i], {
+                    group: 'nested',
+                    animation: 150,
+                    fallbackOnBody: true,
+                    swapThreshold: 0.65
+                });
+            }
+        }
+    </script>
+{% endblock %}

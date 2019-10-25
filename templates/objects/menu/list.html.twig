@@ -7,7 +7,7 @@
         'active' : 'object_menu',
         'items': [
             {'path' : path('rf_object_menu_list'), 'title':"Menus"},
-            {'path' : path('rf_user_add'), 'title':"Add Menu"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -18,7 +18,7 @@
         'main': {'path' : path('rf_object_menu_list'), 'title':"O Menu Management"},
         'items': [
             {'path' : path('rf_object_menu_list'), 'title':"Menus", 'active':true},
-            {'path' : path('rf_user_add'), 'title':"Add Menu"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}

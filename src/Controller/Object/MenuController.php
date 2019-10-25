@@ -4,7 +4,9 @@ namespace App\Controller\Object;
 
 use App\Entity\ObjectMenu;
 use App\Enums\Roles;
+use App\Form\Type\Objects\MenuType;
 use App\Repository\ObjectMenuRepository;
+use App\Repository\PageRepository;
 use App\Service\RfMessages;
 use App\Service\SearchParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,6 +56,27 @@ class MenuController extends AbstractController
     public function view(Request $request, ObjectMenu $objectMenu)
     {
 
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @IsGranted(Roles::ROLE_OBJECT_MENU_EDITOR)
+     * @Route("/add", name="rf_object_menu_add")
+     */
+    public function add(Request $request, PageRepository $pageRepository)
+    {
+        $menu = new ObjectMenu();
+        $form = $this->createForm(MenuType::class, $menu);
+
+
+
+
+        $pages = $pageRepository->findBy(['published'=>true]);
+        return $this->render('objects/menu/add.html.twig', [
+            'pages' => $pages
+        ]);
     }
 
     /**

@@ -38,6 +38,11 @@ class ObjectMenu
      */
     private $lastModifiedBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $menuHTML;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class ObjectMenu
     public function setLastModifiedBy(?User $lastModifiedBy): self
     {
         $this->lastModifiedBy = $lastModifiedBy;
+
+        return $this;
+    }
+
+    public function getMenuHTML(): ?string
+    {
+        return $this->menuHTML;
+    }
+
+    public function setMenuHTML(?string $menuHTML): self
+    {
+        $this->menuHTML = $menuHTML;
 
         return $this;
     }
