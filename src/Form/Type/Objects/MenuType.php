@@ -31,7 +31,9 @@ class MenuType extends AbstractType
                 HiddenType::class,
                 [
                     'label' => 'Properties',
-                    'required'=> false
+                    'attr' => array(
+                        'class' => "my_menu_properties",
+                    ),
                 ]
             )
 
@@ -39,7 +41,9 @@ class MenuType extends AbstractType
                 HiddenType::class,
                 [
                     'label' => 'menu in html format',
-                    'required'=> false
+                    'attr' => array(
+                        'class' => "my_menu_html",
+                    ),
                 ]
             )
         ;

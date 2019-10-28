@@ -43,6 +43,11 @@ class ObjectMenu
      */
     private $menuHTML;
 
+    public function __construct()
+    {
+        $this->lastModifiedAt = new \DateTime('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;

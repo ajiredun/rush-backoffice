@@ -1,0 +1,162 @@
+{% extends 'objects/components/structure.html.twig' %}
+
+{% block title %}O Menu List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'object_menu',
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_object_menu_list'), 'title':"O Menu Management"},
+        'items': [
+            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
+            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block content %}
+    <div class="row menu-creator">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">{{ object.name }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="nestedMenu" class="list-group col nested-sortable  rf-nested">
+                                {{ object.menuHTML }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #nestedMenu {
+            width: 92%;
+            min-height: 400px;
+            padding: 4%;
+            background: gainsboro;
+        }
+
+        .menu-creator .list-group-item {
+            border: 1px solid #2c76bf;
+        }
+
+        .menu-creator .list-group-item .views .checkbox-inline {
+            padding: 5px;
+        }
+
+        .menu-creator .list-group-item .title {
+            padding-bottom: 10px;
+            color: black;
+        }
+
+        .rf-nested  .rf-nested .rf-nested {
+            display:none;
+        }
+
+        .list-group-item .views {
+            display: none;
+        }
+
+        #nestedMenu .views {
+            display: block;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            initSortable();
+
+            $('#btn-submit').click(function (e) {
+                e.preventDefault();
+
+                let data = [];
+                let menu = $('#nestedMenu');
+
+                let firstLevel = menu.children('.list-group-item');
+
+                firstLevel.each(function () {
+                    let basicData = {
+                        'id' : null,
+                        'public': false,
+                        'authenticated' : false,
+                        'children' : []
+                    };
+                    let flElement = $(this);
+                    basicData.id = flElement.attr('rf-type');
+                    if (flElement.find('.views .public').prop('checked')) {
+                        basicData.public = true;
+                    }
+                    if (flElement.find('.views .authenticated').prop('checked')) {
+                        basicData.authenticated = true;
+                    }
+                    let childrenElement = flElement.children('.list-group');
+                    if (childrenElement.children().length > 0) {
+                        secondLevel = childrenElement.children('.list-group-item');
+                        secondLevel.each(function () {
+                            let secondLevelData = {
+                                'id': null,
+                                'public': false,
+                                'authenticated': false
+                            }
+                            let slElement = $(this);
+                            secondLevelData.id = slElement.attr('rf-type');
+                            if (slElement.children('.views').children('.public').checked) {
+                                secondLevelData.public = true;
+                            }
+                            if (slElement.children('.views').children('.authenticated').checked) {
+                                secondLevelData.authenticated = true;
+                            }
+
+                            basicData.children.push(secondLevelData);
+                        });
+                    }
+
+                    data.push(basicData);
+                });
+
+                $('.my_menu_properties').val(JSON.stringify(data));
+
+                $('.my_menu_html').val($('#nestedMenu').html());
+            });
+        });
+
+        function initSortable() {
+            var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+
+            var sortables = [];
+
+            // Loop through each nested sortable element
+            for (var i = 0; i < nestedSortables.length; i++) {
+                sortables[i] = new Sortable(nestedSortables[i], {
+                    group: 'nested',
+                    animation: 150,
+                    fallbackOnBody: true,
+                    swapThreshold: 0.65
+                });
+            }
+        }
+    </script>
+{% endblock %}
