@@ -59,7 +59,6 @@ class MenuController extends AbstractController
     {
         return $this->render('objects/menu/view.html.twig', [
             'object' => $objectMenu,
-            'form' => $form->createView(),
         ]);
     }
 
@@ -80,38 +79,104 @@ class MenuController extends AbstractController
     {
         $menu = new ObjectMenu();
         $menu->setLastModifiedBy($this->getUser());
-        $form = $this->createForm(MenuType::class, $menu);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        //dd($request->request);
+
+        if (
+            $request->isMethod('POST') &&
+            $request->request->get('my_menu_name', false) &&
+            $request->request->get('my_menu_properties', false) &&
+            $request->request->get('my_menu_html', false)
+        ) {
 
             /**
-             * @var ObjectMenu $objectMenu
+             * @var ObjectMenu $menu
              */
-            $objectMenu = $form->getData();
-            $objectMenu->setLastModifiedAt(new \DateTime('now'));
-            $em->persist($objectMenu);
+            $menu->setProperties(json_decode($request->request->get('my_menu_properties')));
+            $menu->setName($request->request->get('my_menu_name'));
+            $menu->setMenuHTML($request->request->get('my_menu_html'));
+            $menu->setLastModifiedAt(new \DateTime('now'));
+            $em->persist($menu);
             $em->flush();
 
             $rfMessages->addSuccess("Menu added successfully!");
-            return $this->redirectToRoute('rf_object_menu_view', array_merge(['id'=>$objectMenu->getId()],$rfMessages->getMessages()));
+            return $this->redirectToRoute('rf_object_menu_view', array_merge(['id'=>$menu->getId()],$rfMessages->getMessages()));
         }
 
         $pages = $pageRepository->findBy(['published'=>true]);
         return $this->render('objects/menu/add.html.twig', [
             'pages' => $pages,
-            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
-     * @param ObjectMenu $objectMenu
+     * @param ObjectMenu $menu
+     * @param PageRepository $pageRepository
+     * @param RfMessages $rfMessages
+     * @param EntityManagerInterface $em
+     *
      *
      * @Route("/edit/menu-{id}", name="rf_object_menu_edit")
+     * @return mixed
      */
-    public function edit(Request $request, ObjectMenu $objectMenu)
+    public function edit(Request $request, ObjectMenu $menu, PageRepository $pageRepository, RfMessages $rfMessages, EntityManagerInterface $em)
     {
 
+        $menu->setLastModifiedBy($this->getUser());
+
+
+        if (
+            $request->isMethod('POST') &&
+            $request->request->get('my_menu_name', false) &&
+            $request->request->get('my_menu_properties', false) &&
+            $request->request->get('my_menu_html', false)
+        ) {
+
+            /**
+             * @var ObjectMenu $menu
+             */
+            $menu->setProperties(json_decode($request->request->get('my_menu_properties')));
+            $menu->setName($request->request->get('my_menu_name'));
+            $menu->setMenuHTML($request->request->get('my_menu_html'));
+            $menu->setLastModifiedAt(new \DateTime('now'));
+            $em->flush();
+
+            $rfMessages->addSuccess("Menu edit successfully!");
+            return $this->redirectToRoute('rf_object_menu_view', array_merge(['id'=>$menu->getId()],$rfMessages->getMessages()));
+        }
+
+
+        $pages = $pageRepository->findBy(['published'=>true]);
+        return $this->render('objects/menu/add.html.twig', [
+            'editMode' => true,
+            'object' => $menu,
+            'pages' => $pages,
+        ]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param ObjectMenu $objectMenu
+     * @param RfMessages $rfMessages
+     * @param EntityManagerInterface $em
+     * @return mixed
+     *
+     * @Route("/delete/{id}", name="rf_object_menu_delete")
+     *
+     */
+    public function delete(Request $request, ObjectMenu $objectMenu, RfMessages $rfMessages, EntityManagerInterface $em)
+    {
+
+        $em->remove($objectMenu);
+        $em->flush();
+
+        $rfMessages->addSuccess("Menu deleted successfully.");
+        return $this->redirectToRoute('rf_object_menu_list', array_merge([],$rfMessages->getMessages()));
+
+        return $this->render('objects/menu/view.html.twig', [
+            'object' => $objectMenu,
+        ]);
     }
 }

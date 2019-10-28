@@ -42,10 +42,10 @@
                         <th scope="col">Status</th>
                     {% endif %}
                     {% if 'lastModifiedAt' in config.fields %}
-                        <th scope="col">Created on</th>
+                        <th scope="col">Last modified</th>
                     {% endif %}
                     {% if 'lastModifiedBy' in config.fields %}
-                        <th scope="col">Created on</th>
+                        <th scope="col">Last modified by</th>
                     {% endif %}
                     {% if 'createdAt' in config.fields %}
                         <th scope="col">Created on</th>
@@ -63,7 +63,9 @@
                     <tr>
                         {% if 'name' in config.fields %}
                             <td>
-                                {{ object.name }}
+                                <a class="dropdown-item" href="{{ path('rf_object_'~config.classname~'_view',{'id':object.id}) }}">
+                                    {{ object.name }}
+                                </a>
                             </td>
                         {% endif %}
 

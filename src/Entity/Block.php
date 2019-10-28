@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -82,12 +83,18 @@ class Block
      */
     private $contentType;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ObjectRelation", mappedBy="block", orphanRemoval=true)
+     */
+    private $objectRelations;
+
 
     public function __construct()
     {
         $this->blockOrder = 0;
         $this->createdAt = new \DateTime('now');
         $this->lastModifiedAt = new \DateTime('now');
+        $this->objectRelations = new ArrayCollection();
     }
 
     public function __clone()
@@ -219,6 +226,37 @@ class Block
     public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ObjectRelation[]
+     */
+    public function getObjectRelations(): Collection
+    {
+        return $this->objectRelations;
+    }
+
+    public function addObjectRelation(ObjectRelation $objectRelation): self
+    {
+        if (!$this->objectRelations->contains($objectRelation)) {
+            $this->objectRelations[] = $objectRelation;
+            $objectRelation->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectRelation(ObjectRelation $objectRelation): self
+    {
+        if ($this->objectRelations->contains($objectRelation)) {
+            $this->objectRelations->removeElement($objectRelation);
+            // set the owning side to null (unless already changed)
+            if ($objectRelation->getBlock() === $this) {
+                $objectRelation->setBlock(null);
+            }
+        }
 
         return $this;
     }

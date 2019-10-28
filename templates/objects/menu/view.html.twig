@@ -33,13 +33,28 @@
                         <div class="col-8">
                             <h3 class="mb-0">{{ object.name }}</h3>
                         </div>
+                        <div class="col-4" style="text-align: right;">
+
+                            <a href="{{ path('rf_object_menu_edit', {'id':object.id}) }}"  class="btn btn-outline-secondary btn-sm" >
+                                <span class="btn-inner--icon"><i class="fa fa-edit"></i></span>
+                                <span class="btn-inner--text">Edit</span>
+                            </a>
+
+                            <a href="{{ path('rf_object_menu_edit', {'id':object.id}) }}"  id="deleteMenu" class="btn btn-outline-danger btn-sm" data-title="Delete this menu ?" >
+                                <span class="btn-inner--icon"><i class="fas fa-times-circle"></i></span>
+                                <span class="btn-inner--text">Delete</span>
+                            </a>
+
+
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
                             <div id="nestedMenu" class="list-group col nested-sortable  rf-nested">
-                                {{ object.menuHTML }}
+
+                                {{ object.menuHTML | raw }}
                             </div>
                         </div>
                     </div>
@@ -57,7 +72,11 @@
         }
 
         .menu-creator .list-group-item {
-            border: 1px solid #2c76bf;
+            border: none;
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px darkgrey;
+            background-image: linear-gradient(to top, #ffffff 0%, #eef1f5 100%);
         }
 
         .menu-creator .list-group-item .views .checkbox-inline {
@@ -67,6 +86,10 @@
         .menu-creator .list-group-item .title {
             padding-bottom: 10px;
             color: black;
+        }
+
+        .rf-nested  .rf-nested .rf-nested {
+            display:none;
         }
 
         .rf-nested  .rf-nested .rf-nested {
@@ -83,80 +106,89 @@
     </style>
 {% endblock %}
 
+
 {% block js %}
     {{ parent() }}
     <script>
-        $(document).ready(function() {
-            initSortable();
+        $(document).ready(function () {
+            initSelectedMenu();
 
-            $('#btn-submit').click(function (e) {
-                e.preventDefault();
-
-                let data = [];
-                let menu = $('#nestedMenu');
-
-                let firstLevel = menu.children('.list-group-item');
-
-                firstLevel.each(function () {
-                    let basicData = {
-                        'id' : null,
-                        'public': false,
-                        'authenticated' : false,
-                        'children' : []
-                    };
-                    let flElement = $(this);
-                    basicData.id = flElement.attr('rf-type');
-                    if (flElement.find('.views .public').prop('checked')) {
-                        basicData.public = true;
-                    }
-                    if (flElement.find('.views .authenticated').prop('checked')) {
-                        basicData.authenticated = true;
-                    }
-                    let childrenElement = flElement.children('.list-group');
-                    if (childrenElement.children().length > 0) {
-                        secondLevel = childrenElement.children('.list-group-item');
-                        secondLevel.each(function () {
-                            let secondLevelData = {
-                                'id': null,
-                                'public': false,
-                                'authenticated': false
-                            }
-                            let slElement = $(this);
-                            secondLevelData.id = slElement.attr('rf-type');
-                            if (slElement.children('.views').children('.public').checked) {
-                                secondLevelData.public = true;
-                            }
-                            if (slElement.children('.views').children('.authenticated').checked) {
-                                secondLevelData.authenticated = true;
-                            }
-
-                            basicData.children.push(secondLevelData);
-                        });
-                    }
-
-                    data.push(basicData);
-                });
-
-                $('.my_menu_properties').val(JSON.stringify(data));
-
-                $('.my_menu_html').val($('#nestedMenu').html());
+            $('#deleteMenu').confirm({
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn btn-secondary',
+                        action: function () {
+                            // do nothing
+                        }
+                    },
+                    delete: {
+                        text: 'Delete',
+                        btnClass: 'btn btn-danger',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            location.href = this.$target.attr('href');
+                        }
+                    },
+                }
             });
+
         });
 
-        function initSortable() {
-            var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+        function initSelectedMenu() {
+            let properties = '{{ object.encodedProperties | raw }}';
+            properties = JSON.parse(properties);
+            /*properties.each(function() {
+                $('#nestedMenu .list-group-item[rf-type="118"]').toggle()
+            });*/
+            initLevel(properties);
+            $('#menuContents input[type=checkbox]').attr('disabled', 'disabled');
+        }
 
-            var sortables = [];
+        function initLevel(data) {
+            $.each(data, function (key, data) {
+                let elementId = false;
+                let elementPublic = false;
+                let elementAuthenticated = false;
+                let elementChildren = false;
 
-            // Loop through each nested sortable element
-            for (var i = 0; i < nestedSortables.length; i++) {
-                sortables[i] = new Sortable(nestedSortables[i], {
-                    group: 'nested',
-                    animation: 150,
-                    fallbackOnBody: true,
-                    swapThreshold: 0.65
+                $.each(data, function (index, data) {
+                    if (index == "id") {
+                        elementId = data;
+                    }
+                    if (index == "public") {
+                        elementPublic = data;
+                    }
+                    if (index == "authenticated") {
+                        elementAuthenticated = data;
+                    }
+                    if (index == "children") {
+                        if (data.length > 0) {
+                            elementChildren = data;
+                        }
+                    }
                 });
-            }
+
+                var element = $('#nestedMenu .list-group-item[rf-type="' + elementId + '"]');
+
+                //hide in list
+                $('#menuContents .list-group-item[rf-type="' + elementId + '"]').hide();
+                if (elementPublic) {
+                    element.find('.views .public').prop('checked', true);
+                } else {
+                    element.find('.views .public').prop('checked', false);
+                }
+                if (elementAuthenticated) {
+                    element.find('.views .authenticated').prop('checked', true);
+                } else {
+                    element.find('.views .authenticated').prop('checked', false);
+                }
+
+                if (elementChildren) {
+                    initLevel(elementChildren);
+                }
+            })
         }
     </script>
 {% endblock %}
+

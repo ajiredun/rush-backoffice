@@ -31,103 +31,124 @@
                 <div class="card-header bg-translucent-neutral border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Add Menu</h3>
+                            <h3 class="mb-0">
+                                {% if editMode is defined and editMode %}
+                                    Edit Menu
+                                {% else %}
+                                    Add Menu
+                                {% endif %}
+                            </h3>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
 
-                    {{ form_start(form) }}
-                    <div class="pl-lg-4">
+                    <form id="form_menu" method="post">
+
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input class="form-control" id="my_menu_name"
+                                               name="my_menu_name" {% if editMode is defined and editMode %} value="{{ object.name }}"{% endif %}
+                                               type="text"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="my_menu_properties" name="my_menu_properties" type="text"/>
+                                    <input id="my_menu_html" name="my_menu_html" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4"/>
+
+
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    {{ form_row(form.name) }}
+                            <div class="col-md-8">
+                                <div id="nestedMenu" class="list-group col nested-sortable  rf-nested">
+                                    {% if editMode is defined and editMode %}
+                                        {{ object.menuHTML | raw }}
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                {{ form_row(form.properties) }}
-                                {{ form_row(form.menuHTML) }}
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4"/>
-
-
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div id="nestedMenu" class="list-group col nested-sortable  rf-nested">
-
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div id="menuContents" class="list-group col nested-sortable" style="max-height:600px; overflow: auto;">
-                                <div class="list-group-item" rf-type="virtual_logo">
-                                    <div class="title">
-                                        Logo with Homepage Link
-                                    </div>
-
-                                    <div class="views">
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" class="public" name="views_type" value="public">Appear in Public
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox"  class="authenticated"  name="views_type"  value="authenticated">Appear when logged in
-                                        </label>
-                                    </div>
-                                    <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; display: none; margin-top:5px; border-radius:10px;"></div>
-                                </div>
-                                {% for page in pages %}
-                                    <div class="list-group-item" rf-type="{{ page.id }}">
+                            <div class="col-md-4">
+                                <div id="menuContents" class="list-group col nested-sortable"
+                                     style="max-height:600px; overflow: auto;">
+                                    <div class="list-group-item" rf-type="virtual_logo">
                                         <div class="title">
-                                            {{ page.name }}
+                                            Logo with Homepage Link
                                         </div>
+
                                         <div class="views">
                                             <label class="checkbox-inline">
-                                                <input type="checkbox" class="public" name="views_type" value="public">Appear in Public
+                                                <input type="checkbox" class="public" name="views_type" value="public">Appear
+                                                in Public
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox"  class="authenticated"  name="views_type"  value="authenticated">Appear when logged in
+                                                <input type="checkbox" class="authenticated" name="views_type"
+                                                       value="authenticated">Appear when logged in
                                             </label>
                                         </div>
-                                        <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
+                                        <div class="list-group nested-sortable rf-nested"
+                                             style="min-height:50px;background: gainsboro; display: none; margin-top:5px; border-radius:10px;"></div>
                                     </div>
-                                {% endfor %}
-                                <div class="list-group-item" rf-type="virtual_user_account">
-                                    <div class="title">
-                                        Account Section
-                                    </div>
+                                    {% for page in pages %}
+                                        <div class="list-group-item" rf-type="{{ page.id }}">
+                                            <div class="title">
+                                                {{ page.name }}
+                                            </div>
+                                            <div class="views">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" class="public" name="views_type"
+                                                           value="public">Appear in Public
+                                                </label>
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" class="authenticated" name="views_type"
+                                                           value="authenticated">Appear when logged in
+                                                </label>
+                                            </div>
+                                            <div class="list-group nested-sortable rf-nested"
+                                                 style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="list-group-item" rf-type="virtual_user_account">
+                                        <div class="title">
+                                            Account Section
+                                        </div>
 
-                                    <div class="views">
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" class="public" name="views_type" value="public">Appear in Public
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox"  class="authenticated"  name="views_type"  value="authenticated">Appear when logged in
-                                        </label>
+                                        <div class="views">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" class="public" name="views_type" value="public">Appear
+                                                in Public
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" class="authenticated" name="views_type"
+                                                       value="authenticated">Appear when logged in
+                                            </label>
+                                        </div>
+                                        <div class="list-group nested-sortable rf-nested"
+                                             style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
                                     </div>
-                                    <div class="list-group nested-sortable rf-nested" style="min-height:50px;background: gainsboro; margin-top:5px; border-radius:10px;"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <hr class="my-4"/>
-                    <h6 class="heading-small text-muted mb-4">Actions</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button type="submit" id="btn-submit" class="btn btn-icon btn-3 btn-primary">
-                                        <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+                        <hr class="my-4"/>
+                        <h6 class="heading-small text-muted mb-4">Actions</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" id="btn-submit" class="btn btn-icon btn-3 btn-primary">
+                                            <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
 
-                                        <span class="btn-inner--text">Done</span>
-                                    </button>
+                                            <span class="btn-inner--text">Done</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{ form_end(form) }}
+                    </form>
                 </div>
             </div>
         </div>
@@ -142,7 +163,11 @@
         }
 
         .menu-creator .list-group-item {
-            border: 1px solid #2c76bf;
+            border: none;
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px darkgrey;
+            background-image: linear-gradient(to top, #ffffff 0%, #eef1f5 100%);
         }
 
         .menu-creator .list-group-item .views .checkbox-inline {
@@ -154,8 +179,8 @@
             color: black;
         }
 
-        .rf-nested  .rf-nested .rf-nested {
-            display:none;
+        .rf-nested .rf-nested .rf-nested {
+            display: none;
         }
 
         .list-group-item .views {
@@ -171,8 +196,11 @@
 {% block js %}
     {{ parent() }}
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             initSortable();
+            {% if editMode is defined and editMode %}
+            initSelectedMenu();
+            {% endif %}
 
             $('#btn-submit').click(function (e) {
                 e.preventDefault();
@@ -184,10 +212,10 @@
 
                 firstLevel.each(function () {
                     let basicData = {
-                        'id' : null,
+                        'id': null,
                         'public': false,
-                        'authenticated' : false,
-                        'children' : []
+                        'authenticated': false,
+                        'children': []
                     };
                     let flElement = $(this);
                     basicData.id = flElement.attr('rf-type');
@@ -208,10 +236,10 @@
                             }
                             let slElement = $(this);
                             secondLevelData.id = slElement.attr('rf-type');
-                            if (slElement.children('.views').children('.public').checked) {
+                            if (slElement.find('.views .public').prop('checked')) {
                                 secondLevelData.public = true;
                             }
-                            if (slElement.children('.views').children('.authenticated').checked) {
+                            if (slElement.find('.views .authenticated').prop('checked')) {
                                 secondLevelData.authenticated = true;
                             }
 
@@ -222,11 +250,11 @@
                     data.push(basicData);
                 });
 
-                $('.my_menu_properties').val(JSON.stringify(data));
+                $('#my_menu_properties').val(JSON.stringify(data));
 
-                $('.my_menu_html').val($('#nestedMenu').html());
+                $('#my_menu_html').val($('#nestedMenu').html());
 
-                $('form[name="menu"]').submit();
+                $('#form_menu').submit();
             });
         });
 
@@ -245,5 +273,61 @@
                 });
             }
         }
+
+        {% if editMode is defined and editMode %}
+        function initSelectedMenu() {
+            let properties = '{{ object.encodedProperties | raw }}';
+            properties = JSON.parse(properties);
+            /*properties.each(function() {
+                $('#nestedMenu .list-group-item[rf-type="118"]').toggle()
+            });*/
+            initLevel(properties);
+        }
+
+        function initLevel(data) {
+            $.each(data, function (key, data) {
+                let elementId = false;
+                let elementPublic = false;
+                let elementAuthenticated = false;
+                let elementChildren = false;
+
+                $.each(data, function (index, data) {
+                    if (index == "id") {
+                        elementId = data;
+                    }
+                    if (index == "public") {
+                        elementPublic = data;
+                    }
+                    if (index == "authenticated") {
+                        elementAuthenticated = data;
+                    }
+                    if (index == "children") {
+                        if (data.length > 0) {
+                            elementChildren = data;
+                        }
+                    }
+                });
+
+                var element = $('#nestedMenu .list-group-item[rf-type="' + elementId + '"]');
+
+                //hide in list
+                $('#menuContents .list-group-item[rf-type="' + elementId + '"]').hide();
+                if (elementPublic) {
+                    element.find('.views .public').prop('checked', true);
+                } else {
+                    element.find('.views .public').prop('checked', false);
+                }
+                if (elementAuthenticated) {
+                    element.find('.views .authenticated').prop('checked', true);
+                } else {
+                    element.find('.views .authenticated').prop('checked', false);
+                }
+
+                if (elementChildren) {
+                    initLevel(elementChildren);
+                }
+            })
+        }
+        {% endif %}
     </script>
 {% endblock %}

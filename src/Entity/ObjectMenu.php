@@ -70,6 +70,11 @@ class ObjectMenu
         return $this->properties;
     }
 
+    public function getEncodedProperties()
+    {
+        return json_encode($this->getProperties());
+    }
+
     public function setProperties(array $properties): self
     {
         $this->properties = $properties;

@@ -16,7 +16,7 @@ class MenuType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
+        /*$builder
             ->add('name',
                 TextType::class,
                 [
@@ -45,7 +45,7 @@ class MenuType extends AbstractType
                         'class' => "my_menu_html",
                     ),
                 ]
-            )
+            )*/
         ;
     }
 
