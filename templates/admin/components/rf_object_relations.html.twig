@@ -1,0 +1,13 @@
+{% if rfObjectRelations is defined and rfObjectRelations is not empty %}
+    {% for relation in rfObjectRelations %}
+        {% if relation is not empty %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <span>Cannot delete this object as it is being used. </span>
+            <span class="alert-inner--text"><a style="color:white; font-weight: bolder; text-decoration: underline;" target="_blank" href="{{ path('rf_page_viewproperties', {'page':relation.block.page.id, 'block':relation.block.id}) }}">Modify Block</a></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

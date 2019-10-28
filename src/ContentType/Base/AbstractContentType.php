@@ -88,6 +88,11 @@ abstract class AbstractContentType implements ContentTypeInterface
         return [];
     }
 
+    public function getObjectRelation()
+    {
+        return null;
+    }
+
 
     /*public function getProperty($property)
     {

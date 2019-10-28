@@ -3,8 +3,6 @@
 namespace App\Form\Type\ContentType;
 
 
-use App\ContentType\HalfImageHalfTextCT;
-use App\ContentType\OneThirdImageTwoThirdTextCT;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

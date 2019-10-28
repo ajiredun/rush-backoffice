@@ -13,6 +13,7 @@ use App\Repository\PageRepository;
 use App\Service\BlockManager;
 use App\Service\CTManager;
 use App\Service\LayoutManager;
+use App\Service\ObjectRelationManager;
 use App\Service\PageManager;
 use App\Service\RfMessages;
 use App\Service\SearchParams;
@@ -482,20 +483,24 @@ class PageController extends AbstractController
      * @param BlockManager $blockManager
      * @return mixed
      */
-    public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, RfMessages $rfMessages)
+    public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, RfMessages $rfMessages, ObjectRelationManager $objectRelationManager)
     {
         $defaultData = array_merge(['roles'=>$block->getRoles()], $block->getProperties());
+        $objectRelationManager->tansformRelationsBeforePost($block, $defaultData);
+
         $form = $blockManager->getContentType($block)->getForm($defaultData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            $objectRelationManager->tansformRelationsAfterPost($block, $data);
             $params = ['roles'=>$data['roles']];
             unset($data['roles']);
             $params['properties'] = $data;
 
             $blockManager->updateBlock($block, $params);
+
+            $objectRelationManager->handleRelations($block, $params['properties']);
 
             $rfMessages->addSuccess("The block has been modified successfully.");
             return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId(), 'tab'=>'contents'],$rfMessages->getMessages()));

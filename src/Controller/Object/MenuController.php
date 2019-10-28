@@ -7,6 +7,7 @@ use App\Enums\Roles;
 use App\Form\Type\Objects\MenuType;
 use App\Repository\ObjectMenuRepository;
 use App\Repository\PageRepository;
+use App\Service\ObjectRelationManager;
 use App\Service\RfMessages;
 use App\Service\SearchParams;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,14 +52,22 @@ class MenuController extends AbstractController
     /**
      * @param Request $request
      * @param ObjectMenu $objectMenu
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param ObjectRelationManager $objectRelationManager
+     * @return mixed
      *
      * @Route("/menu-{id}", name="rf_object_menu_view")
      */
-    public function view(Request $request, ObjectMenu $objectMenu)
+    public function view(Request $request, ObjectMenu $objectMenu, ObjectRelationManager $objectRelationManager)
     {
+        $rfObjectRelations = null;
+
+        if ($request->get('rfObjectRelations', false)) {
+            $rfObjectRelations = $objectRelationManager->transformFromUrl($request->get('rfObjectRelations'));
+        }
+        //dd($rfObjectRelations);
         return $this->render('objects/menu/view.html.twig', [
             'object' => $objectMenu,
+            'rfObjectRelations' => $rfObjectRelations
         ]);
     }
 
@@ -161,22 +170,25 @@ class MenuController extends AbstractController
      * @param ObjectMenu $objectMenu
      * @param RfMessages $rfMessages
      * @param EntityManagerInterface $em
+     * @param ObjectRelationManager $objectRelationManager
      * @return mixed
      *
      * @Route("/delete/{id}", name="rf_object_menu_delete")
      *
      */
-    public function delete(Request $request, ObjectMenu $objectMenu, RfMessages $rfMessages, EntityManagerInterface $em)
+    public function delete(Request $request, ObjectMenu $objectMenu, RfMessages $rfMessages, EntityManagerInterface $em, ObjectRelationManager $objectRelationManager)
     {
 
-        $em->remove($objectMenu);
-        $em->flush();
+        $relations = $objectRelationManager->objectHasRelation(ObjectMenu::class, $objectMenu->getId());
 
-        $rfMessages->addSuccess("Menu deleted successfully.");
-        return $this->redirectToRoute('rf_object_menu_list', array_merge([],$rfMessages->getMessages()));
+        if ($relations === false) {
+            $em->remove($objectMenu);
+            $em->flush();
 
-        return $this->render('objects/menu/view.html.twig', [
-            'object' => $objectMenu,
-        ]);
+            $rfMessages->addSuccess("Menu deleted successfully.");
+            return $this->redirectToRoute('rf_object_menu_list', array_merge([],$rfMessages->getMessages()));
+        }
+
+        return $this->redirectToRoute('rf_object_menu_view', ['id'=>$objectMenu->getId(), 'rfObjectRelations'=>$objectRelationManager->transformForUrl($relations)]);
     }
 }

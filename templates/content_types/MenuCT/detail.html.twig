@@ -1,1 +1,55 @@
 {% extends 'content_types/base/detail.html.twig' %}
+
+{% block body %}
+    {% if block.properties is not empty %}
+        <div class="table-responsive">
+            <div>
+                <table class="table align-items-center">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">
+                            Properties
+                        </th>
+                        <th scope="col">
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="list">
+                    {% for property, value in block.properties %}
+                        <tr>
+                            <td>
+                                {{ property | upper }}
+                            </td>
+                            <td style="max-width:300px; overflow: hidden;">
+                                {% if property == "image" %}
+                                    <img src="{{ asset(value) }}" style="width:60px;"/>
+
+                                {% elseif property == "text" %}
+                                    <button type="button" class="btn btn-sm btn-secondary btn-view-html"
+                                            rf-pane="view_html_{{ block.id }}_{{ property }}"
+                                            id="view_button_html_{{ block.id }}_{{ property }}">View Content
+                                    </button>
+                                    <div id="view_html_{{ block.id }}_{{ property }}" style="display:none;">
+                                        {{ (value | raw | replaceSingleQuote) | raw }}
+                                    </div>
+
+                                {% elseif property == "displays" %}
+                                    Display in :
+                                    {% for dis in value %}
+                                        {{ dis }}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ (value | raw | replaceSingleQuote) | raw }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <p>You should edit this content.</p>
+    {% endif %}
+{% endblock %}

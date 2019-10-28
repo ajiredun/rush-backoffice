@@ -23,4 +23,6 @@ interface ContentTypeInterface
     public function getDependencies();
 
     public function getRouteParams();
+
+    public function getObjectRelation();
 }
