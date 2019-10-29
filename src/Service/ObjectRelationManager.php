@@ -67,6 +67,29 @@ class ObjectRelationManager
         }
     }
 
+    public function addObjectRelationIfExist(Block $block)
+    {
+        if ($this->hasObjectRelationMeta($block)) {
+            $relationMeta = $this->getObjectRelationsMeta($block);
+            $data = $block->getProperties();
+            foreach ($relationMeta as $meta) {
+                if (array_key_exists($meta['formName'],$data)) {
+                    $id = $data[$meta['formName']];
+                    //we create a new ObjectRelation
+                    $or = new ObjectRelation();
+                    $or->setBlock($block);
+                    $or->setObjectId($id);
+                    $or->setType($meta['type']);
+
+                    $this->entityManager->persist($or);
+                }
+            }
+
+            $this->entityManager->flush();
+        }
+    }
+
+
     public function transformForUrl(array $relations)
     {
         $relationIds = [];

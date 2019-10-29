@@ -273,7 +273,7 @@ class PageController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function publish(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager)
+    public function publish(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager, BlockManager $blockManager, ObjectRelationManager $objectRelationManager)
     {
 
         if ($page->getPublished()) {
@@ -290,6 +290,17 @@ class PageController extends AbstractController
         $duplicatedPage = $pageManager->duplicatePage($page);
 
         if ($pageManager->publishPage($duplicatedPage)) {
+
+
+            //add object relations
+            $blocks = $duplicatedPage->getBlocks();
+
+            foreach ($blocks as $block)
+            {
+                $objectRelationManager->addObjectRelationIfExist($block);
+            }
+
+
             $rfMessages->addSuccess("This page has been successfully published.");
             $rfMessages->addInfo("Don't forget to add it in the menu, only if you want to ;)");
         }
