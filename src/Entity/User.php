@@ -2,7 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +17,14 @@ use App\Enums\Roles;
 /**
  * @ApiResource(
  *     accessControl="is_granted('ROLE_API_USER', object)",
- *     accessControlMessage="UNAUTHORISED_API_REQUEST"
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST",
+ *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"users:read"}}
+ *         }
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
@@ -22,31 +34,37 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read","users:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read","users:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read","users:read"})
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read", "users:read"})
      */
     private $status;
 
@@ -57,26 +75,31 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $mobile;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user:read","user:write", "users:read"})
      */
     private $zipcode;
 
@@ -87,11 +110,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"user:read", "users:read"})
      */
     private $lastactive;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user:read", "users:read"})
      */
     private $createdAt;
 
@@ -315,6 +340,10 @@ class User implements UserInterface
         return $this->getFirstname() . " " . $this->getLastname();
     }
 
+    /**
+     * @return string
+     * @Groups({"user:read", "users:read"})
+     */
     public function getPicture()
     {
         return 'https://robohash.org/aj'.$this->getId().'?set=set4&size=100x100';

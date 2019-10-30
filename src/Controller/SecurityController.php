@@ -401,6 +401,61 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/api/modify-password", name="api_modify_password")
+     */
+    public function modifyPassword(Request $request, UserManager $userManager, RfMessages $rfMessages, EntityManagerInterface $entityManager)
+    {
+
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+
+        if (
+        $request->isMethod('POST')
+        ) {
+            $contents = json_decode($request->getContent(), true);
+
+            if (!empty($contents)) {
+                if (
+                    (isset($contents['input_password']) && !empty($contents['input_password'])) &&
+                    (isset($contents['input_confirm_password']) && !empty($contents['input_confirm_password'])) &&
+                    (isset($contents['input_old_password']) && !empty($contents['input_old_password']))
+                ) {
+                    if ($contents['input_password'] === $contents['input_confirm_password']) {
+
+                        if ($contents['input_password'] == $contents['input_old_password']) {
+                            $response['message'] = "Passwords cannot be the same as the last three passwords";
+                        } else {
+
+                            $isPasswordMatched = $userManager->verifyPassword($this->getUser(), $contents['input_old_password']);
+                            if ($isPasswordMatched) {
+
+                                $userManager->setPassword($this->getUser(), $contents['input_password'], true, true);
+                                $entityManager->flush();
+
+
+                                $response['success'] = true;
+                                $response['message'] = "Password changed!";
+                            } else {
+                                $response['message'] = "Your old password does not match.";
+                            }
+                        }
+                    } else {
+                        $response['message'] = "The two passwords don't match.";
+                    }
+                } else {
+                    $response['message'] = "Please fill in all the details";
+                }
+            } else {
+                $response['message'] = "Invalid information";
+            }
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      */
     public function logout()
