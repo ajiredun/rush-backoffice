@@ -310,6 +310,40 @@ class PageController extends AbstractController
 
     /**
      *
+     * @Route("/unpublish/{id}", name="rf_page_unpublish")
+     * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
+     *
+     * @param Request $request
+     * @param Page $page
+     * @param RfMessages $rfMessages
+     * @param PageManager $pageManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     */
+    public function unpublish(Request $request, Page $page, RfMessages $rfMessages,PageManager $pageManager, BlockManager $blockManager, ObjectRelationManager $objectRelationManager)
+    {
+
+        if (!$page->getPublished()) {
+            $rfMessages->addWarning('"'.$page->getName() . "\" is NOT PUBLISHED.");
+
+            return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
+        }
+
+        //check if the page has a draft version
+        if ($draftPage = $pageManager->getDraftPageByPublishedPage($page)) {
+            $pageManager->deletePage($draftPage);
+        }
+
+        $pageManager->unpublishPage($page);
+
+        $rfMessages->addSuccess("This page has been converted into draft.");
+        $rfMessages->addInfo("Don't forget to REMOVE it in the menu");
+
+        return $this->redirectToRoute('rf_page_view', array_merge(['id'=>$page->getId()],$rfMessages->getMessages()));
+    }
+
+    /**
+     *
      * @Route("/create-draft/{id}", name="rf_page_createdraft")
      * @IsGranted(Roles::ROLE_PAGE_MANAGEMENT_EDITOR)
      *

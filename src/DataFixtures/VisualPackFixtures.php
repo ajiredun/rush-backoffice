@@ -17,7 +17,7 @@ class VisualPackFixtures extends Fixture
         $defaultVisualPack = new VisualPack();
         $defaultVisualPack->setActive(true);
         $defaultVisualPack->setCode("VP_DEFAULT");
-        $defaultVisualPack->setTitle("Default");
+        $defaultVisualPack->setTitle("Godigital");
 
         $manager->persist($defaultVisualPack);
         $manager->flush();
@@ -34,7 +34,9 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_01,
             SlotCode::SLOT_02,
             SlotCode::SLOT_03,
-            SlotCode::SLOT_04
+            SlotCode::SLOT_04,
+            SlotCode::SLOT_05,
+            SlotCode::SLOT_06
         ]);
         $layout->setStructure('
 <div class="row">
@@ -44,16 +46,16 @@ class VisualPackFixtures extends Fixture
 </div>
 <div class="row">
 <div class="col-md-4" >
-<div class="slot slot-4" data-slot="S_SLOT_02"></div>
+<div class="slot slot-2" data-slot="S_SLOT_02"></div>
 </div>
 <div class="col-md-8" >
-<div class="slot slot-4" data-slot="S_SLOT_03"></div>
+<div class="slot slot-2" data-slot="S_SLOT_03"></div>
 </div>
 </div>
 <div class="row">
-<div class="col-md-12" >
-<div class="slot slot-1"  data-slot="S_SLOT_04"></div>
-</div>
+<div class="col-md-12" ><div class="slot slot-2"  data-slot="S_SLOT_04"></div></div>
+<div class="col-md-12" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-12" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
 </div>  
         ');
 
@@ -71,7 +73,9 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_01,
             SlotCode::SLOT_02,
             SlotCode::SLOT_03,
-            SlotCode::SLOT_04
+            SlotCode::SLOT_04,
+            SlotCode::SLOT_05,
+            SlotCode::SLOT_06
         ]);
         $layout->setStructure('
 <div class="row">
@@ -88,9 +92,9 @@ class VisualPackFixtures extends Fixture
 </div>
 </div>
 <div class="row">
-<div class="col-md-12" >
-<div class="slot slot-1"  data-slot="S_SLOT_04"></div>
-</div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_04"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
 </div>  
         ');
 
@@ -109,6 +113,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_03,
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -122,7 +128,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-4" ><div class="slot slot-4" data-slot="S_SLOT_04"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
 </div>  
         ');
 
@@ -141,6 +149,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_03,
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -154,7 +164,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-3" ><div class="slot slot-4" data-slot="S_SLOT_04"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
 </div>  
         ');
 
@@ -173,6 +185,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_03,
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -186,7 +200,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-6" ><div class="slot slot-4" data-slot="S_SLOT_04"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
 </div>  
         ');
 
@@ -206,6 +222,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_03,
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -219,7 +237,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-3" ><div class="slot slot-4" data-slot="S_SLOT_04"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
 </div>  
         ');
 
@@ -239,6 +259,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
             SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
+            SlotCode::SLOT_08,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -255,7 +277,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-6" ><div class="slot slot-2" data-slot="S_SLOT_05"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_08"></div></div>
 </div>  
         ');
 
@@ -275,6 +299,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
             SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
+            SlotCode::SLOT_08,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -291,7 +317,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-4" ><div class="slot slot-2" data-slot="S_SLOT_05"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_08"></div></div>
 </div>  
         ');
 
@@ -312,6 +340,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
             SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
+            SlotCode::SLOT_08,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -328,7 +358,9 @@ class VisualPackFixtures extends Fixture
 <div class="col-md-8" ><div class="slot slot-2" data-slot="S_SLOT_05"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_08"></div></div>
 </div>  
         ');
 
@@ -348,6 +380,8 @@ class VisualPackFixtures extends Fixture
             SlotCode::SLOT_03,
             SlotCode::SLOT_04,
             SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
         ]);
         $layout->setStructure('
 <div class="row">
@@ -356,14 +390,16 @@ class VisualPackFixtures extends Fixture
 </div>
 </div>
 <div class="row">
-<div class="col-md-8" ><div class="slot " data-slot="S_SLOT_02"></div></div>
-<div class="col-md-4" ><div class="slot " data-slot="S_SLOT_03"></div></div>
+<div class="col-md-8" ><div class="slot slot-2" data-slot="S_SLOT_02"></div></div>
+<div class="col-md-4" ><div class="slot slot-2" data-slot="S_SLOT_03"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-3" data-slot="S_SLOT_04"></div></div>
+<div class="col-md-12" ><div class="slot slot-2" data-slot="S_SLOT_04"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
 </div>   
         ');
 
@@ -373,9 +409,47 @@ class VisualPackFixtures extends Fixture
 
         $layout = new Layout();
         $layout->setVisual('assets/admin/img/sketch.jpg');
-        $layout->setCode(LayoutCode::LAYOUT_10);
-        $layout->setTitle('Layout 10');
+        $layout->setCode(LayoutCode::LAYOUT_11);
+        $layout->setTitle('Layout 11');
         $layout->setDescription('0.33 0.66 / 1.0');
+        $layout->setVisualPack($defaultVisualPack);
+        $layout->setSlots([
+            SlotCode::SLOT_01,
+            SlotCode::SLOT_02,
+            SlotCode::SLOT_03,
+            SlotCode::SLOT_04,
+            SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+            SlotCode::SLOT_07,
+        ]);
+        $layout->setStructure('
+<div class="row">
+<div class="col-md-12" >
+<div class="slot " data-slot="S_SLOT_01"></div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-4" ><div class="slot slot-2" data-slot="S_SLOT_02"></div></div>
+<div class="col-md-8" ><div class="slot slot-2" data-slot="S_SLOT_03"></div></div>
+</div>
+<div class="row">
+<div class="col-md-12" ><div class="slot slot-2" data-slot="S_SLOT_04"></div></div>
+</div>
+<div class="row">
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_07"></div></div>
+</div>   
+        ');
+
+        $manager->persist($layout);
+        $manager->flush();
+
+        $layout = new Layout();
+        $layout->setVisual('assets/admin/img/sketch.jpg');
+        $layout->setCode(LayoutCode::LAYOUT_12);
+        $layout->setTitle('Layout 12');
+        $layout->setDescription('1.0/ 1.0 / 1.0');
         $layout->setVisualPack($defaultVisualPack);
         $layout->setSlots([
             SlotCode::SLOT_01,
@@ -391,15 +465,48 @@ class VisualPackFixtures extends Fixture
 </div>
 </div>
 <div class="row">
-<div class="col-md-4" ><div class="slot " data-slot="S_SLOT_02"></div></div>
-<div class="col-md-8" ><div class="slot " data-slot="S_SLOT_03"></div></div>
+<div class="col-md-12" ><div class="slot slot-4" data-slot="S_SLOT_02"></div></div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-3" data-slot="S_SLOT_04"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_03"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_04"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+</div>
+        ');
+
+        $manager->persist($layout);
+        $manager->flush();
+
+
+        $layout = new Layout();
+        $layout->setVisual('assets/admin/img/sketch.jpg');
+        $layout->setCode(LayoutCode::LAYOUT_13);
+        $layout->setTitle('Layout 13');
+        $layout->setDescription('1.0/ 0.2 0.8 / 1.0');
+        $layout->setVisualPack($defaultVisualPack);
+        $layout->setSlots([
+            SlotCode::SLOT_01,
+            SlotCode::SLOT_02,
+            SlotCode::SLOT_03,
+            SlotCode::SLOT_04,
+            SlotCode::SLOT_05,
+            SlotCode::SLOT_06,
+        ]);
+        $layout->setStructure('
+<div class="row">
+<div class="col-md-12" >
+<div class="slot" data-slot="S_SLOT_01"></div>
+</div>
 </div>
 <div class="row">
-<div class="col-md-12" ><div class="slot slot-1"  data-slot="S_SLOT_05"></div></div>
-</div>   
+<div class="col-md-3" ><div class="slot slot-4" data-slot="S_SLOT_02"></div></div>
+<div class="col-md-9" ><div class="slot slot-4" data-slot="S_SLOT_03"></div></div>
+</div>
+<div class="row">
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_04"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_05"></div></div>
+<div class="col-md-4" ><div class="slot slot-2"  data-slot="S_SLOT_06"></div></div>
+</div>
         ');
 
         $manager->persist($layout);

@@ -124,6 +124,22 @@ class PageManager
         return true;
     }
 
+    /**
+     * @param Page $page
+     * @return bool
+     * @throws \Exception
+     */
+    public function unpublishPage(Page $page)
+    {
+        $page->setPublishedBy($this->security->getUser());
+        $page->setPublishedOn(new \DateTime('now'));
+        $page->setPublished(false);
+
+        $this->getEntityManager()->flush();
+
+        return true;
+    }
+
     public function deletePage(Page $page)
     {
         $this->getEntityManager()->remove($page);

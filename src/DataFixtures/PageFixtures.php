@@ -22,7 +22,7 @@ class PageFixtures extends Fixture implements DependentFixtureInterface
         $vpRepository = $manager->getRepository(VisualPack::class);
 
         $vp = $vpRepository->findOneBy(['active'=>true]);
-        $user = $userRepository->findOneBy(['email'=>'admin@rushframework.com']);
+        $user = $userRepository->findOneBy(['email'=>'ajir.edun@gmail.com']);
         $layout = $layoutRepository->findOneBy(['code'=>LayoutCode::LAYOUT_01, 'visualPack'=>$vp]);
 
         //Create homepage

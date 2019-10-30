@@ -59,7 +59,7 @@
                                                 btnClass: 'btn btn-danger',
                                                 keys: ['enter', 'shift'],
                                                 action: function () {
-                                                    // no nothing
+                                                    location.href = '{{ path('rf_page_unpublish',{'id':page.id}) }}';
                                                 }
                                             },
                                             cancel: {
@@ -131,7 +131,7 @@
                                 btnClass: 'btn btn-danger',
                                 keys: ['enter', 'shift'],
                                 action: function () {
-                                    // no nothing
+                                    location.href = '{{ path('rf_page_unpublish',{'id':page.id}) }}';
                                 }
                             },
                             cancel: {
