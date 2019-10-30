@@ -4,6 +4,7 @@ namespace App\Form\Type\ContentType;
 
 
 use App\ContentType\HalfImageHalfTextCT;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,6 +48,18 @@ class HalfImageHalfTextCTType extends BaseContentType
                     'attr'=>array(
                         'class' => 'rf-richtext',
                     ),
+                    'required'=>false,
+                ]
+            )
+
+            ->add('background',
+                ColorType::class,
+                [
+                    'label' => 'Background colour',
+                    'attr'=>array(
+                        'class' => 'rf-bg',
+                    ),
+                    'empty_data' => '#f8f8f8',
                     'required'=>false,
                 ]
             )
