@@ -87,6 +87,8 @@ class PageManager
     public function duplicatePage(Page $page)
     {
         $pageClone = clone $page;
+
+        $this->getEntityManager()->refresh($page);
         $pageClone->setLastModifiedBy($this->security->getUser());
 
 

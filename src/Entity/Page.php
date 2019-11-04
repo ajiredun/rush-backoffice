@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
- *          "pagination_items_per_page"=10
+ *          "pagination_items_per_page"=3000
  *     },
  *     accessControl="is_granted('ROLE_API_USER', object)",
  *     accessControlMessage="UNAUTHORISED_API_REQUEST",

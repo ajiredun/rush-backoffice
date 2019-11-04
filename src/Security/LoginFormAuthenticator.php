@@ -111,7 +111,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             if (strpos($path, '/api') !== false) {
                 return new JsonResponse(
                     [
-                        'message' => 'Access Denied!'
+                        'message' => 'Access Denied - Trying to login from a form!'
                     ],
                     403
                 );

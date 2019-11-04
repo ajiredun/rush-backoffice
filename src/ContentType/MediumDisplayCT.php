@@ -7,18 +7,18 @@ namespace App\ContentType;
 use App\ContentType\Base\AbstractContentType;
 use App\Enums\CTCategory;
 
-class SliderThumbnailCT extends AbstractContentType
+class MediumDisplayCT extends AbstractContentType
 {
-    const CODE = "CT_SLIDER_THUMBNAIL";
 
+    const CODE = "CT_DISPLAY_MEDIUM";
     public function getLabel()
     {
-        return "Image Slider";
+        return "Medium Display Block";
     }
 
     public function getCategory()
     {
-        return CTCategory::SLIDER;
+        return CTCategory::DISPLAY;
     }
 
 }

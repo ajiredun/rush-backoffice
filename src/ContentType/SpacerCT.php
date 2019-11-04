@@ -5,20 +5,23 @@ namespace App\ContentType;
 
 
 use App\ContentType\Base\AbstractContentType;
+use App\Entity\ObjectMenu;
 use App\Enums\CTCategory;
 
-class SliderThumbnailCT extends AbstractContentType
+class SpacerCT extends AbstractContentType
 {
-    const CODE = "CT_SLIDER_THUMBNAIL";
+
+    const CODE = "CT_SPACER";
+
 
     public function getLabel()
     {
-        return "Image Slider";
+        return "SPACER";
     }
 
     public function getCategory()
     {
-        return CTCategory::SLIDER;
+        return CTCategory::BASIC;
     }
 
 }
