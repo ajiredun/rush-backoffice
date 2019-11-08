@@ -9,3 +9,7 @@
 **To use php7 in cli**
 
 `/opt/cpanel/ea-php73/root/usr/bin/php`
+
+
+**SSH Godigitalshop server
+`ssh godigitalshop@godigitalshop.com`
