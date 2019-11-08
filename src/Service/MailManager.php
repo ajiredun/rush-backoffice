@@ -8,7 +8,7 @@ use App\Entity\User;
 
 class MailManager
 {
-    const SYSTEM_EMAIL = 'dev@dev.ajiredun.com';
+    const SYSTEM_EMAIL = 'info@godigitalshop.com';
 
     protected $mailer;
     private $templating;
@@ -43,9 +43,9 @@ class MailManager
     public function sendActivationMail(User $user, $frontOffice)
     {
         if (!$frontOffice) {
-            $message = (new \Swift_Message('Rush Framework - Activation'))
-                ->setFrom(MailManager::SYSTEM_EMAIL)
-                ->setTo($user->getEmail())
+            $message = (new \Swift_Message($this->getSystemManager()->getValue('bo_name') . ' - Activation'))
+                ->setFrom(MailManager::SYSTEM_EMAIL, $this->getSystemManager()->getValue('bo_name'))
+                ->setTo($user->getEmail(), $user->getName())
                 ->setBody(
                     $this->templating->render(
                     // templates/emails/registration.html.twig
@@ -56,12 +56,12 @@ class MailManager
                 );
         } else {
             $message = (new \Swift_Message($this->getSystemManager()->getValue('fo_name') . ' - Activation'))
-                ->setFrom($this->getSystemManager()->getValue('management_email'))
-                ->setTo($user->getEmail())
+                ->setFrom($this->getSystemManager()->getValue('management_email'), $this->getSystemManager()->getValue('fo_name'))
+                ->setTo($user->getEmail(), $user->getName())
                 ->setBody(
                     $this->templating->render(
                     // templates/emails/registration.html.twig
-                        'Email/User/activation.html.twig',
+                        'Email/User/Front/activation.html.twig',
                         ['user' => $user, 'frontOffice' => true]
                     ),
                     'text/html'
@@ -93,7 +93,7 @@ class MailManager
                 ->setBody(
                     $this->templating->render(
                     // templates/emails/registration.html.twig
-                        'Email/User/password.html.twig',
+                        'Email/User/Front/password.html.twig',
                         ['user' => $user, 'password' => $password]
                     ),
                     'text/html'

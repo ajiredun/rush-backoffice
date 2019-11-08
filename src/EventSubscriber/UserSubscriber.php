@@ -61,6 +61,7 @@ class UserSubscriber implements EventSubscriberInterface
             $this->rfMessages->addWarning('The user is already active, so we have not sent the activation mail.');
             return;
         }
+
         $this->mailManager->sendActivationMail($user, $event->isFrontOffice());
 
     }

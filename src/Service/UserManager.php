@@ -75,7 +75,6 @@ class UserManager
         $user->setEmail($data['email']);
         $user->setRoles($roles);
         $this->setPassword($user, $data['password'], false);
-
         return $this->createUserBase($user, $roles, $status, true);
     }
 
@@ -90,7 +89,7 @@ class UserManager
     {
         $user->setStatus($status);
         $user->setRoles($roles);
-        $event = new UserCreateEvent($user,$fromFrontoffice);
+        $event = new UserCreateEvent($user, $fromFrontoffice);
         $this->eventDispatcher->dispatch($event, UserCreateEvent::NAME);
 
         $this->em->persist($user);
