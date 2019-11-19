@@ -69,6 +69,8 @@ class MediumDisplayCTType extends BaseContentType
                     'help' => "Leave blank if you don't want the link to appear."
                 ]
             )
+            ->remove('padding')
+            ->remove('title')
         ;
     }
 }

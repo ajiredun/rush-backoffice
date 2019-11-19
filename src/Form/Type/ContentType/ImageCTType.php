@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use FM\ElfinderBundle\Form\Type\ElFinderType;
 
-class SmallDisplayCTType extends BaseContentType
+class ImageCTType extends BaseContentType
 {
     protected function addFields(FormBuilderInterface $builder, array $options)
     {

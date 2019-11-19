@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use FM\ElfinderBundle\Form\Type\ElFinderType;
 
-class JumboDisplayCTType extends BaseContentType
+class ThreeDisplayCTType extends BaseContentType
 {
     protected function addFields(FormBuilderInterface $builder, array $options)
     {
@@ -22,7 +22,7 @@ class JumboDisplayCTType extends BaseContentType
                 ElFinderType::class,
                 [
                     'instance'=>'gallery',
-                    'label' => 'Left Image',
+                    'label' => 'Image Left',
                     'enable'=>true ,
                     'attr'=>array(
                         'readOnly'=>'true',
@@ -43,23 +43,12 @@ class JumboDisplayCTType extends BaseContentType
                     'help' => "Leave blank if you don't want the link to appear."
                 ]
             )
-            ->add('image01UrlText',
-                TextType::class,
-                [
-                    'label' => 'Text for Link',
-                    'attr' => array(
-                        'class' => "",
-                    ),
-                    'required'=> false,
-                    'help' => "Leave blank if you don't want the link to appear."
-                ]
-            )
 
             ->add('image02',
                 ElFinderType::class,
                 [
                     'instance'=>'gallery',
-                    'label' => 'Right Image',
+                    'label' => 'Image Middle',
                     'enable'=>true ,
                     'attr'=>array(
                         'readOnly'=>'true',
@@ -69,7 +58,6 @@ class JumboDisplayCTType extends BaseContentType
                     )
                 ]
             )
-
             ->add('image02Url',
                 UrlType::class,
                 [
@@ -81,10 +69,25 @@ class JumboDisplayCTType extends BaseContentType
                     'help' => "Leave blank if you don't want the link to appear."
                 ]
             )
-            ->add('image02UrlText',
-                TextType::class,
+
+            ->add('image03',
+                ElFinderType::class,
                 [
-                    'label' => 'Text for Link',
+                    'instance'=>'gallery',
+                    'label' => 'Image Right',
+                    'enable'=>true ,
+                    'attr'=>array(
+                        'readOnly'=>'true',
+                        'placeholder'=> 'Click To Choose',
+                        'class' => 'disabled rf-media-form-type',
+                        'required' => 'true'
+                    )
+                ]
+            )
+            ->add('image03Url',
+                UrlType::class,
+                [
+                    'label' => 'Link for Image',
                     'attr' => array(
                         'class' => "",
                     ),
@@ -92,28 +95,7 @@ class JumboDisplayCTType extends BaseContentType
                     'help' => "Leave blank if you don't want the link to appear."
                 ]
             )
-            ->add('adv_width',
-                TextType::class,
-                [
-                    'label' => 'ADVANCED: The maximum width of each image',
-                    'attr' => array(
-                        'class' => "",
-                    ),
-                    'required'=> false,
-                    'help' => "This will crop the elements who are bigger than the width mentionned (in pixels)"
-                ]
-            )
-            ->add('adv_height',
-                TextType::class,
-                [
-                    'label' => 'ADVANCED: Height of each picture',
-                    'attr' => array(
-                        'class' => "",
-                    ),
-                    'required'=> false,
-                    'help' => "This will crop the elements who are bigger than the height mentionned (in pixels)"
-                ]
-            )
+
             ->remove('padding')
             ->remove('title')
         ;

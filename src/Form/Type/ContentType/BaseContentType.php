@@ -40,6 +40,17 @@ class BaseContentType extends AbstractType
                     'label' => "Show this block in:"
                 ]
             )
+            ->add('padding', ChoiceType::class, [
+                    'choices' => array(
+                        'True' => true,
+                        'False' => false
+                    ),
+                    'multiple' => false,
+                    'expanded' => true,
+                    'label' => "Padding",
+                    'help' => "Add some space all around the block."
+                ]
+            )
             ->add('roles',
                 ChoiceType::class,
                 [

@@ -28,6 +28,9 @@ class MenuCTType extends BaseContentType
                     'choice_label' => 'name',
                 ]
             )
+
+            ->remove('padding')
+            ->remove('title')
         ;
 
         /*$builder->add('users', EntityType::class, [

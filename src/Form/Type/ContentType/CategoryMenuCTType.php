@@ -2,29 +2,32 @@
 
 namespace App\Form\Type\ContentType;
 
-
-use Symfony\Component\Form\Extension\Core\Type\ColorType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use App\Entity\ObjectMenu;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use FM\ElfinderBundle\Form\Type\ElFinderType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class SpacerCTType extends BaseContentType
+class CategoryMenuCTType extends BaseContentType
 {
     protected function addFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('space',
-                NumberType::class,
+            ->add('menu',
+                EntityType::class,
                 [
-                    'label' => 'Space between the two elements',
-                    'required'=>false,
+                    'label' => 'Choose a menu to associate with this block',
+                    'attr'=>array(
+                    ),
+                    'required'=>true,
+
+                    'class' => ObjectMenu::class,
+                    'choice_label' => 'name',
                 ]
             )
-            ->remove('padding')
             ->remove('title')
         ;
     }
