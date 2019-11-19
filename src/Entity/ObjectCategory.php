@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,9 +49,25 @@ class ObjectCategory
     private $lastModifiedBy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ObjectCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ObjectCategory", inversedBy="objectCategories")
      */
     private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ObjectCategory", mappedBy="category")
+     */
+    private $objectCategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ObjectProduct", mappedBy="category")
+     */
+    private $objectProducts;
+
+    public function __construct()
+    {
+        $this->objectCategories = new ArrayCollection();
+        $this->objectProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +154,68 @@ class ObjectCategory
     public function setCategory(?self $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getObjectCategories(): Collection
+    {
+        return $this->objectCategories;
+    }
+
+    public function addObjectCategory(self $objectCategory): self
+    {
+        if (!$this->objectCategories->contains($objectCategory)) {
+            $this->objectCategories[] = $objectCategory;
+            $objectCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectCategory(self $objectCategory): self
+    {
+        if ($this->objectCategories->contains($objectCategory)) {
+            $this->objectCategories->removeElement($objectCategory);
+            // set the owning side to null (unless already changed)
+            if ($objectCategory->getCategory() === $this) {
+                $objectCategory->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ObjectProduct[]
+     */
+    public function getObjectProducts(): Collection
+    {
+        return $this->objectProducts;
+    }
+
+    public function addObjectProduct(ObjectProduct $objectProduct): self
+    {
+        if (!$this->objectProducts->contains($objectProduct)) {
+            $this->objectProducts[] = $objectProduct;
+            $objectProduct->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjectProduct(ObjectProduct $objectProduct): self
+    {
+        if ($this->objectProducts->contains($objectProduct)) {
+            $this->objectProducts->removeElement($objectProduct);
+            // set the owning side to null (unless already changed)
+            if ($objectProduct->getCategory() === $this) {
+                $objectProduct->setCategory(null);
+            }
+        }
 
         return $this;
     }
