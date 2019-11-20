@@ -1,0 +1,118 @@
+{% extends 'objects/components/structure.html.twig' %}
+
+{% block title %}O Category List{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'object_category',
+        'items': [
+            {'path' : path('rf_object_category_list'), 'title':"Categories"},
+            {'path' : path('rf_object_category_add'), 'title':"Add a Category"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_object_category_list'), 'title':"O Category Management"},
+        'items': [
+            {'path' : path('rf_object_category_list'), 'title':"Categories", 'active':true},
+            {'path' : path('rf_object_category_add'), 'title':"Add a Category"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'objects/category/components/header.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row menu-creator">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">{{ object.name }}</h3>
+                        </div>
+                        <div class="col-4" style="text-align: right;">
+
+                            <a href="{{ path('rf_object_category_edit', {'id':object.id}) }}"  class="btn btn-outline-secondary btn-sm" >
+                                <span class="btn-inner--icon"><i class="fa fa-edit"></i></span>
+                                <span class="btn-inner--text">Edit</span>
+                            </a>
+
+                            <a href="{{ path('rf_object_menu_delete', {'id':object.id}) }}"  id="deleteMenu" class="btn btn-outline-danger btn-sm" data-title="Delete this menu ?" >
+                                <span class="btn-inner--icon"><i class="fas fa-times-circle"></i></span>
+                                <span class="btn-inner--text">Delete</span>
+                            </a>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img style="width:100%;" src="{{ object.image }}" />
+                        </div>
+                        <div class="col-md-9">
+                            <p>
+                                {{ object.description | raw }}
+                            </p>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1>Products</h1>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ path('rf_object_category_edit', {'id':object.id}) }}"  class="btn btn-outline-success" >
+                                <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+                                <span class="btn-inner--text">Add Product</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+
+    </style>
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            $('#deleteMenu').confirm({
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn btn-secondary',
+                        action: function () {
+                            // do nothing
+                        }
+                    },
+                    delete: {
+                        text: 'Delete',
+                        btnClass: 'btn btn-danger',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            location.href = this.$target.attr('href');
+                        }
+                    },
+                }
+            });
+
+        });
+    </script>
+{% endblock %}
+

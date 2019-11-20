@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ObjectCategory;
+use App\Service\SearchParams;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -18,6 +19,23 @@ class ObjectCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ObjectCategory::class);
     }
+
+
+
+    public function getWithSearchQueryBuilder(SearchParams $searchParams)
+    {
+        $term = $searchParams->getCurrent('name');
+
+        $qb = $this->createQueryBuilder('object_category');
+
+        if (!empty($term)) {
+            $qb->orWhere('object_category.name LIKE :term')
+                ->setParameter('term', "%$term%");
+        }
+
+        return $qb->getQuery();
+    }
+
 
     // /**
     //  * @return ObjectCategory[] Returns an array of ObjectCategory objects

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ObjectProduct
 {
     /**
-     * @ORM\Id()
+     * @ORM\Id()Men
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */

@@ -41,7 +41,7 @@ class ObjectCategory
     /**
      * @ORM\Column(type="datetime")
      */
-    private $lastModifedAt;
+    private $lastModifiedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -65,6 +65,8 @@ class ObjectCategory
 
     public function __construct()
     {
+        $this->lastModifiedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
         $this->objectCategories = new ArrayCollection();
         $this->objectProducts = new ArrayCollection();
     }
@@ -122,14 +124,14 @@ class ObjectCategory
         return $this;
     }
 
-    public function getLastModifedAt(): ?\DateTimeInterface
+    public function getLastModifiedAt(): ?\DateTimeInterface
     {
-        return $this->lastModifedAt;
+        return $this->lastModifiedAt;
     }
 
-    public function setLastModifedAt(\DateTimeInterface $lastModifedAt): self
+    public function setLastModifiedAt(\DateTimeInterface $lastModifiedAt): self
     {
-        $this->lastModifedAt = $lastModifedAt;
+        $this->lastModifiedAt = $lastModifiedAt;
 
         return $this;
     }
