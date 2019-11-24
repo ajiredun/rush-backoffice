@@ -204,6 +204,15 @@ class ObjectProduct
      */
     private $priceAsFrom;
 
+
+    public function __construct()
+    {
+        $this->display = false;
+        $this->priceAsFrom = true;
+        $this->sellOnline = false;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

@@ -142,6 +142,13 @@ class PageManager
         return true;
     }
 
+    public function updatePageModificationInfo(Page $page)
+    {
+        $page->setLastModifiedAt(new \DateTime('now'));
+        $page->setLastModifiedBy($this->security->getUser());
+        $this->getEntityManager()->flush();
+    }
+
     public function deletePage(Page $page)
     {
         $this->getEntityManager()->remove($page);

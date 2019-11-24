@@ -32,18 +32,19 @@ class PageController extends AbstractController
 {
 
     /**
-     *
      * @Route("/page-{id}/{tab}", name="rf_page_view")
+     *
      * @param Request $request
      * @param Page $page
      * @param string $tab
      * @param BlockRepository $blockRepository
+     * @param PageManager $pageManager
      * @param RfMessages $rfMessages
      * @param CTManager $CTManager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
+     * @param BlockManager $blockManager
+     * @return mixed
      */
-    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, RfMessages $rfMessages, CTManager $CTManager, BlockManager $blockManager)
+    public function view(Request $request, Page $page, $tab = 'blocks', BlockRepository $blockRepository, PageManager $pageManager, RfMessages $rfMessages, CTManager $CTManager, BlockManager $blockManager)
     {
 
         $twig = 'page/view.html.twig';
@@ -107,6 +108,7 @@ class PageController extends AbstractController
                 $em->remove($block);
             }
             $em->flush();
+            $pageManager->updatePageModificationInfo($page);
 
             $rfMessages->addSuccess("We have successfully modified this page.");
 
@@ -528,7 +530,7 @@ class PageController extends AbstractController
      * @param BlockManager $blockManager
      * @return mixed
      */
-    public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, RfMessages $rfMessages, ObjectRelationManager $objectRelationManager)
+    public function blockViewProperties(Request $request,Page $page, Block $block, BlockManager $blockManager, PageManager $pageManager, RfMessages $rfMessages, ObjectRelationManager $objectRelationManager)
     {
         $defaultData = array_merge(['roles'=>$block->getRoles()], $block->getProperties());
         $objectRelationManager->tansformRelationsBeforePost($block, $defaultData);
@@ -544,6 +546,7 @@ class PageController extends AbstractController
             $params['properties'] = $data;
 
             $blockManager->updateBlock($block, $params);
+            $pageManager->updatePageModificationInfo($page);
 
             $objectRelationManager->handleRelations($block, $params['properties']);
 

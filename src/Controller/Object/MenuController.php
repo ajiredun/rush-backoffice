@@ -35,7 +35,7 @@ class MenuController extends AbstractController
     public function list(Request $request, PaginatorInterface $paginator, SearchParams $searchParams, ObjectMenuRepository $objectMenuRepository)
     {
 
-        $searchParams->setCurrentSector('object_menu_list');
+        $searchParams->setCurrentSector('menu');
 
         $pagination = $paginator->paginate(
             $objectMenuRepository->getWithSearchQueryBuilder($searchParams),

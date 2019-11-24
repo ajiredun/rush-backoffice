@@ -1,0 +1,315 @@
+{% extends 'objects/components/structure.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block sidenav %}
+    {% set config = {'config':{
+        'active' : 'object_product',
+        'items': [
+            {'path' : path('rf_object_product_list'), 'title':"Products"},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
+        ]
+    }} %}
+    {% include 'admin/sidenav.html.twig'  with config %}
+{% endblock %}
+
+{% block nav %}
+    {% set config = {'config':{
+        'main': {'path' : path('rf_object_product_list'), 'title':"O Product Management"},
+        'items': [
+            {'path' : path('rf_object_product_list'), 'title':"Products", 'active':true},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
+        ]
+    }} %}
+    {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'objects/product/components/header.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mb-5 mb-xl-0">
+            <div class="nav-wrapper" >
+                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0 active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true"><i class="ni ni-bulb-61 mr-2"></i>General</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="image-tab" data-toggle="tab" href="#images" role="tab" aria-controls="seo" aria-selected="false"><i class="ni ni-album-2 mr-2"></i>Images</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="attributes-tab" data-toggle="tab" href="#attributes" role="tab" aria-controls="roles" aria-selected="false"><i class="ni ni-books mr-2"></i>Attributes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="questions-tab" data-toggle="tab" href="#questions" role="tab" aria-controls="roles" aria-selected="false"><i class="ni ni-caps-small mr-2"></i>Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="seo-tab" data-toggle="tab" href="#seo" role="tab" aria-controls="seo" aria-selected="false"><i class="ni ni-chart-bar-32 mr-2"></i>SEO</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card shadow">
+                <div class="card-body">
+                    {{ form_start(form) }}
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show" id="images" role="tabpanel" aria-labelledby="images-tab">
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            {{ form_row(form.thumbnail) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            {{ form_row(form.image) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image02) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image03) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image04) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image05) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image06) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image07) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image08) }}</div></div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.image09) }}</div></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade show" id="attributes" role="tabpanel" aria-labelledby="attributes-tab">
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            Attributes
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute01) }}</div></div>
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute01Value) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute02) }}</div></div>
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute02Value) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute03) }}</div></div>
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute03Value) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute04) }}</div></div>
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute04Value) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute05) }}</div></div>
+                                    <div class="col-lg-6"><div class="form-group">{{ form_row(form.attribute05Value) }}</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.question01) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.question02) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.question03) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.question04) }}</div></div>
+                                </div>
+                            </div>
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12"><div class="form-group">{{ form_row(form.question05) }}</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show" id="seo" role="tabpanel" aria-labelledby="seo-tab">
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            SEO (TO DO)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            {{ form_row(form.name) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            {{ form_rest(form) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 class="heading-small text-muted mb-4">Actions</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button type="submit" id="btn-submit" class="btn btn-icon btn-3 btn-primary">
+                                                    <span class="btn-inner--icon"><i class="fa fa-save"></i> </span>
+
+                                                    <span class="btn-inner--text">Done</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-xl-7">
+            <div class="card shadow">
+                <div class="card-header bg-translucent-neutral border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Tips</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            The name of the product should be short but precise.
+                        </li>
+                        <li>
+                            You can choose only one category.
+                        </li>
+                        <li>
+                            To have the best Search Engine Optimisation, please fill the SEO tab.
+                        </li>
+                        <li>
+                            Attributes are specific values for the product. Example:
+                            The specific model of the laptop, or the size of the land, house,..
+                        </li>
+                        <li>
+                            When someone is asking a quote about the product, the questions will be asked prior to
+                            adding it in the Quote box
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('assets/admin/js/plugins/tinymce/tinymce.min.js') }}"></script>
+    {% set config = {'config':{
+        'element' : 'rf-richtext'
+    }} %}
+    {% include 'admin/components/tinymce.html.twig'  with config %}
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+{% endblock %}

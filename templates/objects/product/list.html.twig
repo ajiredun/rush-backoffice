@@ -1,13 +1,13 @@
 {% extends 'objects/components/structure.html.twig' %}
 
-{% block title %}O Menu List{% endblock %}
+{% block title %}O Product List{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
-        'active' : 'object_menu',
+        'active' : 'object_product',
         'items': [
-            {'path' : path('rf_object_menu_list'), 'title':"Menus"},
-            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
+            {'path' : path('rf_object_product_list'), 'title':"Products"},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -15,13 +15,17 @@
 
 {% block nav %}
     {% set config = {'config':{
-        'main': {'path' : path('rf_object_menu_list'), 'title':"O Menu Management"},
+        'main': {'path' : path('rf_object_product_list'), 'title':"O Product Management"},
         'items': [
-            {'path' : path('rf_object_menu_list'), 'title':"Menus", 'active':true},
-            {'path' : path('rf_object_menu_add'), 'title':"Create Menu"},
+            {'path' : path('rf_object_product_list'), 'title':"Products", 'active':true},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
+{% endblock %}
+
+{% block header %}
+    {% include 'objects/product/components/header.html.twig' %}
 {% endblock %}
 
 {% block content %}
@@ -31,13 +35,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="text" class="form-control rf-focus" name="rfsearch_menu_name" value="{{ searchParamsGet('menu_name') }}" placeholder="name">
+                            <input type="text" class="form-control rf-focus" name="rfsearch_category_name" value="{{ searchParamsGet('category_name') }}" placeholder="name">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <button type="submit" class="btn btn-outline-darker"><i class="fa fa-search"></i> </button>
-                            <a href="{{ path('rf_object_menu_list') }}" class="btn btn-outline-darker btn-sm"><i class="fa fa-times"></i> </a>
+                            <a href="{{ path('rf_object_category_list') }}" class="btn btn-outline-darker btn-sm"><i class="fa fa-times"></i> </a>
                         </div>
                     </div>
                 </div>
@@ -47,8 +51,8 @@
     <div class="row user-list-content">
         <div class="col-xl-12 mb-5 mb-xl-0">
             {% set config = {'config':{
-                'title' : 'Menus ('~pagination.getTotalItemCount~')',
-                'classname': "menu",
+                'title' : 'Categories ('~pagination.getTotalItemCount~')',
+                'classname': "category",
                 'objects' : pagination,
                 'fields' : ['online','name','lastModifiedBy', 'lastModifiedAt'],
                 'paginate' : true,

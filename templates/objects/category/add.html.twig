@@ -1,6 +1,6 @@
 {% extends 'objects/components/structure.html.twig' %}
 
-{% block title %}O Menu List{% endblock %}
+{% block title %}Add Category{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
@@ -30,22 +30,13 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
-            <h1 class="mb-0">
-                {% if editMode is defined and editMode %}
-                    Edit Category
-                {% else %}
-                    Add Category
-                {% endif %}
-            </h1>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-8 mb-5 mb-xl-0">
             <div class="nav-wrapper" >
-                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+                <ul class="nav nav-pills nav-fill flex-column  flex-md-row" id="tabs-icons-text" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link mb-sm-3 mb-md-0 active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true"><i class="ni ni-bulb-61 mr-2"></i>General</a>
+                        <a class="nav-link bg-dark mb-sm-3 mb-md-0 active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
+                            {% if editMode is defined and editMode %}Edit Category{% else %}New Category{% endif %}
+                        </a>
                     </li>
                 </ul>
                 {#<ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">

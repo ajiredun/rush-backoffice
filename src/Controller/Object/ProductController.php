@@ -3,9 +3,11 @@
 namespace App\Controller\Object;
 
 use App\Entity\ObjectCategory;
+use App\Entity\ObjectProduct;
 use App\Entity\Page;
 use App\Enums\Roles;
 use App\Form\Type\Objects\CategoryType;
+use App\Form\Type\Objects\ProductType;
 use App\Repository\BlockRepository;
 use App\Repository\ObjectCategoryRepository;
 use App\Service\BlockManager;
@@ -21,10 +23,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * @Route("/object/category")
- * @IsGranted(Roles::ROLE_OBJECT_CATEGORY_VIEWER)
+ * @Route("/object/product")
+ * @IsGranted(Roles::ROLE_OBJECT_PRODUCT_VIEWER)
  */
-class CategoryController extends AbstractController
+class ProductController extends AbstractController
 {
     /**
      * @param Request $request
@@ -33,19 +35,20 @@ class CategoryController extends AbstractController
      * @param ObjectCategoryRepository $objectCategoryRepository
      * @return mixed
      *
-     * @Route("/list", name="rf_object_category_list")
+     * @Route("/list", name="rf_object_product_list")
      */
     public function list(Request $request, PaginatorInterface $paginator, SearchParams $searchParams, ObjectCategoryRepository $objectCategoryRepository)
     {
 
-        $searchParams->setCurrentSector('category');
+        $searchParams->setCurrentSector('product');
+
         $pagination = $paginator->paginate(
             $objectCategoryRepository->getWithSearchQueryBuilder($searchParams),
             $request->query->getInt('page', 1),
             20/*limit per page*/
         );
 
-        return $this->render('objects/category/list.html.twig', [
+        return $this->render('objects/product/list.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -58,21 +61,21 @@ class CategoryController extends AbstractController
      * @throws \Exception
      *
      *
-     * @IsGranted(Roles::ROLE_OBJECT_CATEGORY_EDITOR)
-     * @Route("/add", name="rf_object_category_add")
+     * @IsGranted(Roles::ROLE_OBJECT_PRODUCT_EDITOR)
+     * @Route("/add", name="rf_object_product_add")
      *
      */
     public function add(Request $request, RfMessages $rfMessages, EntityManagerInterface $em)
     {
-        $object = new ObjectCategory();
+        $object = new ObjectProduct();
         $object->setLastModifiedBy($this->getUser());
 
-        $form = $this->createForm(CategoryType::class, $object);
+        $form = $this->createForm(ProductType::class, $object);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /**
-             * @var ObjectCategory $object
+             * @var ObjectProduct $object
              */
             $object = $form->getData();
             $object->setLastModifiedAt(new \DateTime('now'));
@@ -81,10 +84,10 @@ class CategoryController extends AbstractController
             $em->flush();
 
             $rfMessages->addSuccess($object->getName() . " has been created successfully");
-            return $this->redirectToRoute('rf_object_category_view', array_merge(['id'=>$object->getId()],$rfMessages->getMessages()));
+            return $this->redirectToRoute('rf_object_product_view', array_merge(['id'=>$object->getId()],$rfMessages->getMessages()));
         }
 
-        return $this->render('objects/category/add.html.twig', [
+        return $this->render('objects/product/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -105,9 +108,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/edit/category-{id}", name="rf_object_category_edit")
-     * @IsGranted(Roles::ROLE_OBJECT_CATEGORY_EDITOR)
-     *
+     * @Route("/edit/category-{id}", name="rf_object_product_edit")
+     * @IsGranted(Roles::ROLE_OBJECT_PRODUCT_EDITOR)
      *
      * @param Request $request
      * @param ObjectCategory $object

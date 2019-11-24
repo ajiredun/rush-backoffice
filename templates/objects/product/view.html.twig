@@ -1,13 +1,13 @@
 {% extends 'objects/components/structure.html.twig' %}
 
-{% block title %}View Category{% endblock %}
+{% block title %}View Product{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
-        'active' : 'object_category',
+        'active' : 'object_product',
         'items': [
-            {'path' : path('rf_object_category_list'), 'title':"Categories"},
-            {'path' : path('rf_object_category_add'), 'title':"Add a Category"},
+            {'path' : path('rf_object_product_list'), 'title':"Products"},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
         ]
     }} %}
     {% include 'admin/sidenav.html.twig'  with config %}
@@ -15,17 +15,17 @@
 
 {% block nav %}
     {% set config = {'config':{
-        'main': {'path' : path('rf_object_category_list'), 'title':"O Category Management"},
+        'main': {'path' : path('rf_object_product_list'), 'title':"O Product Management"},
         'items': [
-            {'path' : path('rf_object_category_list'), 'title':"Categories", 'active':true},
-            {'path' : path('rf_object_category_add'), 'title':"Add a Category"},
+            {'path' : path('rf_object_product_list'), 'title':"Products", 'active':true},
+            {'path' : path('rf_object_product_add'), 'title':"Add a Product"},
         ]
     }} %}
     {% include 'admin/nav.html.twig' with config %}
 {% endblock %}
 
 {% block header %}
-    {% include 'objects/category/components/header.html.twig' %}
+    {% include 'objects/product/components/header.html.twig' %}
 {% endblock %}
 
 {% block content %}
