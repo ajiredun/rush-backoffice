@@ -94,7 +94,7 @@ class ProductController extends AbstractController
 
     /**
      *
-     * @Route("/category-{id}", name="rf_object_category_view")
+     * @Route("/category-{id}", name="rf_object_product_view")
      *
      * @param Request $request
      * @param ObjectCategory $object

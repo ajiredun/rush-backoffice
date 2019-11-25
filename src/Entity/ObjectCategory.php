@@ -2,11 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ *
+ * @ApiResource(
+ *      attributes={
+ *          "pagination_items_per_page"=3000
+ *     },
+ *     accessControl="is_granted('ROLE_API_USER', object)",
+ *     accessControlMessage="UNAUTHORISED_API_REQUEST",
+ *     normalizationContext={"groups"={"category:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"category:write"}, "swagger_definition_name"="Write"},
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"category:read"}}
+ *         }
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ObjectCategoryRepository")
  */
 class ObjectCategory
@@ -15,26 +33,43 @@ class ObjectCategory
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"category:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"category:read"})
      */
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"category:read"})
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"category:read"})
+     */
+    private $online;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"category:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"category:read"})
      */
     private $image;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"category:read"})
      */
     private $createdAt;
 
@@ -49,17 +84,25 @@ class ObjectCategory
     private $lastModifiedBy;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\ObjectCategory", inversedBy="objectCategories")
+     * @ApiSubresource()
+     * @Groups({"category:read"})
      */
     private $category;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\ObjectCategory", mappedBy="category")
+     * @ApiSubresource()
+     * @Groups({"category:read"})
      */
     private $objectCategories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ObjectProduct", mappedBy="category")
+     * @ApiSubresource()
+     * @Groups({"category:read"})
      */
     private $objectProducts;
 
@@ -69,6 +112,7 @@ class ObjectCategory
         $this->createdAt = new \DateTime('now');
         $this->objectCategories = new ArrayCollection();
         $this->objectProducts = new ArrayCollection();
+        $this->online = false;
     }
 
     public function getId(): ?int
@@ -86,6 +130,45 @@ class ObjectCategory
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function isOnline(): ?bool
+    {
+        return $this->online;
+    }
+
+    public function setOnline(bool $online): self
+    {
+        $this->online = $online;
+
+        return $this;
+    }
+
+
+    function slugify($sluggable)
+    {
+        $sluggable = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $sluggable);
+        $sluggable = trim($sluggable, '-');
+        if( function_exists('mb_strtolower') ) {
+            $sluggable = mb_strtolower( $sluggable );
+        } else {
+            $sluggable = strtolower( $sluggable );
+        }
+        $sluggable = preg_replace("/[\/_|+ -]+/", '-', $sluggable);
+
+        return $sluggable;
     }
 
     public function getDescription(): ?string

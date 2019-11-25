@@ -25,13 +25,29 @@ class ObjectCategoryRepository extends ServiceEntityRepository
     public function getWithSearchQueryBuilder(SearchParams $searchParams)
     {
         $term = $searchParams->getCurrent('name');
+        $status = $searchParams->getCurrent('status');
+        $online = null;
+        if ($status=="ONLINE") {
+            $online = true;
+        }
+        if ($status=="OFFLINE") {
+            $online = false;
+        }
 
         $qb = $this->createQueryBuilder('object_category');
 
         if (!empty($term)) {
             $qb->orWhere('object_category.name LIKE :term')
                 ->setParameter('term', "%$term%");
+
+            $qb->orWhere('object_category.slug LIKE :slug')
+                ->setParameter('slug', "%$term%");
         }
+        if (!is_null($online)) {
+            $qb->andWhere($qb->expr()->eq('object_category.online', ':online'))
+                ->setParameter('online', $online);
+        }
+
 
         return $qb->getQuery();
     }

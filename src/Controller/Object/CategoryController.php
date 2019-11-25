@@ -3,6 +3,7 @@
 namespace App\Controller\Object;
 
 use App\Entity\ObjectCategory;
+use App\Entity\ObjectMenu;
 use App\Entity\Page;
 use App\Enums\Roles;
 use App\Form\Type\Objects\CategoryType;
@@ -10,6 +11,7 @@ use App\Repository\BlockRepository;
 use App\Repository\ObjectCategoryRepository;
 use App\Service\BlockManager;
 use App\Service\CTManager;
+use App\Service\ObjectRelationManager;
 use App\Service\RfMessages;
 use App\Service\SearchParams;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,20 +54,26 @@ class CategoryController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ObjectCategory|null $parent
      * @param RfMessages $rfMessages
      * @param EntityManagerInterface $em
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      *
      *
      * @IsGranted(Roles::ROLE_OBJECT_CATEGORY_EDITOR)
-     * @Route("/add", name="rf_object_category_add")
+     * @Route("/add/{parent}", name="rf_object_category_add")
      *
      */
-    public function add(Request $request, RfMessages $rfMessages, EntityManagerInterface $em)
+    public function add(Request $request, ObjectCategory $parent = null, RfMessages $rfMessages, EntityManagerInterface $em)
     {
+
         $object = new ObjectCategory();
         $object->setLastModifiedBy($this->getUser());
+
+        if ($parent) {
+            $object->setCategory($parent);
+        }
 
         $form = $this->createForm(CategoryType::class, $object);
 
@@ -75,6 +83,10 @@ class CategoryController extends AbstractController
              * @var ObjectCategory $object
              */
             $object = $form->getData();
+            if ("/" !== substr($object->getSlug(), 0, 1)) {
+                $object->setSlug("/".$object->getSlug());
+            }
+
             $object->setLastModifiedAt(new \DateTime('now'));
 
             $em->persist($object);
@@ -128,6 +140,9 @@ class CategoryController extends AbstractController
              * @var ObjectCategory $object
              */
             $object = $form->getData();
+            if ("/" !== substr($object->getSlug(), 0, 1)) {
+                $object->setSlug("/".$object->getSlug());
+            }
             $object->setLastModifiedAt(new \DateTime('now'));
 
             $em->flush();
@@ -140,5 +155,32 @@ class CategoryController extends AbstractController
             'form' => $form->createView(),
             'editMode' => true
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param ObjectCategory $objectCategory
+     * @param RfMessages $rfMessages
+     * @param EntityManagerInterface $em
+     * @param ObjectRelationManager $objectRelationManager
+     * @return mixed
+     *
+     * @Route("/delete/{id}", name="rf_object_category_delete")
+     *
+     */
+    public function delete(Request $request, ObjectCategory $objectCategory, RfMessages $rfMessages, EntityManagerInterface $em, ObjectRelationManager $objectRelationManager)
+    {
+
+        $relations = $objectRelationManager->objectHasRelation(ObjectCategory::class, $objectCategory->getId());
+
+        if ($relations === false) {
+            $em->remove($objectCategory);
+            $em->flush();
+
+            $rfMessages->addSuccess("Category deleted successfully.");
+            return $this->redirectToRoute('rf_object_category_list', array_merge([],$rfMessages->getMessages()));
+        }
+
+        return $this->redirectToRoute('rf_object_category_view', ['id'=>$objectCategory->getId(), 'rfObjectRelations'=>$objectRelationManager->transformForUrl($relations)]);
     }
 }

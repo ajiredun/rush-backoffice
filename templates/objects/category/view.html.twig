@@ -35,7 +35,7 @@
                 <div class="card-header bg-translucent-neutral border-0">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">{{ object.name }}</h3>
+                            <h1 class="mb-0">{{ object.name }} - ({{ object.slug }}) - {% if object.online %}<span style="color:green;">Online</span>{% else %}<span style="color:red;">Offline</span>{% endif %}</h1>
                         </div>
                         <div class="col-4" style="text-align: right;">
 
@@ -44,7 +44,7 @@
                                 <span class="btn-inner--text">Edit</span>
                             </a>
 
-                            <a href="{{ path('rf_object_menu_delete', {'id':object.id}) }}"  id="deleteMenu" class="btn btn-outline-danger btn-sm" data-title="Delete this menu ?" >
+                            <a href="{{ path('rf_object_category_delete', {'id':object.id}) }}"  id="deleteObject" class="btn btn-outline-danger btn-sm" data-title="Delete this menu ?" >
                                 <span class="btn-inner--icon"><i class="fas fa-times-circle"></i></span>
                                 <span class="btn-inner--text">Delete</span>
                             </a>
@@ -53,15 +53,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img style="width:100%;" src="{{ object.image }}" />
+                <div class="card-body" >
+                    <div class="row" >
+                        <div class="col-md-3" style="padding: 15px;">
+                            <h4>Thumbnail</h4>
+                            <img src="{{ object.image }}" style="width:250px;" />
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8" style="padding: 15px;">
+                            <h4>SEO Description</h4>
                             <p>
                                 {{ object.description | raw }}
                             </p>
+                        </div>
+                    </div>
+                    <div class="row" style="border-bottom:1px solid grey;">
+                        <div class="col-md-6" style="padding:15px; border:1px solid gainsboro;">
+                            <h4>Parent Category:</h4>
+                            {% if object.category is not empty %}
+                                <h2>
+                                    <a href="{{ path('rf_object_category_view', {'id':object.category.id}) }}"> {{ object.category.name }}</a>
+                                </h2>
+                            {% else %}
+                                <h2>
+                                    No parent category
+                                </h2>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6" style="padding:15px; border:1px solid gainsboro;">
+                            <h4>Sub Categories:</h4>
+                            {% if object.objectCategories is not empty %}
+                                {% for cat in object.objectCategories %}
+                                    <h2>
+                                        <a href="{{ path('rf_object_category_view', {'id':cat.id}) }}"> {{ cat.name }}</a>
+                                    </h2>
+                                {% endfor %}
+
+                            {% endif %}
+                            <h4>
+                                <a href="{{ path('rf_object_category_add', {'parent':object.id}) }}"> Add a sub category</a>
+                            </h4>
                         </div>
                     </div>
                     <br/><br/>
@@ -92,7 +123,7 @@
     <script>
         $(document).ready(function () {
 
-            $('#deleteMenu').confirm({
+            $('#deleteObject').confirm({
                 buttons: {
                     cancel: {
                         text: 'Cancel',

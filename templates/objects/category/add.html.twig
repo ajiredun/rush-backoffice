@@ -1,6 +1,6 @@
 {% extends 'objects/components/structure.html.twig' %}
 
-{% block title %}Add Category{% endblock %}
+{% block title %}{% if editMode is defined and editMode %}Edit Category{% else %}New Category{% endif %}{% endblock %}
 
 {% block sidenav %}
     {% set config = {'config':{
@@ -128,6 +128,13 @@
     {% include 'admin/components/tinymce.html.twig'  with config %}
     <script>
         $(document).ready(function () {
+
+            $('.my_category_name').keyup(function () {
+                var value = $(this).val();
+                if (value != '') {
+                    $('.my_category_route').val(rfslugify(value));
+                }
+            });
 
         });
     </script>

@@ -41,6 +41,12 @@
                     {% if 'status' in config.fields %}
                         <th scope="col">Status</th>
                     {% endif %}
+                    {% if 'route' in config.fields %}
+                        <th scope="col">Route</th>
+                    {% endif %}
+                    {% if 'slug' in config.fields %}
+                        <th scope="col">Slug</th>
+                    {% endif %}
                     {% if 'lastModifiedAt' in config.fields %}
                         <th scope="col">Last modified</th>
                     {% endif %}
@@ -90,6 +96,18 @@
                                     <span class="badge badge-dot mr-2"><i
                                                 class="bg-gradient-gray-dark"></i> ARCHIVED</span>
                                 {% endif %}
+                            </td>
+                        {% endif %}
+
+                        {% if 'route' in config.fields %}
+                            <td>
+                                <span title="{{ object.route }}">{{ object.route }}</span>
+                            </td>
+                        {% endif %}
+
+                        {% if 'slug' in config.fields %}
+                            <td>
+                                <span title="{{ object.slug }}">{{ object.slug }}</span>
                             </td>
                         {% endif %}
 

@@ -35,7 +35,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <input type="text" class="form-control rf-focus" name="rfsearch_category_name" value="{{ searchParamsGet('category_name') }}" placeholder="name">
+                            <input type="text" class="form-control rf-focus" name="rfsearch_category_name" value="{{ searchParamsGet('category_name') }}" placeholder="name / slug">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control" size="" name="rfsearch_category_status" id="status">
+                                <option value="">Status</option>
+                                <option {% if searchParamsGet('category_status') == "ONLINE" %}selected="selected"{% endif %} value="ONLINE">Online</option>
+                                <option {% if searchParamsGet('category_status') == "OFFLINE" %}selected="selected"{% endif %} value="OFFLINE">Offline</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -54,7 +63,7 @@
                 'title' : 'Categories ('~pagination.getTotalItemCount~')',
                 'classname': "category",
                 'objects' : pagination,
-                'fields' : ['online','name','lastModifiedBy', 'lastModifiedAt'],
+                'fields' : ['online','name','slug','lastModifiedBy', 'lastModifiedAt'],
                 'paginate' : true,
                 'options': ['view', 'edit']
             }} %}
