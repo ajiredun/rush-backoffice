@@ -12,8 +12,12 @@
 
 
 to set php7 global 
-https://forums.cpanel.net/threads/specific-php-cli-version-for-account.636529/
+> mkdir bin
+> ln -s /usr/local/bin/ea-php73 bin/php
+> vim .bashrc
 
+#Put the following code on bottom
+export PATH="/home/[usuario]/bin:$PATH"
 
 
 **SSH Godigitalshop server
