@@ -11,5 +11,10 @@
 `/opt/cpanel/ea-php73/root/usr/bin/php`
 
 
+to set php7 global 
+https://forums.cpanel.net/threads/specific-php-cli-version-for-account.636529/
+
+
+
 **SSH Godigitalshop server
 `ssh godigitalshop@godigitalshop.com`
