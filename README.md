@@ -12,8 +12,14 @@
 
 
 to set php7 global 
+
+
 > mkdir bin
+> 
+
 > ln -s /usr/local/bin/ea-php73 bin/php
+> 
+
 > vim .bashrc
 
 #Put the following code on bottom
